@@ -5,9 +5,6 @@ from classPlanet import Planet
 from classStar import Star
 
 CNS = 0; PLN = 1
-NAM = 0; NPL = 1; WYS = 2
-PLC = 0; LEN = 1
-CLR = 1; COR = 2; 
 XCR = 0; YCR = 1
 
 COLORS = [
@@ -22,7 +19,7 @@ COLORS = [
 
 def okxy(planets, x, y, mind):
     for i in planets:
-        if mymath.dist(x, y, i.coordinates_x, i.coordinates_y) < mind:
+        if mymath.dist(x, y, i.coordinates[XCR], i.coordinates[YCR]) < mind:
             return False
     return True
     
@@ -95,8 +92,8 @@ def printSystems(systems, size):
         for j in systems[PLN][cnt]:
             print('      > Название планеты:', j.name)
             print('           Тип планеты:', j.typ)
-            print('           Координаты в системе:', '({}, {})'.format(j.coordinates_x, j.coordinates_y))
-            view.append((j.coordinates_x, j.coordinates_y))
+            print('           Координаты в системе:', j.coordinates)
+            view.append(j.coordinates)
             print()
         cnt += 1
         print('Внешний вид:')
