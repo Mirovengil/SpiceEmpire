@@ -1,6 +1,8 @@
 from random import randint
 import OstTree
 import mymath
+from classPlanet import Planet
+from classStar import Star
 
 CNS = 0; PLN = 1
 NAM = 0; NPL = 1; WYS = 2
@@ -20,7 +22,7 @@ COLORS = [
 
 def okxy(planets, x, y, mind):
     for i in planets:
-        if mymath.dist(x, y, i[COR][XCR], i[COR][YCR]) < mind:
+        if mymath.dist(x, y, i.coordinates_x, i.coordinates_y) < mind:
             return False
     return True
     
@@ -36,19 +38,17 @@ def generateConstellation(Names, n, minl, maxl, namesNumber):
     for i in range(n):
         star = []
         numm = randint(0, namesNumber - 1)
-        star.append(Names[numm])
+        name = Names[numm]
         Names[numm], Names[namesNumber - 1] = Names[namesNumber - 1], Names[numm]
         namesNumber -= 1
-        star.append(0)
-        star.append([])
-        graph.append(star)
+        graph.append(Star(name, 0, []))
     Ways = []
     for i in range(n):
         for j in range(n):
             Ways.append((randint(minl, maxl), i, j))
     Ways = OstTree.buildOstTree(n, Ways)
     for i in range(n):
-        graph[i][WYS] = Ways[i]
+        graph[i].neighbours = Ways[i]
     return graph
     
 
@@ -57,17 +57,15 @@ def generatePlanets(Names, n, minp, maxp, namesNumber, size, mind):
     for i in range(n):
         planets = []
         for j in range(randint(minp, maxp)):
-            planet = []
             x, y = randint(0, size - 1), randint(0, size - 1)
             while not okxy(planets, x, y, mind):
                 x, y = randint(0, size - 1), randint(0, size - 1)
             numm = randint(0, namesNumber - 1)
-            planet.append(Names[numm])
+            name = Names[numm]
             Names[numm], Names[namesNumber - 1] = Names[namesNumber - 1], Names[numm]
             namesNumber -= 1
-            planet.append(COLORS[randint(0, len(COLORS) - 1)])
-            planet.append((x, y))
-            planets.append(planet)
+            typ = COLORS[randint(0, len(COLORS) - 1)]
+            planets.append(Planet(name, typ, (x, y)))
         graphs.append(planets)
     return graphs
         
@@ -80,30 +78,30 @@ def generateMap(n, minp, maxp, minl, maxl, size, mind):
     planets = generatePlanets(Names, n, minp, maxp, namesNumber, size, mind)
     Map.append(planets)
     for i in range(n):
-        Map[CNS][i][NPL] = len(Map[PLN][i])
+        Map[CNS][i].planetsNumber = len(Map[PLN][i])
     return Map
     
 def printSystems(systems, size):
     cnt = 0
     for i in systems[CNS]:
         print('-------------------------------------------------------')
-        print('Название звезды:', i[NAM])
-        print('Кол-во планет:', i[NPL])
+        print('Название звезды:', i.name)
+        print('Кол-во планет:', i.planetsNumber)
         print('Соседи:')
-        for j in i[WYS]:
-            print('    >', systems[CNS][j[1]][NAM], '  (', j[0], 'ПА', ')')
+        for j in i.neighbours:
+            print('    >', systems[CNS][j[1]].name, '  (', j[0], 'ПА', ')')
         view = []
         print('Планеты:')
         for j in systems[PLN][cnt]:
-            print('      > Название планеты:', j[NAM])
-            print('           Тип планеты:', j[CLR])
-            print('           Координаты в системе:', '({}, {})'.format(j[COR][XCR], j[COR][YCR]))
-            view.append(j[COR])
+            print('      > Название планеты:', j.name)
+            print('           Тип планеты:', j.typ)
+            print('           Координаты в системе:', '({}, {})'.format(j.coordinates_x, j.coordinates_y))
+            view.append((j.coordinates_x, j.coordinates_y))
             print()
         cnt += 1
         print('Внешний вид:')
         for j in range(size):
-            print('                     ', end = '')
+            print('           ', end = '')
             for k in range(size):
                 if (j, k) in view:
                     print('*', end = ' ')
@@ -118,7 +116,7 @@ if __name__ == "__main__":
     maxp = 10    #максимальное кол-во планет в системе
     minl = 1     #минимальная длина пути между двумя системами
     maxl = 4     #максимальная длина пути между двумя системами
-    size = 30    #размер системы по xy (x == y)
+    size = 15    #размер системы по xy (x == y)
     mind = 3     #минимальное расстояние между двумя планетами (считается по Пифагору)
     #изменять можно, на своё усмотрение; нюансы: n < 324, потому что названий для звёзд пока всего 324 (можешь добавить своих);
     #работает за O(n * n) -> не стоит делать n большим, чем sqrt(10^6): питон, всё же, ме-е-едленный;
