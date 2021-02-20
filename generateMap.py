@@ -7,7 +7,7 @@ from classStar import Star
 CNS = 0; PLN = 1
 XCR = 0; YCR = 1
 
-COLORS = [
+TYPES = [
 'magmatic',
 'waterfull',
 'green',
@@ -32,7 +32,7 @@ def getNames(place):
 
 def generateConstellation(Names, n, minl, maxl, namesNumber):
     graph = []
-    for i in range(n):
+    for i in range(n): #Здесь создаётся звезда
         star = []
         numm = randint(0, namesNumber - 1)
         name = Names[numm]
@@ -53,7 +53,7 @@ def generatePlanets(Names, n, minp, maxp, namesNumber, size, mind):
     graphs = []
     for i in range(n):
         planets = []
-        for j in range(randint(minp, maxp)):
+        for j in range(randint(minp, maxp)): #Здесь создаётся планета
             x, y = randint(0, size - 1), randint(0, size - 1)
             while not okxy(planets, x, y, mind):
                 x, y = randint(0, size - 1), randint(0, size - 1)
@@ -61,7 +61,7 @@ def generatePlanets(Names, n, minp, maxp, namesNumber, size, mind):
             name = Names[numm]
             Names[numm], Names[namesNumber - 1] = Names[namesNumber - 1], Names[numm]
             namesNumber -= 1
-            typ = COLORS[randint(0, len(COLORS) - 1)]
+            typ = TYPES[randint(0, len(TYPES) - 1)]
             planets.append(Planet(name, typ, (x, y)))
         graphs.append(planets)
     return graphs
