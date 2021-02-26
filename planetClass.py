@@ -17,7 +17,7 @@ class Planet:
         self.steel = None
         self.food = None
         self.money = None
-        self.type == None
+        self.type = None
         self.description = 'Какой-то дурачок создал планету общего вида. Ошибка в коде, извиняйте-с.'
         self.port = []
         self.defence = []
