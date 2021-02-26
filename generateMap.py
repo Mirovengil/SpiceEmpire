@@ -1,21 +1,10 @@
 from random import randint
 import OstTree
 import mymath
-from classPlanet import Planet
+from classPlanet import newPlanet
 from classStar import Star
-
 CNS = 0; PLN = 1
 XCR = 0; YCR = 1
-
-TYPES = [
-'magmatic',
-'waterfull',
-'green',
-'desert',
-'Earth',
-'gase',
-'rock'
-]
 
 def okxy(planets, x, y, mind):
     for i in planets:
@@ -61,17 +50,16 @@ def generatePlanets(Names, n, minp, maxp, namesNumber, size, mind):
             name = Names[numm]
             Names[numm], Names[namesNumber - 1] = Names[namesNumber - 1], Names[numm]
             namesNumber -= 1
-            typ = TYPES[randint(0, len(TYPES) - 1)]
-            planets.append(Planet(name, typ, (x, y)))
+            planets.append(newPlanet(name, (x, y)))
         graphs.append(planets)
     return graphs
         
 def generateMap(n, minp, maxp, minl, maxl, size, mind):
-    Names, namesNumber = getNames('StarsNames.txt')
+    Names, namesNumber = getNames('./data/StarsNames.txt')
     Map = []
     graph = generateConstellation(Names, n, minl, maxl, namesNumber)
     Map.append(graph)
-    Names, namesNumber = getNames('PlanetsNames.txt')
+    Names, namesNumber = getNames('./data/PlanetsNames.txt')
     planets = generatePlanets(Names, n, minp, maxp, namesNumber, size, mind)
     Map.append(planets)
     for i in range(n):
@@ -90,9 +78,13 @@ def printSystems(systems, size):
         view = []
         print('Планеты:')
         for j in systems[PLN][cnt]:
-            print('      > Название планеты:', j.name)
-            print('           Тип планеты:', j.typ)
-            print('           Координаты в системе:', j.coordinates)
+            print('      > Название планеты:', j.getName())
+            print('           Стратегический тип планеты:', j.getType())
+            print('           Описание планеты:', j.getDescription())
+            print('           Координаты в системе:', j.getCoordinates())
+            print('           Скорость добычи стали у одного завода:', int(j.getSteel() * 100), '%')
+            print('           Скорость добычи еды у одной фермы:', int(j.getFood() * 100), '%')
+            print('           Скорость получения денег у одного порта:', int(j.getMoney() * 100), '%')
             view.append(j.coordinates)
             print()
         cnt += 1
