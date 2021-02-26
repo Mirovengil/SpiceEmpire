@@ -55,16 +55,28 @@
             <li><strong>getFun()&nbsp;: [Fun]&nbsp;-- </strong>геттер<strong>,&nbsp;</strong>возвращает значение поля <strong>fun</strong><strong>;</strong></li>
             <li><strong>getFarm()&nbsp;: [Farm]&nbsp;--&nbsp;</strong>геттер<strong>,&nbsp;</strong>возвращает значение поля <strong>farm</strong><strong>;</strong></li>
             <li><strong>getMain() : [Main] -- </strong>геттер<strong>,&nbsp;</strong>возвращает значение поля <strong>main</strong><strong>;</strong></li>
+            <li><strong>getName() : string&nbsp;-- </strong>геттер<strong>,&nbsp;</strong>возвращает значение поля <strong>name</strong><strong>;</strong></li>
+            <li><strong>getCoordinates() : (int, int)&nbsp;-- </strong>геттер<strong>,&nbsp;</strong>возвращает значение поля <strong>coordinates</strong><strong>;</strong></li>
             <li><strong>getBuildsLen() : int</strong> -- типа геттер, возвращает суммарное количество строений на планете;</li>
             <li><strong>addPort(port) : bool -- </strong>пытается построить порт, возвращает<strong> True</strong> (удалось) <strong>/ False </strong>(нельзя); в случае успеха добавляет<strong> port </strong>в поле<strong> port;</strong></li>
+        </ul>
+
+        <ul>
             <li><strong>addDefence(defence) : bool&nbsp;-- </strong>пытается построить планетарный гарнизон, возвращает<strong> True</strong> (удалось)<strong> / False </strong>(нельзя);<strong> </strong>в случае успеха добавляет <strong>defence </strong>в поле<strong> defence;</strong></li>
             <li><strong>addFun(fun)&nbsp;: bool -- </strong>пытается построить развлекательное сооружение, возвращает<strong> True и/ False </strong>(нельзя); в случае успеха добавляет <strong>fun</strong> в поле<strong> fun;</strong></li>
             <li><strong>addFarm(farm)&nbsp;: bool --</strong> пытается построить ферму, возвращает <strong>True </strong>(удалось)<strong> / False</strong> (нельзя); в случае успеха добавляет<strong> farm </strong>в поле<strong> farm;</strong></li>
             <li><strong>addMain(main)&nbsp;: bool --</strong> пытается построить шахту, возвращает<strong> True</strong> (удалось) <strong>/ False</strong> (нельзя); в случае успеха добавляет<strong> main </strong>в поле <strong>main;</strong></li>
         </ul>
-
         <hr />
-    
-    
+        <h2>Star</h2>
+        <p>Класс, описывающий звезду. Имеет следующие поля:</p>
+        <ul>
+        <li><b>name</b> : <b>string</b> -- имя звезды;</li>
+        <li><b>planetsNumber</b> : <b>int</b> -- кол-во планет, принадлежащих звезде;</li>
+        <li><b>neighbours</b> : <b>(int, int)</b> -- смежные с оной звёзды: первое число -- длина пути, второе -- номер звезды, к которой путь ведёт, в графе;&nbsp;</li>
+        </ul>
+        <p><span style="text-decoration: underline;"><em><strong>Класс на данный момент не доработан, потому что не продуманы свойства звезды.</strong></em></span></p>
+        <p><span style="text-decoration: underline;"><em><strong></strong></em></span></p>
+        <hr>
     </body>
 </html>
