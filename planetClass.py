@@ -17,6 +17,7 @@ class Planet:
         self.steel = None
         self.food = None
         self.money = None
+        self.type == None
         self.description = 'Какой-то дурачок создал планету общего вида. Ошибка в коде, извиняйте-с.'
         self.port = []
         self.defence = []
@@ -24,6 +25,12 @@ class Planet:
         self.farm = []
         self.main = [] 
     #Геттеры
+    def getType(self):
+        return self.type
+    def getName(self):
+        return self.name
+    def getCoordinates(self):
+        return self.coordinates
     def getSteel(self):
         return self.steel
     def getFood(self):
@@ -85,6 +92,7 @@ class Lave(Planet):
         self.food = 0
         self.money = 1
         self.description = loadDescription('./data/LaveDescription.txt')
+        self.type = "lave"
     def addFarm(self, farm):
         return False
     def addFun(self, fun):
@@ -97,6 +105,7 @@ class Ice(Planet):
         self.steel = 0.5
         self.food = 0
         self.money = 1
+        self.type = 'ice'
         self.description = loadDescription('./data/IceDescription.txt')
     def addFarm(self, farm):
         return False
@@ -112,6 +121,7 @@ class Air(Planet):
         self.steel = 0
         self.food = 0
         self.money = 2
+        self.type = 'air'
         self.description = loadDescription('./data/AirDescription.txt')
     def addFun(self, fun):
         return False
@@ -136,6 +146,7 @@ class Rock(Planet):
         super().__init__(name, coordinates)
         self.steel = 2
         self.food = 0.5
+        self.type = 'rock'
         self.money = 1
         self.description = loadDescription('./data/RockDescription.txt')
     def addFun(self, fun):
@@ -148,6 +159,7 @@ class Water(Planet):
         self.steel = 0.5
         self.food = 1
         self.money = 1
+        self.type = 'water'
         self.description = loadDescription('./data/WaterDescription.txt')
     def addPort(self, port):
         if self.getBuildsLen() < Water.maxPortNumber:
@@ -161,6 +173,7 @@ class Desert(Planet):
         self.steel = 1
         self.food = 0.5
         self.money = 1
+        self.type = 'desert'
         self.description = loadDescription('./data/DesertDescription.txt')
     
     
@@ -170,6 +183,7 @@ class Earth(Planet):
         self.steel = 1
         self.food = 1
         self.money = 1
+        self.type = 'earth'
         self.description = loadDescription('./data/EarthDescription.txt')
 
 def newPlanet(name, coordinates):
