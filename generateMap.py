@@ -87,6 +87,12 @@ def printSystems(systems, sizex, sizey):
             print('           Скорость добычи стали у одного завода:', int(j.getSteel() * 100), '%')
             print('           Скорость добычи еды у одной фермы:', int(j.getFood() * 100), '%')
             print('           Скорость получения денег у одного порта:', int(j.getMoney() * 100), '%')
+            j.addMoney(5)
+            j.addFood(10)
+            j.addSteel(777)
+            print('           Стали уже есть на планете:', j.getSteelHas())
+            print('           Еды уже есть на планете:', j.getFoodHas())
+            print('           Денег уже есть на планете:', j.getMoneyHas())
             view.append(j.coordinates)
             print()
         cnt += 1

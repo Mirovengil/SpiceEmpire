@@ -46,9 +46,24 @@ class Planet:
         self.money = None
         self.type = None
         self.image = None
+        self.steelHas = 0
+        self.foodHas = 0
+        self.moneyHas = 0
         self.description = 'Какой-то дурачок создал планету общего вида. Ошибка в коде, извиняйте-с.'
         self.builds = []
     #Геттеры
+    def getSteelHas(self):
+        return self.steelHas
+    def getFoodHas(self):
+        return self.foodHas
+    def getMoneyHas(self):
+        return self.moneyHas
+    def addSteel(self, value):
+        self.steelHas += value
+    def addFood(self, value):
+        self.foodHas += value
+    def addMoney(self, value):
+        self.moneyHas += value
     def getImage(self):
         return self.image
     def getType(self):

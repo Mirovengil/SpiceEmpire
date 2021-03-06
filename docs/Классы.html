@@ -18,6 +18,9 @@
             <li><strong>steel : float --&nbsp;</strong>коэффициент, на который домножается количество добываемой на планете стали;</li>
             <li><strong>food : float --&nbsp;</strong>коэффициент, на который домножается количество добываемой на планете еды;</li>
             <li><strong>money : float --&nbsp;</strong>коэффициент, на который домножается количество добываемых&nbsp;на планете денег;</li>
+            <li><strong>steelHas : int --&nbsp;</strong>количество стали, которое имеет государство планеты в наличии;</li>
+            <li><strong>foodHas : int --&nbsp;</strong>количество еды, которое имеет государство планеты в наличии</li>
+            <li><strong>moneyHas : int --&nbsp;</strong>количество денег, которое имеет государство планеты в наличии</li>
             <li><strong>description : string -- </strong>текстоое описание планеты, которое видит игрок;</li>
             <li><strong>builds : [Build] --&nbsp;</strong>массив имеющихся на планете построек (см. соответствующий класс <strong>Build</strong>);</li>
             <li><strong>image : string --&nbsp;</strong> имя изображения, соответствующего планете;</li>
@@ -43,9 +46,16 @@
         <ul>
             <li><strong>__init__(name, coordinates)&nbsp;-- </strong>конструктор, на вход получает значения одноимённых полей;</li>
             <li><strong>getSteel() : int -- </strong>геттер<strong>,&nbsp;</strong>возвращает значение поля <strong>steel;</strong></li>
+            <li><strong>getSteelHas() : int -- </strong>геттер<strong>,&nbsp;</strong>возвращает значение поля <strong>steelHas;</strong></li>
+            <li><strong>getFoodHas() : int -- </strong>геттер<strong>,&nbsp;</strong>возвращает значение поля <strong>foodHas;</strong></li>
+            <li><strong>getMoneyHas() : int -- </strong>геттер<strong>,&nbsp;</strong>возвращает значение поля <strong>moneyHas;</strong></li>
             <li><strong>getFood() : int -- </strong>геттер<strong>,&nbsp;</strong>возвращает значение поля <strong>food;</strong></li>
             <li><strong>getMoney()&nbsp;: int -- </strong>геттер<strong>,&nbsp;</strong>возвращает значение поля <strong>money</strong><strong>;</strong></li>
-            <li><strong>getImage()&nbsp;: string&nbsp;-- </strong>геттер<strong>,&nbsp;</strong>возвращает значение поля <strong>image</strong><strong>;</strong></li>
+            <li><strong>getFood() : int -- </strong>геттер<strong>,&nbsp;</strong>возвращает значение поля <strong>food;</strong></li>
+            <li><strong>addMoney(value : int)</strong> -- прибавляет value к значению поля <strong>moneyHas</strong><strong>;</strong></li>
+            <li><strong>addFood(value : int)</strong> -- прибавляет value к значению поля <strong>foodHas</strong><strong>;</strong></li>
+            <li><strong>addSteel(value : int)</strong> -- прибавляет value к значению поля <strong>steelHas</strong><strong>;</strong></li>
+            <li><strong>getImage() : string</strong> -- </strong>геттер<strong>,&nbsp;</strong>возвращает значение поля <strong>image;</strong></li>
             <li><strong>getPort()&nbsp;: [Port]&nbsp;-- </strong>геттер<strong>,&nbsp;</strong>возвращает все <strong>Port</strong> на планете <strong>;</strong></li>
             <li><strong>getDefence() : [Defence] -- </strong>геттер<strong>,&nbsp;</strong>возвращает все <strong>Defence</strong> на планете <strong>;</strong></li>
             <li><strong>getFun()&nbsp;: [Fun]&nbsp;-- </strong>геттер<strong>,&nbsp;</strong>возвращает все <strong>Fun</strong> на планете <strong>;</strong></li>
