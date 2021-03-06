@@ -21,23 +21,19 @@
             <li><strong>food : float --&nbsp;</strong>коэффициент, на который домножается количество добываемой на планете еды;</li>
             <li><strong>money : float --&nbsp;</strong>коэффициент, на который домножается количество добываемых&nbsp;на планете денег;</li>
             <li><strong>description : string -- </strong>текстоое описание планеты, которое видит игрок;</li>
-            <li><strong>port : [Port] --&nbsp;</strong>массив имеющихся на планете космических портов (см. соответствующий класс <strong>Port</strong>);</li>
-            <li><strong>defence : [Defence] --&nbsp;</strong>массив имеющихся на планете планетарных гарнизонов (см. соответствующий класс <strong>Defence</strong>);</li>
-            <li><strong>fun : [Fun]&nbsp;--&nbsp;</strong>массив имеющихся на планете развлекательных сооружений (см. соответствующий класс <strong>Fun</strong>);</li>
-            <li><strong>farm : [Farm]&nbsp;--&nbsp;</strong>массив имеющихся на планете ферм (см. соответствующий класс <strong>Farm</strong>);</li>
-            <li><strong>main&nbsp;: [Main]&nbsp;--&nbsp;</strong>массив имеющихся на планете шахт (см. соответствующий класс <strong>Main</strong>)</li>
+            <li><strong>builds : [Build] --&nbsp;</strong>массив имеющихся на планете построек (см. соответствующий класс <strong>Build</strong>);</li>
         </ul>
 
         <p><strong>Важно: т.к. класс является абстрактным, то не рекомендуется создавать объекты его типа. Поля коэффициентов будут иметь значение <em>None.</em>&nbsp;Предпочтительнее использовать классы конкретизированных планет, которые описаны ниже:</strong></p>
-
+        <p><strong>Важно #2: надо импортировать Types из модуля planetClass</strong></p>
         <ul>
-            <li><strong>Lave --&nbsp;</strong>лавовая планета (см. таблицу планет в документации);</li>
-            <li><strong>Water -- </strong>водяная&nbsp;планета (см. таблицу планет в документации);</li>
-            <li><strong>Ice&nbsp;-- </strong>ледяная&nbsp;планета (см. таблицу планет в документации);</li>
-            <li><strong>Desert&nbsp;--&nbsp;</strong>пустынная&nbsp;планета (см. таблицу планет в документации);</li>
-            <li><strong>Earth&nbsp;--&nbsp;</strong>планета Земного типа&nbsp;(см. таблицу планет в документации);</li>
-            <li><strong>Air&nbsp;-- </strong>газовая планета (см. таблицу планет в документации);</li>
-            <li><strong>Rock&nbsp;--&nbsp;</strong>скалистая&nbsp;планета (см. таблицу планет в документации);</li>
+            <li><strong>Types.lave --&nbsp;</strong>лавовая планета (см. таблицу планет в документации);</li>
+            <li><strong>Types.water -- </strong>водяная&nbsp;планета (см. таблицу планет в документации);</li>
+            <li><strong>Types.ice&nbsp;-- </strong>ледяная&nbsp;планета (см. таблицу планет в документации);</li>
+            <li><strong>Types.desert&nbsp;--&nbsp;</strong>пустынная&nbsp;планета (см. таблицу планет в документации);</li>
+            <li><strong>Types.earth&nbsp;--&nbsp;</strong>планета Земного типа&nbsp;(см. таблицу планет в документации);</li>
+            <li><strong>Types.air&nbsp;-- </strong>газовая планета (см. таблицу планет в документации);</li>
+            <li><strong>Types.rock&nbsp;--&nbsp;</strong>скалистая&nbsp;планета (см. таблицу планет в документации);</li>
         </ul>
 
         <p><strong>Все они наследуют класс Planet, переопределяя конструктор и некоторые методы из описанных ниже (см. ограничения на кол-во построек для планет).</strong></p>
@@ -50,17 +46,17 @@
             <li><strong>getFood() : int -- </strong>геттер<strong>,&nbsp;</strong>возвращает значение поля <strong>food;</strong></li>
             <li><strong>getMoney()&nbsp;: int -- </strong>геттер<strong>,&nbsp;</strong>возвращает значение поля <strong>money</strong><strong>;</strong></li>
             <li><strong>getDescription()&nbsp;: string&nbsp;-- </strong>геттер<strong>,&nbsp;</strong>возвращает значение поля <strong>description</strong><strong>;</strong></li>
-            <li><strong>getPort()&nbsp;: [Port]&nbsp;-- </strong>геттер<strong>,&nbsp;</strong>возвращает значение поля <strong>port</strong><strong>;</strong></li>
-            <li><strong>getDefence() : [Defence] -- </strong>геттер<strong>,&nbsp;</strong>возвращает значение поля <strong>defence</strong><strong>;</strong></li>
-            <li><strong>getFun()&nbsp;: [Fun]&nbsp;-- </strong>геттер<strong>,&nbsp;</strong>возвращает значение поля <strong>fun</strong><strong>;</strong></li>
-            <li><strong>getFarm()&nbsp;: [Farm]&nbsp;--&nbsp;</strong>геттер<strong>,&nbsp;</strong>возвращает значение поля <strong>farm</strong><strong>;</strong></li>
-            <li><strong>getMain() : [Main] -- </strong>геттер<strong>,&nbsp;</strong>возвращает значение поля <strong>main</strong><strong>;</strong></li>
+            <li><strong>getPort()&nbsp;: [Port]&nbsp;-- </strong>геттер<strong>,&nbsp;</strong>возвращает все <strong>Port</strong> на планете <strong>;</strong></li>
+            <li><strong>getDefence() : [Defence] -- </strong>геттер<strong>,&nbsp;</strong>возвращает все <strong>Defence</strong> на планете <strong>;</strong></li>
+            <li><strong>getFun()&nbsp;: [Fun]&nbsp;-- </strong>геттер<strong>,&nbsp;</strong>возвращает все <strong>Fun</strong> на планете <strong>;</strong></li>
+            <li><strong>getFarm()&nbsp;: [Farm]&nbsp;--&nbsp;</strong>геттер<strong>,&nbsp;</strong>возвращает все <strong>Farm</strong> на планете <strong>;</strong></li>
+            <li><strong>getMain() : [Main] -- </strong>геттер<strong>,&nbsp;</strong>возвращает все <strong>Main</strong> на планете <strong>;</strong></li>
             <li><strong>getBuildsLen() : int</strong> -- типа геттер, возвращает суммарное количество строений на планете;</li>
-            <li><strong>addPort(port) : bool -- </strong>пытается построить порт, возвращает<strong> True</strong> (удалось) <strong>/ False </strong>(нельзя); в случае успеха добавляет<strong> port </strong>в поле<strong> port;</strong></li>
-            <li><strong>addDefence(defence) : bool&nbsp;-- </strong>пытается построить планетарный гарнизон, возвращает<strong> True</strong> (удалось)<strong> / False </strong>(нельзя);<strong> </strong>в случае успеха добавляет <strong>defence </strong>в поле<strong> defence;</strong></li>
-            <li><strong>addFun(fun)&nbsp;: bool -- </strong>пытается построить развлекательное сооружение, возвращает<strong> True и/ False </strong>(нельзя); в случае успеха добавляет <strong>fun</strong> в поле<strong> fun;</strong></li>
-            <li><strong>addFarm(farm)&nbsp;: bool --</strong> пытается построить ферму, возвращает <strong>True </strong>(удалось)<strong> / False</strong> (нельзя); в случае успеха добавляет<strong> farm </strong>в поле<strong> farm;</strong></li>
-            <li><strong>addMain(main)&nbsp;: bool --</strong> пытается построить шахту, возвращает<strong> True</strong> (удалось) <strong>/ False</strong> (нельзя); в случае успеха добавляет<strong> main </strong>в поле <strong>main;</strong></li>
+            <li><strong>addPort(port) : bool -- </strong>пытается построить порт, возвращает<strong> True</strong> (удалось) <strong>/ False </strong>(нельзя); в случае успеха добавляет<strong> port </strong>в поле<strong> builds;</strong></li>
+            <li><strong>addDefence(defence) : bool&nbsp;-- </strong>пытается построить планетарный гарнизон, возвращает<strong> True</strong> (удалось)<strong> / False </strong>(нельзя);<strong> </strong>в случае успеха добавляет <strong>defence </strong>в поле<strong> builds;</strong></li>
+            <li><strong>addFun(fun)&nbsp;: bool -- </strong>пытается построить развлекательное сооружение, возвращает<strong> True / False </strong>(нельзя); в случае успеха добавляет <strong>fun</strong> в поле<strong> builds;</strong></li>
+            <li><strong>addFarm(farm)&nbsp;: bool --</strong> пытается построить ферму, возвращает <strong>True </strong>(удалось)<strong> / False</strong> (нельзя); в случае успеха добавляет<strong> farm </strong>в поле<strong> builds;</strong></li>
+            <li><strong>addMain(main)&nbsp;: bool --</strong> пытается построить шахту, возвращает<strong> True</strong> (удалось) <strong>/ False</strong> (нельзя); в случае успеха добавляет<strong> main </strong>в поле <strong>builds;</strong></li>
         </ul>
 
         <hr />
