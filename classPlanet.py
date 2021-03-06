@@ -1,6 +1,15 @@
 XCR = 0; YCR = 1
 from random import randint
 
+class Types:
+    lave = 0
+    air = 1
+    ice = 2
+    earth = 3
+    desert = 4
+    rock = 5
+    water = 6
+
 def loadDescription(File):
     std = open(File, 'r')
     descr = ""
@@ -8,6 +17,15 @@ def loadDescription(File):
         descr = descr  + i
     std.close()
     return descr
+
+descr = dict()
+descr['lave'] = loadDescription('./data/LaveDescription.txt')
+descr['ice'] = loadDescription('./data/IceDescription.txt')
+descr['rock'] = loadDescription('./data/RockDescription.txt')
+descr['water'] = loadDescription('./data/WaterDescription.txt')
+descr['air'] = loadDescription('./data/AirDescription.txt')
+descr['desert'] = loadDescription('./data/DesertDescription.txt')
+descr['earth'] = loadDescription('./data/EarthDescription.txt')
 
 class Planet:
     maxBuildsNumber = 5
@@ -19,11 +37,7 @@ class Planet:
         self.money = None
         self.type = None
         self.description = 'Какой-то дурачок создал планету общего вида. Ошибка в коде, извиняйте-с.'
-        self.port = []
-        self.defence = []
-        self.fun = []
-        self.farm = []
-        self.main = [] 
+        self.builds = []
     #Геттеры
     def getType(self):
         return self.type
@@ -40,23 +54,37 @@ class Planet:
     def getDescription(self):
         return self.description
     def getPort(self):
-        return self.port
+        port = []
+        for i in self.builds:
+            if i.type == "port":
+                port.append(i)
+        return port
     def getDefence(self):
-        return self.defence
+        port = []
+        for i in self.builds:
+            if i.type == "defence":
+                port.append(i)
+        return port
     def getFun(self):
-        return self.fun
+        port = []
+        for i in self.builds:
+            if i.type == "fun":
+                port.append(i)
+        return port
     def getFarm(self):
-        return self.farm
+        port = []
+        for i in self.builds:
+            if i.type == "farm":
+                port.append(i)
+        return port
     def getMain(self):
-        return self.main
+        port = []
+        for i in self.builds:
+            if i.type == "main":
+                port.append(i)
+        return port
     def getBuildsLen(self):
-        summ = 0
-        summ += len(self.getPort())
-        summ += len(self.getDefence())
-        summ += len(self.getFun())
-        summ += len(self.getFarm())
-        summ += len(self.getMain())
-        return summ
+        return len(self.builds)
     #Добавление построек
     def addPort(self, port):
         if self.getBuildsLen() < Planet.maxBuildsNumber:
@@ -91,8 +119,8 @@ class Lave(Planet):
         self.steel = 1
         self.food = 0
         self.money = 1
-        self.description = loadDescription('./data/LaveDescription.txt')
-        self.type = "lave"
+        self.description = descr['lave']
+        self.type = Types.lave
     def addFarm(self, farm):
         return False
     def addFun(self, fun):
@@ -105,8 +133,8 @@ class Ice(Planet):
         self.steel = 0.5
         self.food = 0
         self.money = 1
-        self.type = 'ice'
-        self.description = loadDescription('./data/IceDescription.txt')
+        self.type = Types.ice
+        self.description = descr['ice']
     def addFarm(self, farm):
         return False
     def addFun(self, fun):
@@ -121,8 +149,8 @@ class Air(Planet):
         self.steel = 0
         self.food = 0
         self.money = 2
-        self.type = 'air'
-        self.description = loadDescription('./data/AirDescription.txt')
+        self.type = Types.air
+        self.description = descr['air']
     def addFun(self, fun):
         return False
     def addFarm(self, farm):
@@ -146,9 +174,9 @@ class Rock(Planet):
         super().__init__(name, coordinates)
         self.steel = 2
         self.food = 0.5
-        self.type = 'rock'
+        self.type = Types.rock
         self.money = 1
-        self.description = loadDescription('./data/RockDescription.txt')
+        self.description = descr['rock']
     def addFun(self, fun):
         return False
     
@@ -159,8 +187,8 @@ class Water(Planet):
         self.steel = 0.5
         self.food = 1
         self.money = 1
-        self.type = 'water'
-        self.description = loadDescription('./data/WaterDescription.txt')
+        self.type = Types.water
+        self.description = descr['water']
     def addPort(self, port):
         if self.getBuildsLen() < Water.maxPortNumber:
             self.port.append(port)
@@ -173,9 +201,9 @@ class Desert(Planet):
         self.steel = 1
         self.food = 0.5
         self.money = 1
-        self.type = 'desert'
-        self.description = loadDescription('./data/DesertDescription.txt')
-    
+        self.type = Types.desert
+        self.description = descr['desert']
+           
     
 class Earth(Planet):
     def __init__(self, name, coordinates):
@@ -183,8 +211,8 @@ class Earth(Planet):
         self.steel = 1
         self.food = 1
         self.money = 1
-        self.type = 'earth'
-        self.description = loadDescription('./data/EarthDescription.txt')
+        self.type = Types.earth
+        self.description = descr['earth']
 
 def newPlanet(name, coordinates):
     types = [Lave, Water, Ice, Desert, Earth, Air, Rock]
