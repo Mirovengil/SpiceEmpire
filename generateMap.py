@@ -9,7 +9,7 @@ XCR = 0; YCR = 1
 
 def okxy(planets, x, y, mind):
     for i in planets:
-        if mymath.dist(x, y, i.coordinates[XCR], i.coordinates[YCR]) < mind:
+        if mymath.dist(x, y, i.getCoordinates()[XCR], i.getCoordinates()[YCR]) < mind:
             return False
     return True
     
@@ -69,12 +69,12 @@ def generateMap(n, minp, maxp, minl, maxl, sizex, sizey, mind):
     return Map
 
 if __name__ == "__main__":
-    n = 7        #кол-во систем на карте
+    n = 10        #кол-во систем на карте
     minp = 5     #минимальное кол-во планет в системе
     maxp = 10    #максимальное кол-во планет в системе
     minl = 1     #минимальная длина пути между двумя системами
     maxl = 4     #максимальная длина пути между двумя системами
-    sizex = 30    #размер системы по x
+    sizex = 20    #размер системы по x
     sizey = 10    #размер системы по у
     mind = 3     #минимальное расстояние между двумя планетами (считается по Пифагору)
     #изменять можно, на своё усмотрение; нюансы: n < 324, потому что названий для звёзд пока всего 324 (можешь добавить своих);

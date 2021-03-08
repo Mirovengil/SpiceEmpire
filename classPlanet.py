@@ -160,7 +160,18 @@ class Planet:
             return True
         return False
 
-
+    def __str__(self):
+        string = ""
+        string = string + '      > Название планеты: ' + self.getName() + "\n"
+        string = string + '           Стратегический тип планеты: ' + Planet.typeToStr(self.getType()) + "\n"
+        string = string + '           Описание планеты: ' + self.getDescription() + "\n"
+        string = string + '           Координаты в системе: ' + str(self.getCoordinates()) + "\n"
+        string = string + '           Изображение: ' + self.getImage() + "\n"
+        string = string + '           Скорость добычи стали у одного завода: ' + str(int(self.getSteel() * 100)) + '%' + "\n"
+        string = string + '           Скорость добычи еды у одной фермы: ' + str(int(self.getFood() * 100)) + '%' + "\n"
+        string = string + '           Скорость получения денег у одного порта: ' + str(int(self.getMoney() * 100)) + '%' + "\n"
+        return string
+        
 class Lave(Planet):
     def __init__(self, name, coordinates):
         super().__init__(name, coordinates)
