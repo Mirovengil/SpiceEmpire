@@ -31,7 +31,7 @@ class Star:
     def planetsNumber(self):
         return len(self.planets)
     
-    def __str__(self):
+    def str(self, other):
         string = ""
         temp_coords = []
         string = string + "-------------------------------------------------------" + "\n"
@@ -39,7 +39,7 @@ class Star:
         string = string + 'Кол-во планет: ' + str(self.planetsNumber()) + "\n"
         string = string + 'Соседи: ' + "\n"
         for j in self.getNeighbours():
-            string = string + '    >' + Star.getNeighbour(j).getName() + ' (' + str(Star.getWayLen(j)) +  'ПА' +  ')' + "\n"
+            string = string + '    > ' + other[Star.getNeighbour(j)].getName() + ' (' + str(Star.getWayLen(j)) +  'ПА' +  ')' + "\n"
         string = string + "\n"
         string = string + 'Планеты: ' + "\n"
         for j in self.planets:
@@ -54,4 +54,16 @@ class Star:
                     string = string + " _"
             string = string + "\n"
         string = string + '-------------------------------------------------------' + "\n"
+        return string
+    
+    def cache(self):
+        string = ""
+        string = string + self.name + "\n"
+        string = string + str(len(self.neighbours)) + "\n"
+        for i in self.neighbours:
+            string = string + str(i[0]) + "\n"
+            string = string + str(i[1]) + "\n"
+        string = string + str(len(self.planets)) + "\n"
+        for i in self.planets:
+            string = string + i.cache()
         return string

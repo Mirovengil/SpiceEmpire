@@ -25,10 +25,7 @@ class gameMap:
         if self.sizex != None:
             for i in range(len(self.stars)):
                 self.stars[i].setSize(sizex, sizey)
-        for i in range(len(self.stars)):
-            for j in range(len(self.stars[i].neighbours)):
-                self.stars[i].neighbours[j] = Star.setNeighbour(self.stars[i].neighbours[j], self.stars[Star.getNeighbour(self.stars[i].neighbours[j])])
-                        
+                
     def setPlanets(self, planets):
         if self.stars == None:
             raise ValueError("Сперва задайте звёзды, к которым будут прикрепляться планеты!1")
@@ -41,5 +38,14 @@ class gameMap:
     def __str__(self):
         string = ""
         for i in self.stars:
-           string = string + str(i)
+           string = string + i.str(self.stars)
+        return string
+
+    def cache(self):
+        string = ""
+        string = string + str(self.sizex) + "\n"
+        string = string + str(self.sizey) + "\n"
+        string = string + str(len(self.stars)) + "\n"
+        for i in self.stars:
+            string = string + i.cache()
         return string

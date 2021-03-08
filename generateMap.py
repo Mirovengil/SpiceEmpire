@@ -81,5 +81,9 @@ if __name__ == "__main__":
     #работает за O(n * n) -> не стоит делать n большим, чем sqrt(10^6): питон, всё же, ме-е-едленный;
     #n * maxp < 196 (названий для планет не хватит);
     Map = generateMap(n, minp, maxp, minl, maxl, sizex, sizey, mind)
+    print('Читабельный вывод карты (для людей):')
     print(Map)
+    print('\n\n')
+    print(Map.cache())
+    
 

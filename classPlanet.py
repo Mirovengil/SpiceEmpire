@@ -170,8 +170,23 @@ class Planet:
         string = string + '           Скорость добычи стали у одного завода: ' + str(int(self.getSteel() * 100)) + '%' + "\n"
         string = string + '           Скорость добычи еды у одной фермы: ' + str(int(self.getFood() * 100)) + '%' + "\n"
         string = string + '           Скорость получения денег у одного порта: ' + str(int(self.getMoney() * 100)) + '%' + "\n"
+        string = string + "           Денег у государства: " + str(self.getMoneyHas()) + "\n"
+        string = string + "           Стали у государства: " + str(self.getSteelHas()) + "\n"
+        string = string + "           Дошика у государства: " + str(self.getFoodHas()) + "\n"
         return string
-        
+    
+    def cache(self):
+        string = ""
+        string = string + str(self.type) + "\n"
+        string = string + self.name + "\n"
+        string = string + str(self.coordinates[0]) + "\n"
+        string = string + str(self.coordinates[1]) + "\n"
+        string = string + str(self.steelHas) + "\n"
+        string = string + str(self.foodHas) + "\n"
+        string = string + str(self.moneyHas) + "\n"
+        string = string + self.image + "\n"
+        return string
+    
 class Lave(Planet):
     def __init__(self, name, coordinates):
         super().__init__(name, coordinates)
