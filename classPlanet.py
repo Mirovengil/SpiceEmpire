@@ -37,6 +37,25 @@ img['desert'] = ('desert_img_1.png', 'desert_img_2.png', 'desert_img_3.png', 'de
 img['earth'] = ('earth_img_1.png', 'earth_img_2.png', 'earth_img_3.png', 'earth_img_4.png')
 
 class Planet:
+
+    @staticmethod
+    def typeToStr(planetType):
+        if planetType == Types.air:
+            return "Газовая"
+        if planetType == Types.desert:
+            return "Пустынная"
+        if planetType == Types.rock:
+            return "Скалистая"
+        if planetType == Types.lave:
+            return "Лавовая"
+        if planetType == Types.water:
+            return "Водяная"
+        if planetType == Types.ice:
+            return "Ледяная"
+        if planetType == Types.earth:
+            return "Земного типа"
+        return "ЧТО ЗА ХРЕНЬ ВЫ ПЕРЕДАЛИ В ПАРАМЕТРЫ!? ПЕРЕДАЙТЕ, пожалуйста, СУЩЕСТВУЮЩИЙ ТИП ПЛАНЕТЫ!"
+    
     maxBuildsNumber = 5
     def __init__(self, name, coordinates):
         self.name = name
@@ -49,7 +68,9 @@ class Planet:
         self.steelHas = 0
         self.foodHas = 0
         self.moneyHas = 0
-        self.description = 'Какой-то дурачок создал планету общего вида. Ошибка в коде, извиняйте-с.'
+        self.description = 'Какой-то дурачок создал планету общего вида. Ошибка в коде, извиняйте-с.' #Возможно,
+        #вы имеете счастье наблюдать планету-затычку, которая изображает звезду. Сделано это для того, чтобы обеспечить
+        #отсутствие планет на определённом расстоянии от того места, где в графическом интерфейсе будет изображаться звезда.
         self.builds = []
     #Геттеры
     def getSteelHas(self):

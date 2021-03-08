@@ -3,7 +3,8 @@ import OstTree
 import mymath
 from classPlanet import newPlanet
 from classStar import Star
-CNS = 0; PLN = 1
+from Map import gameMap
+
 XCR = 0; YCR = 1
 
 def okxy(planets, x, y, mind):
@@ -28,7 +29,7 @@ def generateConstellation(Names, n, minl, maxl, namesNumber):
         name = Names[numm]
         Names[numm], Names[namesNumber - 1] = Names[namesNumber - 1], Names[numm]
         namesNumber -= 1
-        graph.append(Star(name, 0, []))
+        graph.append(Star(name, []))
     Ways = []
     for i in range(n):
         for j in range(n):
@@ -57,55 +58,15 @@ def generatePlanets(Names, n, minp, maxp, namesNumber, sizex, sizey, mind):
         
 def generateMap(n, minp, maxp, minl, maxl, sizex, sizey, mind):
     Names, namesNumber = getNames('./data/StarsNames.txt')
-    Map = []
+    Map = gameMap()
     graph = generateConstellation(Names, n, minl, maxl, namesNumber)
-    Map.append(graph)
+    Map.setStars(graph)
     Names, namesNumber = getNames('./data/PlanetsNames.txt')
     planets = generatePlanets(Names, n, minp, maxp, namesNumber, sizex, sizey, mind)
-    Map.append(planets)
-    for i in range(n):
-        Map[CNS][i].planetsNumber = len(Map[PLN][i])
+    Map.setPlanets(planets)
+    Map.setPlanets(planets)
+    Map.setSize(sizex, sizey)
     return Map
-    
-def printSystems(systems, sizex, sizey):
-    cnt = 0
-    for i in systems[CNS]:
-        print('-------------------------------------------------------')
-        print('Название звезды:', i.name)
-        print('Кол-во планет:', i.planetsNumber)
-        print('Соседи:')
-        for j in i.neighbours:
-            print('    >', systems[CNS][j[1]].name, '  (', j[0], 'ПА', ')')
-        view = []
-        print('Планеты:')
-        for j in systems[PLN][cnt]:
-            print('      > Название планеты:', j.getName())
-            print('           Стратегический тип планеты:', j.getType())
-            print('           Описание планеты:', j.getDescription())
-            print('           Координаты в системе:', j.getCoordinates())
-            print('           Изображение:', j.getImage())
-            print('           Скорость добычи стали у одного завода:', int(j.getSteel() * 100), '%')
-            print('           Скорость добычи еды у одной фермы:', int(j.getFood() * 100), '%')
-            print('           Скорость получения денег у одного порта:', int(j.getMoney() * 100), '%')
-            j.addMoney(5)
-            j.addFood(10)
-            j.addSteel(777)
-            print('           Стали уже есть на планете:', j.getSteelHas())
-            print('           Еды уже есть на планете:', j.getFoodHas())
-            print('           Денег уже есть на планете:', j.getMoneyHas())
-            view.append(j.coordinates)
-            print()
-        cnt += 1
-        print('Внешний вид:')
-        for j in range(sizey):
-            print('           ', end = '')
-            for k in range(sizex):
-                if (j, k) in view:
-                    print('*', end = ' ')
-                else:
-                    print('_', end = ' ')
-            print()
-    print('-------------------------------------------------------')
 
 if __name__ == "__main__":
     n = 7        #кол-во систем на карте
@@ -119,6 +80,6 @@ if __name__ == "__main__":
     #изменять можно, на своё усмотрение; нюансы: n < 324, потому что названий для звёзд пока всего 324 (можешь добавить своих);
     #работает за O(n * n) -> не стоит делать n большим, чем sqrt(10^6): питон, всё же, ме-е-едленный;
     #n * maxp < 196 (названий для планет не хватит);
-    systems = generateMap(n, minp, maxp, minl, maxl, sizex, sizey, mind)
-    printSystems(systems, sizex, sizey)
+    Map = generateMap(n, minp, maxp, minl, maxl, sizex, sizey, mind)
+    print(Map)
 
