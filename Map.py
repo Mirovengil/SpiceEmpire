@@ -2,11 +2,7 @@ from classStar import Star
 from classPlanet import Planet
 
 class gameMap:
-    exist = False
-    
     def __init__(self):
-        if gameMap.exist:
-            raise ValueError('Игровая карта может существовать только в едином экземпляре!!11 АУФ!11')
         self.stars = None
         self.shiphs = None
         self.sizex = None
@@ -49,3 +45,12 @@ class gameMap:
         for i in self.stars:
             string = string + i.cache()
         return string
+
+def rdf(f):
+    return input(file = f).replace("\n", "")
+
+def readMap(name):
+    Map = gameMap()
+    f = open(name)
+    
+    f.close()

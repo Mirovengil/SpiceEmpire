@@ -4,7 +4,7 @@ import mymath
 from classPlanet import newPlanet
 from classStar import Star
 from Map import gameMap
-
+from Map import readMap
 XCR = 0; YCR = 1
 
 def okxy(planets, x, y, mind):
@@ -80,10 +80,16 @@ if __name__ == "__main__":
     #изменять можно, на своё усмотрение; нюансы: n < 324, потому что названий для звёзд пока всего 324 (можешь добавить своих);
     #работает за O(n * n) -> не стоит делать n большим, чем sqrt(10^6): питон, всё же, ме-е-едленный;
     #n * maxp < 196 (названий для планет не хватит);
-    Map = generateMap(n, minp, maxp, minl, maxl, sizex, sizey, mind)
+    
+    
+    #Map = generateMap(n, minp, maxp, minl, maxl, sizex, sizey, mind)
+    Map = readMap("log.txt")
     print('Читабельный вывод карты (для людей):')
     print(Map)
     print('\n\n')
     print(Map.cache())
+    f = open('log.txt', 'w')
+    print(Map.cache(), file = f)
+    f.close()
     
 
