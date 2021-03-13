@@ -25,9 +25,37 @@ descr['rock'] = loadDescription('./data/RockDescription.txt')
 descr['water'] = loadDescription('./data/WaterDescription.txt')
 descr['air'] = loadDescription('./data/AirDescription.txt')
 descr['desert'] = loadDescription('./data/DesertDescription.txt')
-descr['Earth'] = loadDescription('./data/EarthDescription.txt')
+descr['earth'] = loadDescription('./data/EarthDescription.txt')
+
+img = dict()
+img['lave'] = ('lave_img_1.png', 'lave_img_2.png', 'lave_img_3.png', 'lave_img_4.png')
+img['ice'] = ('ice_img_1.png', 'ice_img_2.png', 'ice_img_3.png', 'ice_img_4.png')
+img['air'] = ('air_img_1.png', 'air_img_2.png', 'air_img_3.png', 'air_img_4.png')
+img['water'] = ('water_img_1.png', 'water_img_2.png', 'water_img_3.png', 'water_img_4.png')
+img['rock'] = ('rock_img_1.png', 'rock_img_2.png', 'rock_img_3.png', 'rock_img_4.png')
+img['desert'] = ('desert_img_1.png', 'desert_img_2.png', 'desert_img_3.png', 'desert_img_4.png')
+img['earth'] = ('earth_img_1.png', 'earth_img_2.png', 'earth_img_3.png', 'earth_img_4.png')
 
 class Planet:
+
+    @staticmethod
+    def typeToStr(planetType):
+        if planetType == Types.air:
+            return "Газовая"
+        if planetType == Types.desert:
+            return "Пустынная"
+        if planetType == Types.rock:
+            return "Скалистая"
+        if planetType == Types.lave:
+            return "Лавовая"
+        if planetType == Types.water:
+            return "Водяная"
+        if planetType == Types.ice:
+            return "Ледяная"
+        if planetType == Types.earth:
+            return "Земного типа"
+        return "ЧТО ЗА ХРЕНЬ ВЫ ПЕРЕДАЛИ В ПАРАМЕТРЫ!? ПЕРЕДАЙТЕ, пожалуйста, СУЩЕСТВУЮЩИЙ ТИП ПЛАНЕТЫ!"
+    
     maxBuildsNumber = 5
     def __init__(self, name, coordinates):
         self.name = name
@@ -36,9 +64,29 @@ class Planet:
         self.food = None
         self.money = None
         self.type = None
-        self.description = 'Какой-то дурачок создал планету общего вида. Ошибка в коде, извиняйте-с.'
+        self.image = None
+        self.steelHas = 0
+        self.foodHas = 0
+        self.moneyHas = 0
+        self.description = 'Какой-то дурачок создал планету общего вида. Ошибка в коде, извиняйте-с.' #Возможно,
+        #вы имеете счастье наблюдать планету-затычку, которая изображает звезду. Сделано это для того, чтобы обеспечить
+        #отсутствие планет на определённом расстоянии от того места, где в графическом интерфейсе будет изображаться звезда.
         self.builds = []
     #Геттеры
+    def getSteelHas(self):
+        return self.steelHas
+    def getFoodHas(self):
+        return self.foodHas
+    def getMoneyHas(self):
+        return self.moneyHas
+    def addSteel(self, value):
+        self.steelHas += value
+    def addFood(self, value):
+        self.foodHas += value
+    def addMoney(self, value):
+        self.moneyHas += value
+    def getImage(self):
+        return self.image
     def getType(self):
         return self.type
     def getName(self):
@@ -112,7 +160,33 @@ class Planet:
             return True
         return False
 
-
+    def __str__(self):
+        string = ""
+        string = string + '      > Название планеты: ' + self.getName() + "\n"
+        string = string + '           Стратегический тип планеты: ' + Planet.typeToStr(self.getType()) + "\n"
+        string = string + '           Описание планеты: ' + self.getDescription() + "\n"
+        string = string + '           Координаты в системе: ' + str(self.getCoordinates()) + "\n"
+        string = string + '           Изображение: ' + self.getImage() + "\n"
+        string = string + '           Скорость добычи стали у одного завода: ' + str(int(self.getSteel() * 100)) + '%' + "\n"
+        string = string + '           Скорость добычи еды у одной фермы: ' + str(int(self.getFood() * 100)) + '%' + "\n"
+        string = string + '           Скорость получения денег у одного порта: ' + str(int(self.getMoney() * 100)) + '%' + "\n"
+        string = string + "           Денег у государства: " + str(self.getMoneyHas()) + "\n"
+        string = string + "           Стали у государства: " + str(self.getSteelHas()) + "\n"
+        string = string + "           Дошика у государства: " + str(self.getFoodHas()) + "\n"
+        return string
+    
+    def cache(self):
+        string = ""
+        string = string + str(self.type) + "\n"
+        string = string + self.name + "\n"
+        string = string + str(self.coordinates[0]) + "\n"
+        string = string + str(self.coordinates[1]) + "\n"
+        string = string + str(self.steelHas) + "\n"
+        string = string + str(self.foodHas) + "\n"
+        string = string + str(self.moneyHas) + "\n"
+        string = string + self.image + "\n"
+        return string
+    
 class Lave(Planet):
     def __init__(self, name, coordinates):
         super().__init__(name, coordinates)
@@ -121,6 +195,7 @@ class Lave(Planet):
         self.money = 1
         self.description = descr['lave']
         self.type = Types.lave
+        self.image = img['lave'][randint(0, len(img['lave']) - 1)]
     def addFarm(self, farm):
         return False
     def addFun(self, fun):
@@ -135,6 +210,7 @@ class Ice(Planet):
         self.money = 1
         self.type = Types.ice
         self.description = descr['ice']
+        self.image = img['ice'][randint(0, len(img['ice']) - 1)]
     def addFarm(self, farm):
         return False
     def addFun(self, fun):
@@ -151,6 +227,7 @@ class Air(Planet):
         self.money = 2
         self.type = Types.air
         self.description = descr['air']
+        self.image = img['air'][randint(0, len(img['air']) - 1)]
     def addFun(self, fun):
         return False
     def addFarm(self, farm):
@@ -177,6 +254,7 @@ class Rock(Planet):
         self.type = Types.rock
         self.money = 1
         self.description = descr['rock']
+        self.image = img['rock'][randint(0, len(img['rock']) - 1)]
     def addFun(self, fun):
         return False
     
@@ -189,6 +267,7 @@ class Water(Planet):
         self.money = 1
         self.type = Types.water
         self.description = descr['water']
+        self.image = img['water'][randint(0, len(img['water']) - 1)]
     def addPort(self, port):
         if self.getBuildsLen() < Water.maxPortNumber:
             self.port.append(port)
@@ -203,7 +282,8 @@ class Desert(Planet):
         self.money = 1
         self.type = Types.desert
         self.description = descr['desert']
-           
+        self.image = img['desert'][randint(0, len(img['desert']) - 1)]
+        
     
 class Earth(Planet):
     def __init__(self, name, coordinates):
@@ -213,6 +293,7 @@ class Earth(Planet):
         self.money = 1
         self.type = Types.earth
         self.description = descr['earth']
+        self.image = img['earth'][randint(0, len(img['earth']) - 1)]
 
 def newPlanet(name, coordinates):
     types = [Lave, Water, Ice, Desert, Earth, Air, Rock]
