@@ -5,11 +5,9 @@
         <title>Классы</title>
     </head>
     <body>
-        <p>Классы</p>
-
         <h1>Классы:</h1>
 
-        <hr />
+       <hr />
         <h2>Planet</h2>
 
         <p>Абстракный класс планеты. Имеет следующие поля:</p>
@@ -20,12 +18,20 @@
             <li><strong>steel : float --&nbsp;</strong>коэффициент, на который домножается количество добываемой на планете стали;</li>
             <li><strong>food : float --&nbsp;</strong>коэффициент, на который домножается количество добываемой на планете еды;</li>
             <li><strong>money : float --&nbsp;</strong>коэффициент, на который домножается количество добываемых&nbsp;на планете денег;</li>
+            <li><strong>steelHas : int --&nbsp;</strong>количество стали, которое имеет государство планеты в наличии;</li>
+            <li><strong>foodHas : int --&nbsp;</strong>количество еды, которое имеет государство планеты в наличии</li>
+            <li><strong>moneyHas : int --&nbsp;</strong>количество денег, которое имеет государство планеты в наличии</li>
             <li><strong>description : string -- </strong>текстоое описание планеты, которое видит игрок;</li>
             <li><strong>builds : [Build] --&nbsp;</strong>массив имеющихся на планете построек (см. соответствующий класс <strong>Build</strong>);</li>
+            <li><strong>image : string --&nbsp;</strong> имя изображения, соответствующего планете;</li>
         </ul>
 
         <p><strong>Важно: т.к. класс является абстрактным, то не рекомендуется создавать объекты его типа. Поля коэффициентов будут иметь значение <em>None.</em>&nbsp;Предпочтительнее использовать классы конкретизированных планет, которые описаны ниже:</strong></p>
+
         <p><strong>Важно #2: надо импортировать Types из модуля planetClass</strong></p>
+
+        <p><strong>Важно №3: названия картинок содержатся в словаре img в начале модуля (для того, чтобы к ним не было доступа извне). Для того, чтобы добавить планете название картинки, просто занесите его&nbsp;в словарь: длина обновляется автоматически.</strong></p>
+
         <ul>
             <li><strong>Types.lave --&nbsp;</strong>лавовая планета (см. таблицу планет в документации);</li>
             <li><strong>Types.water -- </strong>водяная&nbsp;планета (см. таблицу планет в документации);</li>
@@ -43,9 +49,16 @@
         <ul>
             <li><strong>__init__(name, coordinates)&nbsp;-- </strong>конструктор, на вход получает значения одноимённых полей;</li>
             <li><strong>getSteel() : int -- </strong>геттер<strong>,&nbsp;</strong>возвращает значение поля <strong>steel;</strong></li>
+            <li><strong>getSteelHas() : int -- </strong>геттер<strong>,&nbsp;</strong>возвращает значение поля <strong>steelHas;</strong></li>
+            <li><strong>getFoodHas() : int -- </strong>геттер<strong>,&nbsp;</strong>возвращает значение поля <strong>foodHas;</strong></li>
+            <li><strong>getMoneyHas() : int -- </strong>геттер<strong>,&nbsp;</strong>возвращает значение поля <strong>moneyHas;</strong></li>
             <li><strong>getFood() : int -- </strong>геттер<strong>,&nbsp;</strong>возвращает значение поля <strong>food;</strong></li>
             <li><strong>getMoney()&nbsp;: int -- </strong>геттер<strong>,&nbsp;</strong>возвращает значение поля <strong>money</strong><strong>;</strong></li>
-            <li><strong>getDescription()&nbsp;: string&nbsp;-- </strong>геттер<strong>,&nbsp;</strong>возвращает значение поля <strong>description</strong><strong>;</strong></li>
+            <li><strong>getFood() : int -- </strong>геттер<strong>,&nbsp;</strong>возвращает значение поля <strong>food;</strong></li>
+            <li><strong>addMoney(value : int)</strong> -- прибавляет value к значению поля <strong>moneyHas</strong><strong>;</strong></li>
+            <li><strong>addFood(value : int)</strong> -- прибавляет value к значению поля <strong>foodHas</strong><strong>;</strong></li>
+            <li><strong>addSteel(value : int)</strong> -- прибавляет value к значению поля <strong>steelHas</strong><strong>;</strong></li>
+            <li><strong>getImage() : string</strong> -- геттер<strong>,&nbsp;</strong>возвращает значение поля <strong>image;</strong></li>
             <li><strong>getPort()&nbsp;: [Port]&nbsp;-- </strong>геттер<strong>,&nbsp;</strong>возвращает все <strong>Port</strong> на планете <strong>;</strong></li>
             <li><strong>getDefence() : [Defence] -- </strong>геттер<strong>,&nbsp;</strong>возвращает все <strong>Defence</strong> на планете <strong>;</strong></li>
             <li><strong>getFun()&nbsp;: [Fun]&nbsp;-- </strong>геттер<strong>,&nbsp;</strong>возвращает все <strong>Fun</strong> на планете <strong>;</strong></li>
@@ -57,7 +70,27 @@
             <li><strong>addFun(fun)&nbsp;: bool -- </strong>пытается построить развлекательное сооружение, возвращает<strong> True / False </strong>(нельзя); в случае успеха добавляет <strong>fun</strong> в поле<strong> builds;</strong></li>
             <li><strong>addFarm(farm)&nbsp;: bool --</strong> пытается построить ферму, возвращает <strong>True </strong>(удалось)<strong> / False</strong> (нельзя); в случае успеха добавляет<strong> farm </strong>в поле<strong> builds;</strong></li>
             <li><strong>addMain(main)&nbsp;: bool --</strong> пытается построить шахту, возвращает<strong> True</strong> (удалось) <strong>/ False</strong> (нельзя); в случае успеха добавляет<strong> main </strong>в поле <strong>builds;</strong></li>
+            <li><strong>cache() : string </strong>--&nbsp;переводит всю информацию о планете&nbsp;в текстовую форму. Всё выводится без пояснений, в столбик (метод необходим для реализации сохранений в будущем).&nbsp;
+            <ul>
+                <li>Порядок вывода следующий:
+                <ul>
+                    <li><strong>type;</strong></li>
+                    <li><strong>name;</strong></li>
+                    <li><strong>coordinates[0];</strong></li>
+                    <li><strong>coordinates[1];</strong></li>
+                    <li><strong>steelHas;</strong></li>
+                    <li><strong>foodHas;</strong></li>
+                    <li><strong>moneyHas;</strong></li>
+                    <li><strong>image;</strong></li>
+                </ul>
+                </li>
+                <li><strong>Замечание: передаются только уникальные параметры; остальное можно восстановить, зная значение поля type;</strong></li>
+            </ul>
+            </li>
+            <li><strong>static&nbsp;typeToStr(planetType : int) :&nbsp;string</strong> -- возвращает название типа планеты (пока только на русском языке, однако);</li>
         </ul>
+
+        <p><strong>Важно: также перегружен перевод планеты в строку (для удобства работы с выводом в файл). Всё выводится с комментариями, всё читаемо (для логгирования / консольной графики -- самое то).</strong></p>
 
         <hr />
     
