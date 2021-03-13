@@ -5,7 +5,7 @@
         <title>Классы</title>
     </head>
     <body>
-        <h1>Классы:</h1>
+        <h1>Классы</h1>
 
         <hr />
         <h2>Planet</h2>
@@ -30,9 +30,7 @@
 
         <p><strong>Важно #2: надо импортировать Types из модуля planetClass</strong></p>
 
-        <p><strong>Важно №3: названия картинок содержатся в словаре img в начале модуля (для того, чтобы к ним не было доступа извне). Для того, чтобы добавить планете название картинки, просто занесите его в словарь: длина обновляется автоматически.</strong></p>
-
-        <p>;</p>
+        <p><strong>Важно №3: названия картинок содержатся в словаре img в начале модуля (для того, чтобы к ним не было доступа извне). Для того, чтобы добавить планете название картинки, просто занесите его&nbsp;в словарь: длина обновляется автоматически.</strong></p>
 
         <ul>
             <li><strong>Types.lave --&nbsp;</strong>лавовая планета (см. таблицу планет в документации);</li>
@@ -72,7 +70,27 @@
             <li><strong>addFun(fun)&nbsp;: bool -- </strong>пытается построить развлекательное сооружение, возвращает<strong> True / False </strong>(нельзя); в случае успеха добавляет <strong>fun</strong> в поле<strong> builds;</strong></li>
             <li><strong>addFarm(farm)&nbsp;: bool --</strong> пытается построить ферму, возвращает <strong>True </strong>(удалось)<strong> / False</strong> (нельзя); в случае успеха добавляет<strong> farm </strong>в поле<strong> builds;</strong></li>
             <li><strong>addMain(main)&nbsp;: bool --</strong> пытается построить шахту, возвращает<strong> True</strong> (удалось) <strong>/ False</strong> (нельзя); в случае успеха добавляет<strong> main </strong>в поле <strong>builds;</strong></li>
+            <li><strong>cache() : string </strong>--&nbsp;переводит всю информацию о планете&nbsp;в текстовую форму. Всё выводится без пояснений, в столбик (метод необходим для реализации сохранений в будущем).&nbsp;
+            <ul>
+                <li>Порядок вывода следующий:
+                <ul>
+                    <li><strong>type;</strong></li>
+                    <li><strong>name;</strong></li>
+                    <li><strong>coordinates[0];</strong></li>
+                    <li><strong>coordinates[1];</strong></li>
+                    <li><strong>steelHas;</strong></li>
+                    <li><strong>foodHas;</strong></li>
+                    <li><strong>moneyHas;</strong></li>
+                    <li><strong>image;</strong></li>
+                </ul>
+                </li>
+                <li><strong>Замечание: передаются только уникальные параметры; остальное можно восстановить, зная значение поля type;</strong></li>
+            </ul>
+            </li>
+            <li><strong>static&nbsp;typeToStr(planetType : int) :&nbsp;string</strong> -- возвращает название типа планеты (пока только на русском языке, однако);</li>
         </ul>
+
+        <p><strong>Важно: также перегружен перевод планеты в строку (для удобства работы с выводом в файл). Всё выводится с комментариями, всё читаемо (для логгирования / консольной графики -- самое то).</strong></p>
 
         <hr />
         <h2>Star</h2>
@@ -93,7 +111,30 @@
             <li><strong>конструктор( name : string, neighbours : [ (int, int) ] ) --&nbsp;</strong>создаёт новую звезду; на вход принимает массив звёзд-соседей <strong>neighbours</strong> и имя <strong>name</strong>;&nbsp;</li>
             <li><strong>static&nbsp;getNeighbour( way : (int, int) )</strong> :&nbsp;<strong>int --&nbsp;</strong>возвращает номер звезды-соседа, к которой ведёт путь&nbsp;<strong>way;</strong></li>
             <li><strong>static&nbsp;getWayLen( way : (int, int) )</strong> :&nbsp;<strong>int --&nbsp;</strong>возвращает длину пути&nbsp;<strong>way;</strong></li>
-            <li>&nbsp;</li>
+            <li><strong>setSize(sizex : int, sizey : int) </strong>-- сеттер; устанавливает полям с соответствующими именами передаваемые значения;</li>
+            <li><strong>getName() : string </strong>-- геттер; возвращает значение поля <strong>name</strong>;</li>
+            <li><strong>getNeighbours() : [ (int, int) ] </strong>-- геттер; возвращает значение поля <strong>neighbours</strong>;</li>
+            <li><strong>setPlanets( planets : [Planet] )</strong> -- сеттер; устанавливает полям с соответствующими именами передаваемые значения;</li>
+            <li><strong>planetsNumber() : int</strong> -- геттер; возвращает число планет, принадлежащих звезде;</li>
+            <li><strong>str(other : [Star]) : string</strong> -- переводит всю информацию о звезде в текстовую форму. На вход принимает массив звёзд <strong>stars</strong> из&nbsp;<strong>gameMap</strong>, которому принадлежит звезда; всё выводится с пояснениями, где какое значение и т.п. (т.е, является читаемым для человека. Возможно применение для&nbsp;логгирования или разработки консольной графики);</li>
+            <li><strong>cache() : string</strong> -- переводит всю информацию о звезде в текстовую форму. Всё выводится без пояснений, в столбик (метод необходим для реализации сохранений в будущем);&nbsp;
+            <ul>
+                <li>Порядок вывода следующий:
+                <ul>
+                    <li><strong>name;</strong></li>
+                    <li><strong>len(neighbours);</strong></li>
+                    <li><strong>[neighbours]:</strong>
+                    <ul>
+                        <li><strong>0;</strong></li>
+                        <li><strong>1;</strong></li>
+                    </ul>
+                    </li>
+                    <li><strong>len(planets);</strong></li>
+                    <li><strong>[planets];</strong></li>
+                </ul>
+                </li>
+            </ul>
+            </li>
         </ul>
 
         <p><u><em><strong>Класс на данный момент не доработан, потому что не продуманы свойства звезды.</strong></em></u></p>

@@ -7,7 +7,6 @@ class gameMap:
         self.shiphs = None
         self.sizex = None
         self.sizey = None
-        gameMap.exist = True
     
     def setSize(self, sizex, sizey):
         self.sizex = sizex
