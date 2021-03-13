@@ -82,8 +82,8 @@ if __name__ == "__main__":
     #n * maxp < 196 (названий для планет не хватит);
     
     
-    #Map = generateMap(n, minp, maxp, minl, maxl, sizex, sizey, mind)
-    Map = readMap("log.txt")
+    Map = generateMap(n, minp, maxp, minl, maxl, sizex, sizey, mind)
+    #Map = readMap("log.txt")
     print('Читабельный вывод карты (для людей):')
     print(Map)
     print('\n\n')

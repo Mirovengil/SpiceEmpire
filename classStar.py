@@ -2,12 +2,11 @@ class Star:
     @staticmethod
     def getNeighbour(way):
         return way[1]
+        
     @staticmethod
     def getWayLen(way):
         return way[0]
-    @staticmethod
-    def setNeighbour(way, value):
-        return (way[0], value)
+        
     def __init__(self, name, neighbours):
         self.name = name
         self.neighbours = neighbours
