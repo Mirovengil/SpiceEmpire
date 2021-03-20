@@ -1,5 +1,7 @@
 from classStar import Star
 from classPlanet import Planet
+from mymath import rdf
+from classStar import readStar
 
 class gameMap:
     def __init__(self):
@@ -13,13 +15,13 @@ class gameMap:
         self.sizey = sizey
         if self.stars != None:
             for i in range(len(self.stars)):
-                self.stars[i].setSize(sizex, sizey)
+                self.stars[i].setSize(self.sizex, self.sizey)
     
     def setStars(self, stars):
         self.stars = stars
         if self.sizex != None:
             for i in range(len(self.stars)):
-                self.stars[i].setSize(sizex, sizey)
+                self.stars[i].setSize(self.sizex, self.sizey)
                 
     def setPlanets(self, planets):
         if self.stars == None:
@@ -45,11 +47,14 @@ class gameMap:
             string = string + i.cache()
         return string
 
-def rdf(f):
-    return input(file = f).replace("\n", "")
-
 def readMap(name):
     Map = gameMap()
-    f = open(name)
-    
+    f = open(name, 'r')
+    sizex = int(rdf(f))
+    sizey = int(rdf(f))
+    n = int(rdf(f))
+    rez = gameMap()
+    rez.setSize(sizex, sizey)
+    rez.setStars([readStar(f) for i in range(n)])
     f.close()
+    return rez
