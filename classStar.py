@@ -1,3 +1,6 @@
+from mymath import rdf
+from classPlanet import readPlanet
+
 class Star: 
     @staticmethod
     def getNeighbour(way):
@@ -66,3 +69,19 @@ class Star:
         for i in self.planets:
             string = string + i.cache()
         return string
+
+    @staticmethod
+    def readStar(f):
+        name = str(rdf(f))
+        n = int(rdf(f))
+        neighbours = []
+        for i in range(n):
+            wayLen = int(rdf(f))
+            wayTarget = int(rdf(f))
+            neighbours.append((wayLen, wayTarget))
+        n = int(rdf(f))
+        planets = [readPlanet(f) for i in range(n)]
+        rez = Star(name, neighbours)
+        rez.setPlanets(planets)
+        return rez
+        
