@@ -70,18 +70,18 @@ class Star:
             string = string + i.cache()
         return string
 
-
-def readStar(f):
-    name = str(rdf(f))
-    n = int(rdf(f))
-    neighbours = []
-    for i in range(n):
-        wayLen = int(rdf(f))
-        wayTarget = int(rdf(f))
-        neighbours.append((wayLen, wayTarget))
-    n = int(rdf(f))
-    planets = [readPlanet(f) for i in range(n)]
-    rez = Star(name, neighbours)
-    rez.setPlanets(planets)
-    return rez
-    
+    @staticmethod
+    def readStar(f):
+        name = str(rdf(f))
+        n = int(rdf(f))
+        neighbours = []
+        for i in range(n):
+            wayLen = int(rdf(f))
+            wayTarget = int(rdf(f))
+            neighbours.append((wayLen, wayTarget))
+        n = int(rdf(f))
+        planets = [readPlanet(f) for i in range(n)]
+        rez = Star(name, neighbours)
+        rez.setPlanets(planets)
+        return rez
+        

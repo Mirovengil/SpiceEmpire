@@ -4,7 +4,7 @@ import mymath
 from classPlanet import newPlanet
 from classStar import Star
 from Map import gameMap
-from Map import readMap
+
 XCR = 0; YCR = 1
 
 def okxy(planets, x, y, mind):
@@ -83,7 +83,7 @@ if __name__ == "__main__":
     
     
     #Map = generateMap(n, minp, maxp, minl, maxl, sizex, sizey, mind)
-    Map = readMap("log.txt")
+    Map = gameMap.readMap("log.txt")
     print('Читабельный вывод карты (для людей):')
     print(Map)
     print('\n\n')

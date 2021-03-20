@@ -198,7 +198,7 @@ class Planet:
         string = string + str(self.moneyHas) + "\n"
         string = string + self.image + "\n"
         return string
-    
+
 class Lave(Planet):
     def __init__(self, name, coordinates):
         super().__init__(name, coordinates)
@@ -306,7 +306,6 @@ class Earth(Planet):
         self.type = Types.earth
         self.description = descr['earth']
         self.image = img['earth'][randint(0, len(img['earth']) - 1)]
-
 
 def newPlanet(name, coordinates):
     types = [Lave, Water, Ice, Desert, Earth, Air, Rock]
