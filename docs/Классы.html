@@ -5,9 +5,9 @@
         <title>Классы</title>
     </head>
     <body>
-        <h1>Классы:</h1>
+        <h1>Классы</h1>
 
-       <hr />
+        <hr />
         <h2>Planet</h2>
 
         <p>Абстракный класс планеты. Имеет следующие поля:</p>
@@ -42,6 +42,18 @@
             <li><strong>Types.rock&nbsp;--&nbsp;</strong>скалистая&nbsp;планета (см. таблицу планет в документации);</li>
         </ul>
 
+        <p><strong>Важно №4: в модуле planetClass также присутствует словарь typeToClass, который восстанавливает обратно тип планеты по его значению из Types:</strong></p>
+
+        <ul>
+            <li><strong>&quot;0&quot;&nbsp;:&nbsp;Lave;</strong></li>
+            <li><strong>&quot;1&quot; :&nbsp;Air;</strong></li>
+            <li><strong>&quot;2&quot; : Ice;</strong></li>
+            <li><strong>&nbsp;3&quot; : Earth;</strong></li>
+            <li><strong>&quot;4&quot; :&nbsp;Desert;</strong></li>
+            <li><strong>&quot;5&quot; : Rock;</strong></li>
+            <li><strong>&quot;6&quot; :&nbsp;Water;</strong></li>
+        </ul>
+
         <p><strong>Все они наследуют класс Planet, переопределяя конструктор и некоторые методы из описанных ниже (см. ограничения на кол-во построек для планет).</strong></p>
 
         <p>Методы класса <strong>Planet</strong>:</p>
@@ -55,6 +67,10 @@
             <li><strong>getFood() : int -- </strong>геттер<strong>,&nbsp;</strong>возвращает значение поля <strong>food;</strong></li>
             <li><strong>getMoney()&nbsp;: int -- </strong>геттер<strong>,&nbsp;</strong>возвращает значение поля <strong>money</strong><strong>;</strong></li>
             <li><strong>getFood() : int -- </strong>геттер<strong>,&nbsp;</strong>возвращает значение поля <strong>food;</strong></li>
+            <li><strong>setSteelHas(value : int) &nbsp;-- </strong>сеттер, устанавливает значение поля <strong>steelHas </strong>в <strong>value</strong>;</li>
+            <li><strong>setFoodHas(value : int) &nbsp;--&nbsp;</strong>сеттер, устанавливает значение поля <strong>foodHas&nbsp;</strong>в <strong>value</strong>;</li>
+            <li><strong>setMoneyHas(value : int)&nbsp;--&nbsp;</strong>сеттер, устанавливает значение поля <strong>moneyHas&nbsp;</strong>в <strong>value</strong>;</li>
+            <li><strong>setImage(value : int)&nbsp;--&nbsp;</strong>сеттер, устанавливает устанавливает поля <strong>image&nbsp;</strong>в <strong>value</strong>;</li>
             <li><strong>addMoney(value : int)</strong> -- прибавляет value к значению поля <strong>moneyHas</strong><strong>;</strong></li>
             <li><strong>addFood(value : int)</strong> -- прибавляет value к значению поля <strong>foodHas</strong><strong>;</strong></li>
             <li><strong>addSteel(value : int)</strong> -- прибавляет value к значению поля <strong>steelHas</strong><strong>;</strong></li>
@@ -90,10 +106,94 @@
             <li><strong>static&nbsp;typeToStr(planetType : int) :&nbsp;string</strong> -- возвращает название типа планеты (пока только на русском языке, однако);</li>
         </ul>
 
+        <p><strong>ФУНКЦИЯ:&nbsp;</strong><strong>readPlanet(f : file) : Planet&nbsp;</strong>-- считывает с файла&nbsp;<strong>f&nbsp;</strong>планету (в том же порядке, что и кеширует&nbsp;<strong>cache</strong>) и возвращает полученную планету.</p>
+
         <p><strong>Важно: также перегружен перевод планеты в строку (для удобства работы с выводом в файл). Всё выводится с комментариями, всё читаемо (для логгирования / консольной графики -- самое то).</strong></p>
 
         <hr />
-    
-    
+        <h2>Star</h2>
+
+        <p>Класс, описывающий звезду. Имеет следующие поля:</p>
+
+        <ul>
+            <li><strong>name</strong> : <strong>string</strong> -- имя звезды;</li>
+            <li><strong>planets</strong> : <strong>[Planet]</strong>&nbsp;-- планеты,&nbsp;принадлежащих звезде;</li>
+            <li><strong>neighbours</strong> : <strong>(int, int)</strong> -- смежные с оной звёзды: первое число -- длина пути, второе -- номер звезды, к которой путь ведёт, в графе; для читаемости кода в классе звезды <strong>Star </strong>есть методы для работы с оным кортежем:<strong> static&nbsp;getNeighbour(way : (int, int))</strong> и<strong> static getWayLen(way : (int, int))</strong>;</li>
+            <li><strong>sizex : int </strong>-- размеры планетарной карты по оси х;&nbsp;</li>
+            <li><strong>sizey&nbsp;: int </strong>-- размеры планетарной карты по оси х;</li>
+        </ul>
+
+        <p>Методы класса следующие:</p>
+
+        <ul>
+            <li><strong>конструктор( name : string, neighbours : [ (int, int) ] ) --&nbsp;</strong>создаёт новую звезду; на вход принимает массив звёзд-соседей <strong>neighbours</strong> и имя <strong>name</strong>;&nbsp;</li>
+            <li><strong>static&nbsp;getNeighbour( way : (int, int) )</strong> :&nbsp;<strong>int --&nbsp;</strong>возвращает номер звезды-соседа, к которой ведёт путь&nbsp;<strong>way;</strong></li>
+            <li><strong>static&nbsp;getWayLen( way : (int, int) )</strong> :&nbsp;<strong>int --&nbsp;</strong>возвращает длину пути&nbsp;<strong>way;</strong></li>
+            <li><strong>setSize(sizex : int, sizey : int) </strong>-- сеттер; устанавливает полям с соответствующими именами передаваемые значения;</li>
+            <li><strong>getName() : string </strong>-- геттер; возвращает значение поля <strong>name</strong>;</li>
+            <li><strong>getNeighbours() : [ (int, int) ] </strong>-- геттер; возвращает значение поля <strong>neighbours</strong>;</li>
+            <li><strong>setPlanets( planets : [Planet] )</strong> -- сеттер; устанавливает полям с соответствующими именами передаваемые значения;</li>
+            <li><strong>planetsNumber() : int</strong> -- геттер; возвращает число планет, принадлежащих звезде;</li>
+            <li><strong>str(other : [Star]) : string</strong> -- переводит всю информацию о звезде в текстовую форму. На вход принимает массив звёзд <strong>stars</strong> из&nbsp;<strong>gameMap</strong>, которому принадлежит звезда; всё выводится с пояснениями, где какое значение и т.п. (т.е, является читаемым для человека. Возможно применение для&nbsp;логгирования или разработки консольной графики);</li>
+            <li><strong>cache() : string</strong> -- переводит всю информацию о звезде в текстовую форму. Всё выводится без пояснений, в столбик (метод необходим для реализации сохранений в будущем);&nbsp;
+            <ul>
+                <li>Порядок вывода следующий:
+                <ul>
+                    <li><strong>name;</strong></li>
+                    <li><strong>len(neighbours);</strong></li>
+                    <li><strong>[neighbours]:</strong>
+                    <ul>
+                        <li><strong>0;</strong></li>
+                        <li><strong>1;</strong></li>
+                    </ul>
+                    </li>
+                    <li><strong>len(planets);</strong></li>
+                    <li><strong>[planets];</strong></li>
+                </ul>
+                </li>
+            </ul>
+            </li>
+            <li><strong>static readStar(f : file) : Star</strong>-- считывает с файла&nbsp;<strong>f </strong>звезду (в том же порядке, что и кеширует&nbsp;<strong>cache</strong>) и возвращает полученную звезду;</li>
+        </ul>
+
+        <p>&nbsp;</p>
+
+        <hr />
+        <h2>gameMap</h2>
+
+        <p>Поля:</p>
+
+        <ul>
+            <li><strong>stars : [Star]</strong> -- звёзды на карте;</li>
+            <li><strong>ships : [Ship]</strong> -- корабли на карте (класс пока не реализован, увы и ах);</li>
+            <li><strong>sizex : int</strong> -- размер планетарной карты по оси x (скоро может быть удалён, если будет принято решение о произвольности размеров планетарной карты для каждой звезды);</li>
+            <li><strong>sizey : int</strong> -- размер планетарной карты по оси y (скоро может быть удалён, если будет принято решение о произвольности размеров планетарной карты для каждой звезды);&nbsp;</li>
+        </ul>
+
+        <p>Методы:</p>
+
+        <ul>
+            <li><strong>Конструктор на вход не принимает ничего (это связано с особенностями генерации карты). Все поля по умолчанию равны None.</strong></li>
+            <li><strong>setSize(sizex : int, sizey : int)</strong> --&nbsp;сеттер; устанавливает полям с соответствующими именами передаваемые значения; кроме того он устанавливает всем членам массива <strong>stars</strong> эти же значения (поля называются&nbsp;<strong>sizex</strong> и <strong>sizey</strong>);</li>
+            <li><strong>setStars( stars : [Star] )</strong> -- сеттер; устанавливает полям с соответствующими именами передаваемые значения; кроме того он устанавливает всем членам массива <strong>stars</strong> эти же значения полей&nbsp;<strong>sizex</strong> и <strong>sizey </strong>в значения одноимённых полей текущего объекта (<strong>ВАЖНО: если их значение не равно None</strong>);</li>
+            <li><strong>setShips( ships : [Ship] ) </strong> -- сеттер; устанавливает полям с соответствующими именами передаваемые значения (класс&nbsp;<strong>Ship</strong> пока не реализован, увы и ах);&nbsp;&nbsp;</li>
+            <li><strong>cache() : string</strong> --&nbsp;переводит всю информацию о карте в текстовую форму. Всё выводится без пояснений, в столбик (метод необходим для реализации сохранений в будущем);&nbsp;
+            <ul>
+                <li>Вывод реализован в следующем порядке:
+                <ul>
+                    <li><strong>sizex;</strong></li>
+                    <li><strong>sizey;</strong></li>
+                    <li><strong>len(stars);</strong></li>
+                    <li><strong>[stars];</strong></li>
+                </ul>
+                </li>
+            </ul>
+            </li>
+            <li><strong>static readMap(name : str) : gameMap&nbsp;</strong>-- открывает файл&nbsp;&quot;name&quot;, считывает&nbsp;(в том же порядке, что и кеширует&nbsp;<strong>cache</strong>) и возвращает полученную карту;</li>
+        </ul>
+
+        <p><strong>Важно: также перегружен перевод карты в строку (для удобства работы с выводом в файл). Всё выводится с комментариями, всё читаемо (для логгирования / консольной графики -- самое то).</strong></p>
+
+        <hr />
     </body>
 </html>
