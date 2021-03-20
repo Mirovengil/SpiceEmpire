@@ -1,5 +1,6 @@
 XCR = 0; YCR = 1
 from random import randint
+from mymath import rdf
 
 class Types:
     lave = 0
@@ -9,7 +10,7 @@ class Types:
     desert = 4
     rock = 5
     water = 6
-
+    
 def loadDescription(File):
     std = open(File, 'r')
     descr = ""
@@ -73,12 +74,23 @@ class Planet:
         #отсутствие планет на определённом расстоянии от того места, где в графическом интерфейсе будет изображаться звезда.
         self.builds = []
     #Геттеры
+    def setSteelHas(self,value):
+        self.steelHas = value
+    def setFoodHas(self, value):
+        self.foodHas = value
+    def setMoneyHas(self, value):
+        self.moneyHas = value
+    def setImage(self, image):
+        self.image = image
+        
     def getSteelHas(self):
         return self.steelHas
     def getFoodHas(self):
         return self.foodHas
     def getMoneyHas(self):
         return self.moneyHas
+    
+    
     def addSteel(self, value):
         self.steelHas += value
     def addFood(self, value):
@@ -186,7 +198,7 @@ class Planet:
         string = string + str(self.moneyHas) + "\n"
         string = string + self.image + "\n"
         return string
-    
+
 class Lave(Planet):
     def __init__(self, name, coordinates):
         super().__init__(name, coordinates)
@@ -298,3 +310,29 @@ class Earth(Planet):
 def newPlanet(name, coordinates):
     types = [Lave, Water, Ice, Desert, Earth, Air, Rock]
     return types[randint(0, len(types) - 1)](name, coordinates)
+
+typeToClass = dict()
+typeToClass["0"] = Lave
+typeToClass["1"] = Air
+typeToClass["2"] = Ice
+typeToClass["3"] = Earth
+typeToClass["4"] = Desert
+typeToClass["5"] = Rock
+typeToClass["6"] = Water
+
+def readPlanet(f):
+    typeplanet = str(rdf(f))
+    name = str(rdf(f))
+    x = int(rdf(f))
+    y = int(rdf(f))
+    coordinates = (x, y)
+    rez = typeToClass[typeplanet](name, coordinates)
+    steelHas = int(rdf(f))
+    foodHas = int(rdf(f))
+    moneyHas = int(rdf(f))
+    image = str(rdf(f))
+    rez.setSteelHas(steelHas)
+    rez.setFoodHas(foodHas)
+    rez.setMoneyHas(moneyHas)
+    rez.setImage(image)
+    return rez
