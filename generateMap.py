@@ -90,29 +90,4 @@ if __name__ == "__main__":
     #f = open('log.txt', 'w')
     #print(Map.cache(), file = f)
     #f.close()
-    
 
-'''
-Задокументировать
-
-Planet
-def getSteelHas(self,value):
-    self.steelHas = value
-def getFoodHas(self, value):
-    self.foodHas = value
-def getMoneyHas(self, value):
-    self.moneyHas = value
-def setImage(self, image):
-    self.image = image
-
-def readPlanet(f):
-    
-mymath
-
-def rdf(f):
-    return f.readline().replace("\n", "")
-    
-def readMap(name):
-
-def readStar(f):
-'''

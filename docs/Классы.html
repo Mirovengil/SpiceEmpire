@@ -42,6 +42,18 @@
             <li><strong>Types.rock&nbsp;--&nbsp;</strong>скалистая&nbsp;планета (см. таблицу планет в документации);</li>
         </ul>
 
+        <p><strong>Важно №4: в модуле planetClass также присутствует словарь typeToClass, который восстанавливает обратно тип планеты по его значению из Types:</strong></p>
+
+        <ul>
+            <li><strong>&quot;0&quot;&nbsp;:&nbsp;Lave;</strong></li>
+            <li><strong>&quot;1&quot; :&nbsp;Air;</strong></li>
+            <li><strong>&quot;2&quot; : Ice;</strong></li>
+            <li><strong>&nbsp;3&quot; : Earth;</strong></li>
+            <li><strong>&quot;4&quot; :&nbsp;Desert;</strong></li>
+            <li><strong>&quot;5&quot; : Rock;</strong></li>
+            <li><strong>&quot;6&quot; :&nbsp;Water;</strong></li>
+        </ul>
+
         <p><strong>Все они наследуют класс Planet, переопределяя конструктор и некоторые методы из описанных ниже (см. ограничения на кол-во построек для планет).</strong></p>
 
         <p>Методы класса <strong>Planet</strong>:</p>
@@ -55,6 +67,10 @@
             <li><strong>getFood() : int -- </strong>геттер<strong>,&nbsp;</strong>возвращает значение поля <strong>food;</strong></li>
             <li><strong>getMoney()&nbsp;: int -- </strong>геттер<strong>,&nbsp;</strong>возвращает значение поля <strong>money</strong><strong>;</strong></li>
             <li><strong>getFood() : int -- </strong>геттер<strong>,&nbsp;</strong>возвращает значение поля <strong>food;</strong></li>
+            <li><strong>setSteelHas(value : int) &nbsp;-- </strong>сеттер, устанавливает значение поля <strong>steelHas </strong>в <strong>value</strong>;</li>
+            <li><strong>setFoodHas(value : int) &nbsp;--&nbsp;</strong>сеттер, устанавливает значение поля <strong>foodHas&nbsp;</strong>в <strong>value</strong>;</li>
+            <li><strong>setMoneyHas(value : int)&nbsp;--&nbsp;</strong>сеттер, устанавливает значение поля <strong>moneyHas&nbsp;</strong>в <strong>value</strong>;</li>
+            <li><strong>setImage(value : int)&nbsp;--&nbsp;</strong>сеттер, устанавливает устанавливает поля <strong>image&nbsp;</strong>в <strong>value</strong>;</li>
             <li><strong>addMoney(value : int)</strong> -- прибавляет value к значению поля <strong>moneyHas</strong><strong>;</strong></li>
             <li><strong>addFood(value : int)</strong> -- прибавляет value к значению поля <strong>foodHas</strong><strong>;</strong></li>
             <li><strong>addSteel(value : int)</strong> -- прибавляет value к значению поля <strong>steelHas</strong><strong>;</strong></li>
@@ -89,6 +105,8 @@
             </li>
             <li><strong>static&nbsp;typeToStr(planetType : int) :&nbsp;string</strong> -- возвращает название типа планеты (пока только на русском языке, однако);</li>
         </ul>
+
+        <p><strong>ФУНКЦИЯ:&nbsp;</strong><strong>readPlanet(f : file) : Planet&nbsp;</strong>-- считывает с файла&nbsp;<strong>f&nbsp;</strong>планету (в том же порядке, что и кеширует&nbsp;<strong>cache</strong>) и возвращает полученную планету.</p>
 
         <p><strong>Важно: также перегружен перевод планеты в строку (для удобства работы с выводом в файл). Всё выводится с комментариями, всё читаемо (для логгирования / консольной графики -- самое то).</strong></p>
 
@@ -135,17 +153,23 @@
                 </li>
             </ul>
             </li>
+            <li><strong>static readStar(f : file) : Star</strong>-- считывает с файла&nbsp;<strong>f </strong>звезду (в том же порядке, что и кеширует&nbsp;<strong>cache</strong>) и возвращает полученную звезду;</li>
         </ul>
+
         <p>&nbsp;</p>
+
         <hr />
         <h2>gameMap</h2>
+
         <p>Поля:</p>
+
         <ul>
             <li><strong>stars : [Star]</strong> -- звёзды на карте;</li>
             <li><strong>ships : [Ship]</strong> -- корабли на карте (класс пока не реализован, увы и ах);</li>
             <li><strong>sizex : int</strong> -- размер планетарной карты по оси x (скоро может быть удалён, если будет принято решение о произвольности размеров планетарной карты для каждой звезды);</li>
             <li><strong>sizey : int</strong> -- размер планетарной карты по оси y (скоро может быть удалён, если будет принято решение о произвольности размеров планетарной карты для каждой звезды);&nbsp;</li>
         </ul>
+
         <p>Методы:</p>
 
         <ul>
@@ -165,9 +189,11 @@
                 </li>
             </ul>
             </li>
+            <li><strong>static readMap(name : str) : gameMap&nbsp;</strong>-- открывает файл&nbsp;&quot;name&quot;, считывает&nbsp;(в том же порядке, что и кеширует&nbsp;<strong>cache</strong>) и возвращает полученную карту;</li>
         </ul>
 
         <p><strong>Важно: также перегружен перевод карты в строку (для удобства работы с выводом в файл). Всё выводится с комментариями, всё читаемо (для логгирования / консольной графики -- самое то).</strong></p>
-        <hr>
+
+        <hr />
     </body>
 </html>
