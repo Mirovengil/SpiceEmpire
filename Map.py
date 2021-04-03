@@ -44,6 +44,13 @@ class gameMap:
             string = string + i.str(self.stars)
         return string
 
+    def next_turn(self):
+        for i in range(len(self.ships)):
+            if self.ships[i].get_xy() == self.ships[i].get_fly_to():
+                self.ships[i].heal_self()
+            self.ships[i].move()
+        
+
     def cache(self):
         string = ""
         string = string + str(self.sizex) + "\n"

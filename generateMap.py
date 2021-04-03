@@ -92,6 +92,9 @@ if __name__ == "__main__":
     #Map.addShip(tested_scout)
     
     Map = gameMap.readMap("log.txt")
+    
+    Map.next_turn()
+    
     print('Читабельный вывод карты (для людей):')
     print(Map)
     print('\n\n')
