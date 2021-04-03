@@ -5,8 +5,6 @@
         <title>Классы</title>
     </head>
     <body>
-        <p>Классы</p>
-
         <h1>Классы</h1>
 
         <hr />
@@ -26,6 +24,7 @@
             <li><strong>description : string -- </strong>текстоое описание планеты, которое видит игрок;</li>
             <li><strong>builds : [Build] --&nbsp;</strong>массив имеющихся на планете построек (см. соответствующий класс <strong>Build</strong>);</li>
             <li><strong>image : string --&nbsp;</strong> имя изображения, соответствующего планете;</li>
+            <li><strong>master : int</strong> -- номер игрока, которому принадлежит планета; нейтральные планеты имеют хозяина <strong>-1</strong>;</li>
         </ul>
 
         <p><strong>Важно: т.к. класс является абстрактным, то не рекомендуется создавать объекты его типа. Поля коэффициентов будут иметь значение <em>None.</em>&nbsp;Предпочтительнее использовать классы конкретизированных планет, которые описаны ниже:</strong></p>
@@ -100,6 +99,7 @@
                     <li><strong>foodHas;</strong></li>
                     <li><strong>moneyHas;</strong></li>
                     <li><strong>image;</strong></li>
+                    <li><strong>master;</strong></li>
                 </ul>
                 </li>
                 <li><strong>Замечание: передаются только уникальные параметры; остальное можно восстановить, зная значение поля type;</strong></li>

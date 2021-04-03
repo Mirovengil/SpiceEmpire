@@ -68,6 +68,7 @@ class Planet:
         self.steelHas = 0
         self.foodHas = 0
         self.moneyHas = 0
+        self.master = -1
         self.description = 'Какой-то дурачок создал планету общего вида. Ошибка в коде, извиняйте-с.' #Возможно,
         #вы имеете счастье наблюдать планету-затычку, которая изображает звезду. Сделано это для того, чтобы обеспечить
         #отсутствие планет на определённом расстоянии от того места, где в графическом интерфейсе будет изображаться звезда.
@@ -170,6 +171,11 @@ class Planet:
             self.main.append(main)
             return True
         return False
+    #Геттеры и сеттеры (сгенерированы автоматически)
+    def get_master(self):
+        return self.master
+    def set_master(self, value):
+        self.master = value
 
     def __str__(self):
         string = ""
@@ -184,6 +190,7 @@ class Planet:
         string = string + "           Денег у государства: " + str(self.getMoneyHas()) + "\n"
         string = string + "           Стали у государства: " + str(self.getSteelHas()) + "\n"
         string = string + "           Дошика у государства: " + str(self.getFoodHas()) + "\n"
+        string = string + "           Хозяин планеты: " + ("никто" if self.get_master() == -1 else str(self.get_master())) + "\n"
         return string
     
     def cache(self):
@@ -196,6 +203,7 @@ class Planet:
         string = string + str(self.foodHas) + "\n"
         string = string + str(self.moneyHas) + "\n"
         string = string + self.image + "\n"
+        string = string + str(self.master) + "\n"
         return string
 
 class Lave(Planet):
@@ -330,8 +338,10 @@ def readPlanet(f):
     foodHas = int(rdf(f))
     moneyHas = int(rdf(f))
     image = str(rdf(f))
+    master = int(rdf(f))
     rez.setSteelHas(steelHas)
     rez.setFoodHas(foodHas)
     rez.setMoneyHas(moneyHas)
     rez.setImage(image)
+    rez.set_master(master)
     return rez
