@@ -5,6 +5,8 @@
         <title>Классы</title>
     </head>
     <body>
+        <p>Классы</p>
+
         <h1>Классы</h1>
 
         <hr />
@@ -14,7 +16,7 @@
 
         <ul>
             <li><strong>name : string --&nbsp;</strong>название планеты;</li>
-            <li><strong>coordinates : (int, int) --&nbsp;</strong>координаты планеты на планетарной карте;</li>
+            <li><strong>coordinates : Coords --&nbsp;</strong>координаты планеты на планетарной карте;</li>
             <li><strong>steel : float --&nbsp;</strong>коэффициент, на который домножается количество добываемой на планете стали;</li>
             <li><strong>food : float --&nbsp;</strong>коэффициент, на который домножается количество добываемой на планете еды;</li>
             <li><strong>money : float --&nbsp;</strong>коэффициент, на который домножается количество добываемых&nbsp;на планете денег;</li>
@@ -80,6 +82,7 @@
             <li><strong>getFun()&nbsp;: [Fun]&nbsp;-- </strong>геттер<strong>,&nbsp;</strong>возвращает все <strong>Fun</strong> на планете <strong>;</strong></li>
             <li><strong>getFarm()&nbsp;: [Farm]&nbsp;--&nbsp;</strong>геттер<strong>,&nbsp;</strong>возвращает все <strong>Farm</strong> на планете <strong>;</strong></li>
             <li><strong>getMain() : [Main] -- </strong>геттер<strong>,&nbsp;</strong>возвращает все <strong>Main</strong> на планете <strong>;</strong></li>
+            <li><strong>getCoordinates() : Coords --&nbsp;</strong>геттер<strong>,&nbsp;</strong>возвращает <strong>Coords</strong>&nbsp;планеты&nbsp;<strong>;</strong></li>
             <li><strong>getBuildsLen() : int</strong> -- типа геттер, возвращает суммарное количество строений на планете;</li>
             <li><strong>addPort(port) : bool -- </strong>пытается построить порт, возвращает<strong> True</strong> (удалось) <strong>/ False </strong>(нельзя); в случае успеха добавляет<strong> port </strong>в поле<strong> builds;</strong></li>
             <li><strong>addDefence(defence) : bool&nbsp;-- </strong>пытается построить планетарный гарнизон, возвращает<strong> True</strong> (удалось)<strong> / False </strong>(нельзя);<strong> </strong>в случае успеха добавляет <strong>defence </strong>в поле<strong> builds;</strong></li>
@@ -92,8 +95,7 @@
                 <ul>
                     <li><strong>type;</strong></li>
                     <li><strong>name;</strong></li>
-                    <li><strong>coordinates[0];</strong></li>
-                    <li><strong>coordinates[1];</strong></li>
+                    <li><strong>coordinates;</strong></li>
                     <li><strong>steelHas;</strong></li>
                     <li><strong>foodHas;</strong></li>
                     <li><strong>moneyHas;</strong></li>
