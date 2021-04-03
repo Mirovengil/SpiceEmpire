@@ -1,5 +1,6 @@
 from mymath import rdf
 from classPlanet import readPlanet
+import mymath
 
 class Star: 
     @staticmethod
@@ -50,7 +51,7 @@ class Star:
         string = string + "Положение планет: " + "\n"
         for y in range(self.sizey):
             for x in range(self.sizex):
-                if (x, y) in temp_coords:
+                if mymath.Coords(x, y) in temp_coords:
                     string = string + " *"
                 else:
                     string = string + " _"

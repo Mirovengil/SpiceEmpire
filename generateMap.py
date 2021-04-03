@@ -5,11 +5,9 @@ from classPlanet import newPlanet
 from classStar import Star
 from Map import gameMap
 
-XCR = 0; YCR = 1
-
-def okxy(planets, x, y, mind):
+def okxy(planets, coords, mind):
     for i in planets:
-        if mymath.dist(x, y, i.getCoordinates()[XCR], i.getCoordinates()[YCR]) < mind:
+        if mymath.dist(coords, i.getCoordinates()) < mind:
             return False
     return True
     
@@ -46,13 +44,13 @@ def generatePlanets(Names, n, minp, maxp, namesNumber, sizex, sizey, mind):
         planets = []
         for j in range(randint(minp, maxp)): #Здесь создаётся планета
             x, y = randint(0, sizex - 1), randint(0, sizey - 1)
-            while not okxy(planets, x, y, mind):
+            while not okxy(planets, mymath.Coords(x, y), mind):
                 x, y = randint(0, sizex - 1), randint(0, sizey - 1)
             numm = randint(0, namesNumber - 1)
             name = Names[numm]
             Names[numm], Names[namesNumber - 1] = Names[namesNumber - 1], Names[numm]
             namesNumber -= 1
-            planets.append(newPlanet(name, (x, y)))
+            planets.append(newPlanet(name, mymath.Coords(x, y)))
         graphs.append(planets)
     return graphs
         

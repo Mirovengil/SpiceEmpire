@@ -1,7 +1,6 @@
-XCR = 0; YCR = 1
 from random import randint
 from mymath import rdf
-
+import mymath
 class Types:
     lave = 0
     air = 1
@@ -191,8 +190,8 @@ class Planet:
         string = ""
         string = string + str(self.type) + "\n"
         string = string + self.name + "\n"
-        string = string + str(self.coordinates[0]) + "\n"
-        string = string + str(self.coordinates[1]) + "\n"
+        string = string + str(self.coordinates.get_x()) + "\n"
+        string = string + str(self.coordinates.get_y()) + "\n"
         string = string + str(self.steelHas) + "\n"
         string = string + str(self.foodHas) + "\n"
         string = string + str(self.moneyHas) + "\n"
@@ -325,7 +324,7 @@ def readPlanet(f):
     name = str(rdf(f))
     x = int(rdf(f))
     y = int(rdf(f))
-    coordinates = (x, y)
+    coordinates = mymath.Coords(x, y)
     rez = typeToClass[typeplanet](name, coordinates)
     steelHas = int(rdf(f))
     foodHas = int(rdf(f))

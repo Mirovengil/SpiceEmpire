@@ -25,8 +25,8 @@ class Ship:
     }
     
     def __init__(self):
-        self.xy = (None, None)
-        self.fly_to = (None, None)
+        self.xy = Coords()
+        self.fly_to = Coords()
         self.hp = 100 #percents
         self.damage = None
         self.defence = None

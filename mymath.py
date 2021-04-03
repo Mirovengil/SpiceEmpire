@@ -2,9 +2,15 @@
 EPS = 0.00001
 
 class Coords:
-    def __init__(self, x, y):
+    def __init__(self, x = None, y = None):
         self.x = x
         self.y = y
+    
+    def __eq__(self, other):
+        return self.x == other.x and self.y == other.y
+    
+    def __str__(self):
+        return "(" + str(self.x) + ", " + str(self.y) + ")"
     
     #Геттеры и сеттеры (сгенерированы автоматически)
     def get_x(self):
@@ -17,7 +23,11 @@ class Coords:
         self.y = value
 
 
-def dist(x1, y1, x2, y2):
+def dist(coords1, coords2):
+    x1 = coords1.get_x()
+    x2 = coords2.get_x()
+    y1 = coords1.get_y()
+    y2 = coords2.get_y()
     return ((x1 - x2) ** 2 + (y1 - y2) ** 2) ** 0.5
 
 def rdf(f):
