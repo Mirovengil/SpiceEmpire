@@ -1,11 +1,12 @@
 from classStar import Star
 from classPlanet import Planet
 from mymath import rdf
+from classShip import readShip
 
 class gameMap:
     def __init__(self):
-        self.stars = None
-        self.shiphs = None
+        self.stars = []
+        self.ships = []
         self.sizex = None
         self.sizey = None
     
@@ -31,10 +32,16 @@ class gameMap:
     def setShips(self, ships):
         self.ships = ships
     
+    def addShip(self, ship):
+        self.ships.append(ship)
+    
     def __str__(self):
-        string = ""
+        string = "Звёзды\n\n"
         for i in self.stars:
            string = string + i.str(self.stars)
+        string = string + 'Корабли\n'
+        for i in self.ships:
+            string = string + i.str(self.stars)
         return string
 
     def cache(self):
@@ -43,6 +50,9 @@ class gameMap:
         string = string + str(self.sizey) + "\n"
         string = string + str(len(self.stars)) + "\n"
         for i in self.stars:
+            string = string + i.cache()
+        string = string + str(len(self.ships)) + "\n"
+        for i in self.ships:
             string = string + i.cache()
         return string
 
@@ -56,6 +66,8 @@ class gameMap:
         rez = gameMap()
         rez.setSize(sizex, sizey)
         rez.setStars([Star.readStar(f) for i in range(n)])
+        n = int(rdf(f))
+        rez.setShips([readShip(f) for i in range(n)])
         f.close()
         return rez    
     

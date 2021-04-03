@@ -4,6 +4,7 @@ import mymath
 from classPlanet import newPlanet
 from classStar import Star
 from Map import gameMap
+from classShip import Scout
 
 def okxy(planets, coords, mind):
     for i in planets:
@@ -81,11 +82,19 @@ if __name__ == "__main__":
     
     
     #Map = generateMap(n, minp, maxp, minl, maxl, sizex, sizey, mind)
+    
+    #tested_scout = Scout()
+    #tested_scout.set_system(0)
+    #tested_scout.set_xy(mymath.Coords(0, 0))
+    #tested_scout.set_target(mymath.Coords(3, 3))
+    #tested_scout.set_master(0)
+    #tested_scout.move()
+    #Map.addShip(tested_scout)
     Map = gameMap.readMap("log.txt")
     print('Читабельный вывод карты (для людей):')
     print(Map)
     print('\n\n')
-    #f = open('log.txt', 'w')
-    #print(Map.cache(), file = f)
-    #f.close()
+    f = open('log.txt', 'w')
+    print(Map.cache(), file = f)
+    f.close()
 
