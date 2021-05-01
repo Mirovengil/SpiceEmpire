@@ -7,7 +7,7 @@ from random import randint
 
 import ost_tree
 import my_math
-from class_planet import new_planet
+from class_planet import Planet
 from class_star import Star
 from class_map import GameMap
 from class_ship import Ship
@@ -98,7 +98,7 @@ def ok_xy(planets, coords, option):
     planets будут coords.
     '''
     for i in planets:
-        if my_math.dist(coords, i.getCoordinates()) < option.get_min_d():
+        if my_math.dist(coords, i.get_coordinates()) < option.get_min_d():
             return False
     return True
 
@@ -144,13 +144,13 @@ def generate_planets(names, names_number, option):
         planets = []
         for j in range(randint(option.get_min_p(), option.get_max_p())): #Здесь создаётся планета
             x, y = randint(0, option.get_size_x() - 1), randint(0, option.get_size_y() - 1)
-            while not ok_xy(planets, my_math.Coords(x, y), option.get_min_d()):
+            while not ok_xy(planets, my_math.Coords(x, y), option):
                 x, y = randint(0, option.get_size_x() - 1), randint(0, option.get_size_y() - 1)
             numm = randint(0, names_number - 1)
             name = names[numm]
             names[numm], names[names_number - 1] = names[names_number - 1], names[numm]
             names_number -= 1
-            planets.append(new_planet(name, my_math.Coords(x, y)))
+            planets.append(Planet.new_planet(name, my_math.Coords(x, y)))
         graphs.append(planets)
     return graphs
 
@@ -158,11 +158,11 @@ def generate_map(option):
     '''
     Создаёт карту с указанными параметрами.
     '''
-    names, names_number = get_names('./data/StarsNames.txt')
+    names, names_number = get_names('./data/stars_names.txt')
     game_map = GameMap()
     graph = generate_constellation(names, names_number, option)
     game_map.set_stars(graph)
-    names, names_number = get_names('./data/PlanetsNames.txt')
+    names, names_number = get_names('./data/planets_names.txt')
     planets = generate_planets(names, names_number, option)
     game_map.set_planets(planets)
     game_map.set_size(option.get_size_x(), option.get_size_y())
@@ -172,14 +172,11 @@ if __name__ == "__main__":
     option = GeneratorOptions()
     game_map = generate_map(option)
 
-    tested_scout = Ship()
+    tested_scout = Ship.new_ship('scout')
     tested_scout.set_system(0)
-    tested_scout.set_xy(my_math.Coords(0, 0))
-    tested_scout.set_target(my_math.Coords(3, 3))
+    tested_scout.set_x_y(my_math.Coords(0, 0))
     tested_scout.set_master(0)
-    tested_scout.move()
     game_map.add_ship(tested_scout)
-
     #game_map = GameMap.read_map("log.txt")
 
     game_map.next_turn()

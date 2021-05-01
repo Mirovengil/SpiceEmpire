@@ -4,7 +4,7 @@
 
 from class_star import Star
 from my_math import rdf
-from class_ship import read_ship
+from class_ship import Ship
 
 class GameMap:
     '''
@@ -25,7 +25,7 @@ class GameMap:
         self.size_y = size_y
         if self.stars != None:
             for i in range(len(self.stars)):
-                self.stars[i].setSize(self.size_x, self.size_y)
+                self.stars[i].set_size(self.size_x, self.size_y)
 
     def set_stars(self, stars):
         '''
@@ -34,7 +34,7 @@ class GameMap:
         self.stars = stars
         if not self.size_x is None:
             for i in range(len(self.stars)):
-                self.stars[i].setSize(self.size_x, self.size_y)
+                self.stars[i].set_size(self.size_x, self.size_y)
 
     def set_planets(self, planets):
         '''
@@ -43,7 +43,7 @@ class GameMap:
         if self.stars is None:
             raise ValueError("Сперва задайте звёзды, к которым будут прикрепляться планеты!1")
         for i in range(len(planets)):
-            self.stars[i].setPlanets(planets[i])
+            self.stars[i].set_planets(planets[i])
 
     def set_ships(self, ships):
         '''
@@ -58,10 +58,10 @@ class GameMap:
         self.ships.append(ship)
 
     def __str__(self):
-        string = "Звёзды\nummer\nummer"
+        string = "Звёзды\n"
         for i in self.stars:
             string = string + i.str(self.stars)
-        string = string + 'Корабли\nummer'
+        string = string + 'Корабли\n'
         for i in self.ships:
             string = string + i.str(self.stars)
         return string
@@ -70,10 +70,7 @@ class GameMap:
         '''
         Сделать следующий игровой ход.
         '''
-        for i in range(len(self.ships)):
-            if self.ships[i].get_xy() == self.ships[i].get_fly_to():
-                self.ships[i].heal_self()
-            self.ships[i].move()
+        pass
 
     def cache(self):
         '''
@@ -104,6 +101,6 @@ class GameMap:
         rez.set_size(size_x, size_y)
         rez.set_stars([Star.read_star(fin) for i in range(nummer)])
         nummer = int(rdf(fin))
-        rez.set_ships([read_ship(fin) for i in range(nummer)])
+        rez.set_ships([Ship.read_ship(fin) for i in range(nummer)])
         fin.close()
         return rez

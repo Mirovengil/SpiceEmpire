@@ -7,7 +7,7 @@
 '''
 
 from my_math import rdf
-from class_planet import read_planet
+from class_planet import Planet
 import my_math
 
 SIZE = 20
@@ -130,7 +130,7 @@ class Star:
             way_target = int(rdf(fin))
             neighbours.append((way_len, way_target))
         nummer = int(rdf(fin))
-        planets = [read_planet(fin) for i in range(nummer)]
+        planets = [Planet.read_planet(fin) for i in range(nummer)]
         rez = Star(name, neighbours)
         rez.set_planets(planets)
         return rez

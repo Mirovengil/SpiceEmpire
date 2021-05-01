@@ -7,21 +7,11 @@ from random import randint
 from my_math import rdf
 import my_math
 
-def load_description(fin):
-    '''
-    Считывает из файла описание планеты.
-    '''
-    std = open(fin, 'r')
-    descr = ""
-    for i in std:
-        descr = descr  + i
-    std.close()
-    return descr
-
 class Planet:
     '''
     Класс планеты.
     '''
+    types = ['lave', 'ice', 'earth', 'desert', 'water', 'rock', 'air']
     def __init__(self, name, coordinates):
         self.name = name
         self.coordinates = coordinates
@@ -49,7 +39,7 @@ class Planet:
         string = string + '           Изображение: ' +\
         self.get_image() + "\n"
         string = string + "           Хозяин планеты: " +\
-        "никто" if self.get_master() == -1 else str(self.get_master())\
+        ("никто" if self.get_master() == -1 else str(self.get_master()))\
         + "\n"
         return string
 
@@ -104,17 +94,46 @@ class Planet:
         '''Сеттер поля description'''
         self.description = value
 
-def read_planet(fin):
-    '''Считывает из файла закешированную при помощи Planet.cache() планету.'''
-    typeplanet = str(rdf(fin))
-    name = str(rdf(fin))
-    x = int(rdf(fin))
-    y = int(rdf(fin))
-    coordinates = my_math.Coords(x, y)
-    rez = Planet(name, coordinates)
-    image = str(rdf(fin))
-    master = int(rdf(fin))
-    rez.set_image(image)
-    rez.set_master(master)
-    rez.set_type(typeplanet)
-    return rez
+    @staticmethod
+    def load_description(fin):
+        '''
+        Считывает из файла описание планеты.
+        '''
+        fin = './data/' + fin + '_description.txt'
+        fin = open(fin, 'r')
+        descr = ""
+        for i in fin:
+            descr = descr  + i
+        fin.close()
+        return descr
+
+    @staticmethod
+    def read_planet(fin):
+        '''
+        Считывает из файла закешированную при помощи Planet.cache() планету.
+        '''
+        typeplanet = str(rdf(fin))
+        name = str(rdf(fin))
+        x = int(rdf(fin))
+        y = int(rdf(fin))
+        coordinates = my_math.Coords(x, y)
+        rez = Planet(name, coordinates)
+        image = str(rdf(fin))
+        master = int(rdf(fin))
+        rez.set_image(image)
+        rez.set_master(master)
+        rez.set_type(typeplanet)
+        description = Planet.load_description(rez.get_type())
+        rez.set_description(description)
+        return rez
+
+    @staticmethod
+    def new_planet(name, coords):
+        '''
+        Создаёт случайную планету и возвращает её.
+        '''
+        planet = Planet(name, coords)
+        planet.set_type(Planet.types[randint(0, len(Planet.types) - 1)])
+        planet.set_image('/img/' + planet.get_type() + '.png')
+        planet.set_description(Planet.load_description(planet.get_type()))
+        return planet
