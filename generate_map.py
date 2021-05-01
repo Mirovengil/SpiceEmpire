@@ -177,7 +177,7 @@ if __name__ == "__main__":
     tested_scout.set_x_y(my_math.Coords(0, 0))
     tested_scout.set_master(0)
     game_map.add_ship(tested_scout)
-    #game_map = GameMap.read_map("log.txt")
+    game_map = GameMap.read_map("log.txt")
 
     game_map.next_turn()
 

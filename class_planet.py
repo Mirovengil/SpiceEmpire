@@ -10,6 +10,13 @@ import my_math
 class Planet:
     '''
     Класс планеты.
+    name : string -- название планеты;
+    coordinates : Coords -- координаты планеты на планетарной карте;
+    description : string -- текстоое описание планеты, которое видит
+    игрок;
+    image : string --  имя изображения, соответствующего планете;
+    master : int -- номер игрока, которому принадлежит планета;
+    нейтральные планеты имеют хозяина -1;
     '''
     types = ['lave', 'ice', 'earth', 'desert', 'water', 'rock', 'air']
     def __init__(self, name, coordinates):
