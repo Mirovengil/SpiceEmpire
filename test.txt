@@ -1,0 +1,6 @@
+test_attack
+0
+test_defence
+1
+test_movement
+1

@@ -25,8 +25,8 @@ class Card:
         '''
         fin -- название карточки.
         '''
-        fin = open('./data/cards/' + fin + ".txt")
         self.inf = fin
+        fin = open('./data/cards/' + fin + ".txt")
         self.dmg = float(rdf(fin))
         self.dfc = float(rdf(fin))
         self.mov = float(rdf(fin))
@@ -52,7 +52,7 @@ class Card:
         string = string + "Защита: " + str(self.dfc) + "\n"
         string = string + "Перемещение: " + str(self.mov) + "\n"
         string = string + "Приоритет: " + str(self.pri) + "\n"
-        string = string + "Готова к использованию" + str(self.usb) + "\n"
+        string = string + "Готова к использованию: " + str(self.usb) + "\n"
         return string
 
     def cache(self):
@@ -77,19 +77,11 @@ class Card:
 class CardStore:
     '''
     Класс хранилища карточек, доступных кораблю. Де-факто, это структура
-    данных, похожая на стек, но со своими фишечками.
+    данных, похожая на смесь стека и массива, но со своими фишечками.
     Поля:
         cards : [Card] -- массив карточек, доступных корабля.
     '''
     cards_nummer = 3
-    @staticmethod
-    def comparator(first, second):
-        '''
-        Компаратор для корректной сортировки хранилища карточек.
-        '''
-        if first.usb != second.second:
-            return first.pri > second.pri
-        return first.usb > second.usb
 
     def __init__(self, fin=None):
         '''
@@ -100,13 +92,13 @@ class CardStore:
             self.cards.append(Card(fin + '_movement'))
             self.cards.append(Card(fin + '_attack'))
             self.cards.append(Card(fin + '_defence'))
+            self.refresh()
 
     def refresh(self):
         '''
         Сортирует карточки в следующем приоритете
         '''
-        self.cards.sort(cmp=lambda first,\
-            second: CardStore.comparator(first, second))
+        self.cards.sort(key=lambda value: value.pri)
 
     def use(self, index):
         '''
@@ -118,7 +110,6 @@ class CardStore:
             raise ValueError('Эта карточка ещё не восстановилась!11')
         self.cards[index].usb = False
         to_return = copy.copy(self.cards[index])
-        self.refresh()
         return to_return
 
     def __str__(self):
@@ -127,8 +118,8 @@ class CardStore:
         '''
         string = ""
         string = string + "Карточки корабля:\n"
-        for i in self.cards:
-            string = string + str(i) + "\n"
+        for i in range(len(self.cards)):
+            string = string + str(i + 1) + "\n" + str(self.cards[i]) + "\n"
         return string
 
     def cache(self):
@@ -137,7 +128,7 @@ class CardStore:
         '''
         string = ""
         for i in self.cards:
-            string = string + i.cache() + "\n"
+            string = string + i.cache()
         return string
 
     @staticmethod
