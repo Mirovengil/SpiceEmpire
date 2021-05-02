@@ -106,7 +106,7 @@ class Planet:
         '''
         Считывает из файла описание планеты.
         '''
-        fin = './data/' + fin + '_description.txt'
+        fin = './data/descr/' + fin + '_description.txt'
         fin = open(fin, 'r')
         descr = ""
         for i in fin:
@@ -141,6 +141,6 @@ class Planet:
         '''
         planet = Planet(name, coords)
         planet.set_type(Planet.types[randint(0, len(Planet.types) - 1)])
-        planet.set_image('/img/' + planet.get_type() + '.png')
+        planet.set_image('/img/planets' + planet.get_type() + '.png')
         planet.set_description(Planet.load_description(planet.get_type()))
         return planet
