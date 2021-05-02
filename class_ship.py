@@ -5,6 +5,7 @@
 
 import my_math
 from my_math import rdf
+from class_card import CardStore
 
 class Ship:
     '''
@@ -15,6 +16,7 @@ class Ship:
         "medium" : 8**0.5 + 0.01,
         "low" : 2**0.5 + 0.01
     }
+
     classes = ['test']
     def __init__(self):
         self.x_y = my_math.Coords()
@@ -23,6 +25,7 @@ class Ship:
         self.img = None
         self.name = None
         self.master = None
+        self.card_store = CardStore()
 
     def is_live(self):
         '''
@@ -50,6 +53,7 @@ class Ship:
         "Хозяин корабля: игрок номер {}".format(str(self.master)) + "\n"
         string = string + \
         "Корабль находится в системе {}".format(systems[self.system].get_name()) + "\n"
+        string = string + str(self.card_store)
         #string = string + \
         #"Корабль видят игроки под номерами: {}".format(str(self.visible_to)) + "\n"
         return string
@@ -64,6 +68,7 @@ class Ship:
         string = string + str(self.x_y) + "\n"
         string = string + str(self.master) + "\n"
         string = string + str(self.system) + "\n"
+        string = string + self.card_store.cache()
         return string
 
     @staticmethod
@@ -78,10 +83,12 @@ class Ship:
         x_y = rdf(fin).replace(")", "").replace("(", "").split(", ")
         master = int(rdf(fin))
         system = int(rdf(fin))
+        card_store = CardStore.load(fin)
         ship.set_hp(hp)
         ship.set_x_y(my_math.Coords(int(x_y[0]), int(x_y[1])))
         ship.set_master(master)
         ship.set_system(system)
+        ship.card_store = card_store
         return ship
 
     @staticmethod
@@ -95,6 +102,7 @@ class Ship:
         ship.set_hp(100)
         ship.set_name(class_of_ship)
         ship.set_img('./img/' + class_of_ship + '.img')
+        ship.card_store = CardStore(class_of_ship)
         return ship
 
     #Геттеры и сеттеры (сгенерированы автоматически)

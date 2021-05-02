@@ -169,16 +169,15 @@ def generate_map(option):
     return game_map
 
 if __name__ == "__main__":
-    option = GeneratorOptions()
-    game_map = generate_map(option)
+    #option = GeneratorOptions()
+    #game_map = generate_map(option)
 
-    tested_scout = Ship.new_ship('scout')
-    tested_scout.set_system(0)
-    tested_scout.set_x_y(my_math.Coords(0, 0))
-    tested_scout.set_master(0)
-    game_map.add_ship(tested_scout)
+    #tested_scout = Ship.new_ship('test')
+    #tested_scout.set_system(0)
+    #tested_scout.set_x_y(my_math.Coords(0, 0))
+    #tested_scout.set_master(0)
+    #game_map.add_ship(tested_scout)
     game_map = GameMap.read_map("log.txt")
-
     game_map.next_turn()
 
     print('Читабельный вывод карты (для людей):')
