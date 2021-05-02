@@ -15,7 +15,7 @@ class Ship:
         "medium" : 8**0.5 + 0.01,
         "low" : 2**0.5 + 0.01
     }
-    classes = ['scout']
+    classes = ['test']
     def __init__(self):
         self.x_y = my_math.Coords()
         self.system = None
