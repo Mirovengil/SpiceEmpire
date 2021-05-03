@@ -11,12 +11,6 @@ class Ship:
     '''
     Класс корабля.
     '''
-    max_dist = {
-        "fast" : 18**0.5 + 0.01,
-        "medium" : 8**0.5 + 0.01,
-        "low" : 2**0.5 + 0.01
-    }
-
     classes = ['test']
     def __init__(self):
         self.x_y = my_math.Coords()
@@ -26,6 +20,7 @@ class Ship:
         self.name = None
         self.master = None
         self.card_store = CardStore()
+        self.dfc = float(0)
 
     def is_live(self):
         '''
@@ -47,13 +42,14 @@ class Ship:
         "Тип корабля: {}".format(self.name) + "\n"
         string = string + \
         'HP: {}'.format(str(self.hp)) + "\n"
+        string = string + 'Защита: ' + str(self.dfc) + "\n"
         string = string + \
         "Координаты корабля: {}".format(str(self.x_y)) + "\n"
         string = string + \
         "Хозяин корабля: игрок номер {}".format(str(self.master)) + "\n"
         string = string + \
         "Корабль находится в системе {}".format(systems[self.system].get_name()) + "\n"
-        string = string + str(self.card_store)
+        #string = string + str(self.card_store)
         #string = string + \
         #"Корабль видят игроки под номерами: {}".format(str(self.visible_to)) + "\n"
         return string
@@ -69,6 +65,7 @@ class Ship:
         string = string + str(self.master) + "\n"
         string = string + str(self.system) + "\n"
         string = string + self.card_store.cache()
+        string = string + str(self.dfc) + "\n"
         return string
 
     @staticmethod
@@ -84,6 +81,7 @@ class Ship:
         master = int(rdf(fin))
         system = int(rdf(fin))
         card_store = CardStore.load(fin)
+        ship.dfc = float(rdf(fin))
         ship.set_hp(hp)
         ship.set_x_y(my_math.Coords(int(x_y[0]), int(x_y[1])))
         ship.set_master(master)
@@ -104,6 +102,42 @@ class Ship:
         ship.set_img('./img/' + class_of_ship + '.img')
         ship.card_store = CardStore(class_of_ship)
         return ship
+
+    def attack(self, card, enemy):
+        '''
+        Применяет к кораблю карточку атаки.
+        Корабль self наносит урон кораблю enemy.
+        '''
+        enemy.hp -= card.dmg
+
+    def defence(self, card, stub):
+        '''
+        Применяет к кораблю карточку защиты.
+        '''
+        self.dfc += card.dfc
+
+    def move(self, card, place):
+        '''
+        Применяет к кораблю карточку передвижения.
+        '''
+        if my_math.dist(place, self.x_y) > card.mov:
+            raise ValueError('''Корабль не может переместиться на
+                такое расстояние!''')
+        self.x_y = place
+
+    def use(self, index, act, param):
+        '''
+        Применяет к кораблю карточку.
+        '''
+        action = {
+            'attack' : Ship.attack,
+            'defence' : Ship.defence,
+            'move' : Ship.move
+        }
+        if not act in action:
+            raise ValueError('Недопустимое действие с карточки!!11')
+        usable_card = self.card_store.use(index)
+        action[act](self, usable_card, param)
 
     #Геттеры и сеттеры (сгенерированы автоматически)
     def get_x_y(self):
