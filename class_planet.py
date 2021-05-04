@@ -35,17 +35,17 @@ class Planet:
 
     def __str__(self):
         string = ""
-        string = string + '      > Название планеты: ' + self.get_name()\
+        string = string + 'Название планеты: ' + self.get_name()\
         + "\n"
-        string = string + '           Стратегический тип планеты: ' +\
+        string = string + 'Стратегический тип планеты: ' +\
         self.type + "\n"
-        string = string + '           Описание планеты: ' +\
+        string = string + 'Описание планеты: ' +\
         self.get_description() + "\n"
-        string = string + '           Координаты в системе: ' +\
+        string = string + 'Координаты в системе: ' +\
         str(self.get_coordinates()) + "\n"
-        string = string + '           Изображение: ' +\
+        string = string + 'Изображение: ' +\
         self.get_image() + "\n"
-        string = string + "           Хозяин планеты: " +\
+        string = string + "Хозяин планеты: " +\
         ("никто" if self.get_master() == -1 else str(self.get_master()))\
         + "\n"
         return string
