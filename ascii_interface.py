@@ -43,7 +43,14 @@ class ASCIIInteface:
         '''
         Ждёт нажатия клавиши ENTER.
         '''
-        ASCIIInteface.wait()
+        input()
+
+    @staticmethod
+    def cls():
+        '''
+        Очищает консоль.
+        '''
+        print("\033[H\033[J")
 
     def print_cmd(self, cmd):
         '''
@@ -83,9 +90,9 @@ class ASCIIInteface:
         '''
         os.system('clear')
         mass = [
-        ('Новая игра', ASCIIInteface.new_game),
-        ('Загрузить игру', ASCIIInteface.load_game),
-        ('Выйти из игры', ASCIIInteface.exit)
+            ('Новая игра', ASCIIInteface.new_game),
+            ('Загрузить игру', ASCIIInteface.load_game),
+            ('Выйти из игры', ASCIIInteface.exit)
         ]
         if not self.game is None:
             mass.append(('Продолжить игру', ASCIIInteface.show_stars))
@@ -104,8 +111,8 @@ class ASCIIInteface:
         for i in enumerate(self.game.stars):
             print(i[0] + 1, '. ', i[1].name, sep='')
         mass = [
-        ('Главное меню', ASCIIInteface.start),
-        ('Просмотр звезды', ASCIIInteface.show_one_star)
+            ('Главное меню', ASCIIInteface.start),
+            ('Просмотр звезды', ASCIIInteface.show_one_star)
         ]
         self.print_cmd(mass)
 
@@ -148,10 +155,10 @@ class ASCIIInteface:
                 str(i.master) + ' (' + str(i.hp) + ' HP)')
                 cnt += 1
         mass = [
-        ('Главное меню', ASCIIInteface.start),
-        ('Просмотр звезды', ASCIIInteface.show_one_star),
-        ('Просмотр планеты', ASCIIInteface.show_planet),
-        ('Просмотр корабля', ASCIIInteface.show_ship),
+            ('Главное меню', ASCIIInteface.start),
+            ('Просмотр звезды', ASCIIInteface.show_one_star),
+            ('Просмотр планеты', ASCIIInteface.show_planet),
+            ('Просмотр корабля', ASCIIInteface.show_ship),
         ]
         self.print_cmd(mass)
 
@@ -179,8 +186,8 @@ class ASCIIInteface:
         os.system('clear')
         print(self.game.stars[self.scouted_star].planets[planet])
         mass = [
-        ('Главное меню', ASCIIInteface.start),
-        ('Назад к звезде', ASCIIInteface.now_star)
+            ('Главное меню', ASCIIInteface.start),
+            ('Назад к звезде', ASCIIInteface.now_star)
         ]
         self.print_cmd(mass)
 
@@ -192,8 +199,8 @@ class ASCIIInteface:
         os.system('clear')
         print(self.game.ships[self.scouted_ship].card_store.cards[card])
         mass = [
-        ('Главное меню', ASCIIInteface.start),
-        ('Назад к кораблю', ASCIIInteface.now_ship)
+            ('Главное меню', ASCIIInteface.start),
+            ('Назад к кораблю', ASCIIInteface.now_ship)
         ]
         self.print_cmd(mass)
 
@@ -220,7 +227,6 @@ class ASCIIInteface:
         file_to_save.close()
         ASCIIInteface.wait()
         ASCIIInteface.cls()
-        
 
 if __name__ == "__main__":
     TEST_INTERFACE = ASCIIInteface()
