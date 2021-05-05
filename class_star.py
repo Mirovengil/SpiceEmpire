@@ -11,6 +11,9 @@ from class_planet import Planet
 import my_math
 
 SIZE = 20
+MARKER = ' @'
+PLANET = ' *'
+NONE = ' _'
 
 class Star:
     '''
@@ -90,13 +93,7 @@ class Star:
             string = string + str(j)
             temp_coords.append(j.get_coordinates())
         string = string + "Положение планет: " + "\n"
-        for y in range(self.size_y):
-            for x in range(self.size_x):
-                if my_math.Coords(x, y) in temp_coords:
-                    string = string + " *"
-                else:
-                    string = string + " _"
-            string = string + "\n"
+        string = string + self.to_matrix()
         string = string + '-' * SIZE + "\n"
         return string
 
@@ -134,3 +131,23 @@ class Star:
         rez = Star(name, neighbours)
         rez.set_planets(planets)
         return rez
+
+    def to_matrix(self, marker=None):
+        '''
+        Преобразовывает карту в картину, где отображены планеты и (при
+        передаче его в параметры) маркер.
+        '''
+        temp_coords = []
+        for j in self.planets:
+            temp_coords.append(j.get_coordinates())
+        string = ""
+        for y in range(self.size_y):
+            for x in range(self.size_x):
+                if not marker is None and my_math.Coords(x, y) == marker:
+                    string = string + MARKER
+                elif my_math.Coords(x, y) in temp_coords:
+                    string = string + PLANET
+                else:
+                    string = string + NONE
+            string = string + "\n"
+        return string

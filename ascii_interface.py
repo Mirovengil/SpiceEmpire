@@ -49,7 +49,7 @@ class ASCIIInteface:
         '''
         Очищает консоль.
         '''
-        print("\033[H\033[J")
+        print("\033c", end="")
 
     def print_cmd(self, cmd):
         '''
@@ -134,18 +134,10 @@ class ASCIIInteface:
             print(str(i[0] + 1) + '. ' +\
                 self.game.stars[class_star.Star.get_neighbour(i[1])].name +\
                 '(' + str(class_star.Star.get_way_len(i[1])) + ' ПА)')
-        marked_coords = []
         print('Планеты:')
         for i in enumerate(self.game.stars[self.scouted_star].planets):
             print(i[0] + 1, ': ', i[1].name, sep='')
-            marked_coords.append(i[1].coordinates)
-        for y in range(self.game.stars[self.scouted_star].size_y):
-            for x in range(self.game.stars[self.scouted_star].size_x):
-                if my_math.Coords(x, y) in marked_coords:
-                    print('*', end=' ')
-                else:
-                    print('-', end=' ')
-            print()
+        print(self.game.stars[self.scouted_star].to_matrix())
         print('Корабли:')
         cnt = 1
         for i in self.game.ships:
@@ -168,6 +160,8 @@ class ASCIIInteface:
         '''
         ASCIIInteface.cls()
         print(self.game.ships[self.scouted_ship].str(self.game.stars))
+        print(self.game.stars[self.scouted_star].to_matrix(\
+        self.game.ships[self.scouted_ship].x_y))
         print('Карточки:')
         for i in enumerate(self.game.ships[self.scouted_ship].card_store.cards):
             print(str(i[0] + 1) + ". " + i[1].tit)
@@ -281,8 +275,17 @@ class ASCIIInteface:
         '''
         Выбирает клетку и перемещает корабль.
         '''
-        pass
-    
+        ASCIIInteface.cls()
+        print('Карта:')
+        print(self.game.stars[self.scouted_star].to_matrix(\
+        self.game.ships[self.scouted_ship].x_y))
+        print('Вы отмечены как @:')
+        x = ASCIIInteface.read_number('Введите х клетки: ')
+        y = ASCIIInteface.read_number('Введите y клетки: ')
+        self.game.ships[self.scouted_ship].use(self.scouted_card,\
+        'move', my_math.Coords(x, y))
+        self.now_star()
+
 if __name__ == "__main__":
     TEST_INTERFACE = ASCIIInteface()
     TEST_INTERFACE.start()
