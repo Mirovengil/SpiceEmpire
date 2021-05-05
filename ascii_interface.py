@@ -30,6 +30,21 @@ class ASCIIInteface:
         self.scouted_star = None
         self.scouted_ship = None
 
+    @staticmethod
+    def read_number(text):
+        '''
+        Считывает с клавиатуры номер чего-либо и приводит его к
+        индексации.
+        '''
+        return int(input(text)) - 1
+
+    @staticmethod
+    def wait():
+        '''
+        Ждёт нажатия клавиши ENTER.
+        '''
+        ASCIIInteface.wait()
+
     def print_cmd(self, cmd):
         '''
         Выводит список команд, считывает ввод и выполняет выбранную
@@ -38,7 +53,7 @@ class ASCIIInteface:
         print('-' * SIZE)
         for i in enumerate(cmd):
             print(i[0] + 1, '. ', i[1][TITLE_CMD], sep='')
-        cmd_complete = int(input('ВВОД: ')) - 1
+        cmd_complete = ASCIIInteface.read_number('ВВОД: ')
         cmd[cmd_complete][CMD](self)
 
     def new_game(self):
@@ -48,17 +63,20 @@ class ASCIIInteface:
         option = generate_map.GeneratorOptions()
         self.game = generate_map.generate_map(option)
         print('Новая игра создана!')
-    
+
     def load_game(self):
         '''
         Загружает игру. Пока что только из файла 'log.txt'.
         '''
         self.game = class_map.GameMap.read_map("log.txt")
         print('Игра успешно загружена!')
-    
+
     def exit(self):
+        '''
+        Завершает выполнение программы.
+        '''
         exit(0)
-    
+
     def start(self):
         '''
         Главное меню игры.
@@ -71,8 +89,9 @@ class ASCIIInteface:
         ]
         if not self.game is None:
             mass.append(('Продолжить игру', ASCIIInteface.show_stars))
+            mass.append(('Сохранить игру', ASCIIInteface.save_game))
         self.print_cmd(mass)
-        input()
+        ASCIIInteface.wait()
         os.system('clear')
         self.show_stars()
 
@@ -95,7 +114,7 @@ class ASCIIInteface:
         Отрисовывает все планеты системы, её корабли и предлагает перейти
         к чему-то из этого.
         '''
-        self.scouted_star = int(input('Номер звезды: ')) - 1
+        self.scouted_star = ASCIIInteface.read_number('Номер звезды: ')
         self.now_star()
 
     def now_star(self):
@@ -156,7 +175,7 @@ class ASCIIInteface:
         '''
         Отрисовывает планету.
         '''
-        planet = int(input('Номер планеты: ')) - 1
+        planet = ASCIIInteface.read_number('Номер планеты: ')
         os.system('clear')
         print(self.game.stars[self.scouted_star].planets[planet])
         mass = [
@@ -169,7 +188,7 @@ class ASCIIInteface:
         '''
         Отрисовывает карту корабля
         '''
-        card = int(input('Номер карточки: ')) - 1
+        card = ASCIIInteface.read_number('Номер карточки: ')
         os.system('clear')
         print(self.game.ships[self.scouted_ship].card_store.cards[card])
         mass = [
@@ -182,7 +201,7 @@ class ASCIIInteface:
         '''
         Отрисовывает корабль.
         '''
-        self.scouted_ship = int(input('Номер корабля: ')) - 1
+        self.scouted_ship = ASCIIInteface.read_number('Номер корабля: ')
         cnt = 0
         for i in enumerate(self.game.ships):
             cnt += (i[1].system == self.scouted_star)
@@ -191,7 +210,18 @@ class ASCIIInteface:
                 break
         self.now_ship()
 
+    def save_game(self):
+        '''
+        Сохраняет начатую игру в файл log.txt.
+        '''
+        print('Игра успешно сохранена.')
+        file_to_save = open('./log.txt', 'w')
+        print(self.game.cache(), file=file_to_save)
+        file_to_save.close()
+        ASCIIInteface.wait()
+        ASCIIInteface.cls()
+        
 
 if __name__ == "__main__":
-    interface = ASCIIInteface()
-    interface.start()
+    TEST_INTERFACE = ASCIIInteface()
+    TEST_INTERFACE.start()
