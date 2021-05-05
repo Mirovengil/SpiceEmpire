@@ -180,14 +180,12 @@ if __name__ == "__main__":
     ship2 = Ship.new_ship('test')
     ship2.set_system(0)
     ship2.set_x_y(my_math.Coords(0, 0))
-    ship2.set_master(0)
+    ship2.set_master(1)
     
     game_map.add_ship(ship1)
     game_map.add_ship(ship2)
     #game_map = GameMap.read_map("log.txt")
     game_map.next_turn()
-
-    ship1.use(2, 'move', my_math.Coords(3,0))
 
     print('Читабельный вывод карты (для людей):')
     print(game_map)

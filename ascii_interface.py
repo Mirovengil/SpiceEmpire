@@ -7,8 +7,6 @@
 кофеварке!".
 '''
 
-import os
-
 import generate_map
 import class_map
 import class_star
@@ -29,6 +27,7 @@ class ASCIIInteface:
         self.game = None
         self.scouted_star = None
         self.scouted_ship = None
+        self.scouted_card = None
 
     @staticmethod
     def read_number(text):
@@ -88,7 +87,7 @@ class ASCIIInteface:
         '''
         Главное меню игры.
         '''
-        os.system('clear')
+        ASCIIInteface.cls()
         mass = [
             ('Новая игра', ASCIIInteface.new_game),
             ('Загрузить игру', ASCIIInteface.load_game),
@@ -99,14 +98,14 @@ class ASCIIInteface:
             mass.append(('Сохранить игру', ASCIIInteface.save_game))
         self.print_cmd(mass)
         ASCIIInteface.wait()
-        os.system('clear')
+        ASCIIInteface.cls()
         self.show_stars()
 
     def show_stars(self):
         '''
         Отрисовывает все звёзды и предлагает перейти к одной из них.
         '''
-        os.system('clear')
+        ASCIIInteface.cls()
         print('Звёзды:')
         for i in enumerate(self.game.stars):
             print(i[0] + 1, '. ', i[1].name, sep='')
@@ -128,7 +127,7 @@ class ASCIIInteface:
         '''
         Отрисовывает ту звезду, которую рассматривали последней.
         '''
-        os.system('clear')
+        ASCIIInteface.cls()
         print('Звезда: ' + self.game.stars[self.scouted_star].name)
         print('Соседи:')
         for i in enumerate(self.game.stars[self.scouted_star].neighbours):
@@ -152,7 +151,8 @@ class ASCIIInteface:
         for i in self.game.ships:
             if i.system == self.scouted_star:
                 print(str(cnt) + '. ' + i.name + ' игрока №' +\
-                str(i.master) + ' (' + str(i.hp) + ' HP)')
+                str(i.master) + ' (' + str(i.hp) + ' HP)' +\
+                (' -- ЗАЩИЩАЕТСЯ' if i.dfc > 0 else ''))
                 cnt += 1
         mass = [
             ('Главное меню', ASCIIInteface.start),
@@ -166,7 +166,7 @@ class ASCIIInteface:
         '''
         Отрисовывает тот корабль, который рассматривали последним.
         '''
-        os.system('clear')
+        ASCIIInteface.cls()
         print(self.game.ships[self.scouted_ship].str(self.game.stars))
         print('Карточки:')
         for i in enumerate(self.game.ships[self.scouted_ship].card_store.cards):
@@ -174,7 +174,8 @@ class ASCIIInteface:
         mass = [
             ('Главное меню', ASCIIInteface.start),
             ('Назад к звезде', ASCIIInteface.now_star),
-            ('Просмотр карточки', ASCIIInteface.show_card)
+            ('Просмотр карточки', ASCIIInteface.show_card),
+            ('Использование карточки', ASCIIInteface.use_card)
         ]
         self.print_cmd(mass)
 
@@ -183,7 +184,7 @@ class ASCIIInteface:
         Отрисовывает планету.
         '''
         planet = ASCIIInteface.read_number('Номер планеты: ')
-        os.system('clear')
+        ASCIIInteface.cls()
         print(self.game.stars[self.scouted_star].planets[planet])
         mass = [
             ('Главное меню', ASCIIInteface.start),
@@ -196,11 +197,12 @@ class ASCIIInteface:
         Отрисовывает карту корабля
         '''
         card = ASCIIInteface.read_number('Номер карточки: ')
-        os.system('clear')
+        ASCIIInteface.cls()
         print(self.game.ships[self.scouted_ship].card_store.cards[card])
         mass = [
             ('Главное меню', ASCIIInteface.start),
-            ('Назад к кораблю', ASCIIInteface.now_ship)
+            ('Назад к кораблю', ASCIIInteface.now_ship),
+            ('Использовать карточку', ASCIIInteface.use_now_card)
         ]
         self.print_cmd(mass)
 
@@ -228,6 +230,59 @@ class ASCIIInteface:
         ASCIIInteface.wait()
         ASCIIInteface.cls()
 
+    def use_card(self):
+        '''
+        Выбирает карточку и использует её.
+        '''
+        self.scouted_card = ASCIIInteface.read_number('Номер карточки: ')
+        self.use_now_card()
+
+    def use_now_card(self):
+        '''
+        Использует карточку, которая была выбрана или рассматривается.
+        '''
+        ASCIIInteface.cls()
+        print('Выберите действие: ')
+        card = self.game.ships[self.scouted_ship].card_store.cards[\
+        self.scouted_card]
+        self.print_cmd([
+            ('Атака ({} ед.)'.format(card.dmg), ASCIIInteface.attack),
+            ('Защита ({} ед.)'.format(card.dfc), ASCIIInteface.defence),
+            ('Движение ({} ед.)'.format(card.mov), ASCIIInteface.move)
+        ])
+
+    def attack(self):
+        '''
+        Выбирает вражеский корабль и атакует.
+        '''
+        ASCIIInteface.cls()
+        mass = [] #Массив кораблей в системе для удобного обращения.
+        cnt = 1
+        for i in self.game.ships:
+            if i.system == self.scouted_star and\
+            i.master != self.game.ships[self.scouted_ship].master:
+                mass.append(i)
+                print(str(cnt) + '. ' + i.name + ' игрока №' +\
+                str(i.master) + ' (' + str(i.hp) + ' HP)')
+                cnt += 1
+        ship = ASCIIInteface.read_number('Выберите корабль: ')
+        self.game.ships[self.scouted_ship].use(self.scouted_card, 'attack',\
+        mass[ship])
+        self.now_star()
+
+    def defence(self):
+        '''
+        Увеличивает защиту корабля.
+        '''
+        self.game.ships[self.scouted_ship].use(self.scouted_card, 'defence', None)
+        self.now_star()
+
+    def move(self):
+        '''
+        Выбирает клетку и перемещает корабль.
+        '''
+        pass
+    
 if __name__ == "__main__":
     TEST_INTERFACE = ASCIIInteface()
     TEST_INTERFACE.start()

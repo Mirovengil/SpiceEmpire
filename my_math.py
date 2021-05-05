@@ -101,5 +101,15 @@ def main():
     print('ГОТОВО!')
     fin.close()
 
+def choose_from(objects):
+    '''
+    Выводит список объектов под номерами, считывает номер и возвращает
+    выбранный объект.
+    '''
+    for i in enumerate(objects):
+        print(i[0] + 1, '. ', i[1], sep='')
+    chosen = int(input('ВВОД: '))
+    return objects[chosen]
+
 if __name__ == "__main__":
     main()
