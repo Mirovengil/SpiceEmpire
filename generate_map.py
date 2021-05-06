@@ -42,6 +42,8 @@ class GeneratorOptions:
         #размер системы по у
         self.min_d = 3
         #минимальное расстояние между двумя планетами (считается Пифагором)
+        self.players_number = 2
+        #количество игроков (все управляются человеками)
     #Геттеры и сеттеры (сгенерированы автоматически)
     def get_nummer(self):
         '''Геттер поля nummer'''
@@ -154,6 +156,38 @@ def generate_planets(names, names_number, option):
         graphs.append(planets)
     return graphs
 
+def generate_ships(game_map, system, player, player_planet):
+    '''
+    Создаёт начальный набор кораблей для игрока №<player : int> и
+    прикрепляет их к планете <player_planet : Planet>.
+    '''
+
+    ship_1 = Ship.new_ship('test')
+    ship_1.set_master(player)
+    ship_1.set_system(system)
+    ship_1.set_x_y(player_planet.coordinates)
+
+    game_map.add_ship(ship_1)
+
+def add_players(game_map):
+    '''
+    Выделяет игрокам планеты и начальные корабли.
+    '''
+    #Массив звёзд, каждая из которых доступна для генерации.
+    #Когда на любой из планет обосновался игрок, около этой
+    #звезды другой игрок уже не может появиться, чтобы исключить
+    #схватки уже на первых трёх-четырёх ходах.
+    pst = [i[0] for i in enumerate(game_map.stars)]
+    for player in range(game_map.number_of_players):
+        number_of_system_in_pst = randint(0, len(pst) - 1)
+        system = pst[number_of_system_in_pst]
+        pst.pop(number_of_system_in_pst)
+        player_planet = game_map.stars[system].planets[randint(0,\
+        len(game_map.stars[system].planets) - 1)]
+        player_planet.set_master(player)
+        generate_ships(game_map, system, player, player_planet)
+        game_map.stars[system].can_be_seen.add(player)
+
 def generate_map(option):
     '''
     Создаёт карту с указанными параметрами.
@@ -166,30 +200,8 @@ def generate_map(option):
     planets = generate_planets(names, names_number, option)
     game_map.set_planets(planets)
     game_map.set_size(option.get_size_x(), option.get_size_y())
+    game_map.number_of_players = option.players_number
+    add_players(game_map)
     return game_map
 
-if __name__ == "__main__":
-    option = GeneratorOptions()
-    game_map = generate_map(option)
 
-    ship1 = Ship.new_ship('test')
-    ship1.set_system(0)
-    ship1.set_x_y(my_math.Coords(0, 0))
-    ship1.set_master(0)
-
-    ship2 = Ship.new_ship('test')
-    ship2.set_system(0)
-    ship2.set_x_y(my_math.Coords(0, 0))
-    ship2.set_master(1)
-    
-    game_map.add_ship(ship1)
-    game_map.add_ship(ship2)
-    #game_map = GameMap.read_map("log.txt")
-    game_map.next_turn()
-
-    print('Читабельный вывод карты (для людей):')
-    print(game_map)
-    print('\n\n')
-    fin = open('log.txt', 'w')
-    print(game_map.cache(), file=fin)
-    fin.close()

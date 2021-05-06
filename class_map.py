@@ -15,6 +15,9 @@ class GameMap:
         self.ships = []
         self.size_x = None
         self.size_y = None
+        self.number_of_players = None
+        self.player = 0
+        self.option = None
 
     def set_size(self, size_x, size_y):
         '''
@@ -69,8 +72,22 @@ class GameMap:
     def next_turn(self):
         '''
         Сделать следующий игровой ход.
+        1. Ход переходит к следующему игроку.
+        2. Обновляется видимость (т.н. "Туман войны") для игроков.
         '''
-        pass
+
+        #1.
+        self.player = (self.player + 1) % self.number_of_players
+
+        #2.
+        i = 0
+        while i < len(self.stars):
+            self.stars[i].can_be_seen = []
+            i += 1
+        i = 0
+        while i < len(self.ships):
+            self.stars[i].can_be_seen.add(self.ships[i].master)
+            i += 1
 
     def cache(self):
         '''
@@ -85,6 +102,8 @@ class GameMap:
         string = string + str(len(self.ships)) + "\n"
         for i in self.ships:
             string = string + i.cache()
+        string = string + str(self.player) + "\n"
+        string = string + str(self.number_of_players) + "\n"
         return string
 
     @staticmethod
@@ -102,5 +121,7 @@ class GameMap:
         rez.set_stars([Star.read_star(fin) for i in range(nummer)])
         nummer = int(rdf(fin))
         rez.set_ships([Ship.read_ship(fin) for i in range(nummer)])
+        rez.player = int(rdf(fin))
+        rez.number_of_players = int(rdf(fin))
         fin.close()
         return rez

@@ -16,6 +16,33 @@ TITLE_CMD = 0
 CMD = 1
 SIZE = 30
 
+
+'''
+Типа, ASCII-графений.
+'''
+IMAGE = '''
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠹⠏⠀⣠⣤⡀⠀⠻⠃
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣶⠛⠛⢻⣦
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠿⣤⣤⣼⠟
+⠀⠀⠀⠀⣴⣶⣶⣦⠀⠀⢠⣦⠀⠀⠀⠀⣴⠄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⡆⠀⠙⠛⠁⠀⣴⠄
+⠀⠀⠀⠀⣿⡏⠙⠟⠀⠀⢸⣿⣤⣤⡀⠀⣀⡀⠀⠀⣿⡿⠿⠟⠀⠀⠀⠀⣠⣤⡀
+⠀⠀⠀⠀⣿⣷⣶⣶⣶⡄⢸⣿⡛⣿⣿⠀⣿⡇⠀⠀⣿⣷⣶⣦⠀⠀⢠⣶⡛⠛⣻⣦
+⠀⠀⠀⠀⣠⣤⣤⣬⣿⡇⢸⣿⡿⠿⠏⠀⣿⣧⡀⠀⣠⣤⣽⣿⠀⠀⢸⣿⡿⠿⠿⠟
+⠀⠀⠀⠀⠙⠛⠛⠛⠋⠁⢸⣿⠀⠀⠀⠀⠙⠛⠁⠀⠙⠛⠛⠋⠀⠀⠈⠙⣶⣶⣶⣦
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉
+⠀⢀⣤⣤⣤⣤⡀
+⠀⣿⣿⠛⠛⠛⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⡆
+⠀⣿⣿⣤⣄⡀⠀⠀⣠⣤⣤⣤⣤⣤⡀⠀⣠⣤⣤⣄⠀⢀⡀⠀⣠⡾⠿⠿⣄⡀⢀⣠⠿⠿⢷⣄
+⠀⣿⣿⠛⠋⠁⠀⠀⣿⡟⢻⣿⠛⣿⣿⠀⣿⡟⢻⣿⠀⣿⣿⠀⣿⡇⠀⠀⠉⠁⢸⣿⣷⣶⣾⣿
+⠀⣿⣿⣤⣤⣤⡀⠀⣿⡇⢸⣿⠀⣿⣿⠀⣿⣧⣼⣿⠀⣿⣿⠀⣿⡇⠀⠀⠀⠀⠘⠿⣥⣤⣤⣄
+⠀⠈⠛⠛⠛⠛⠁⠀⠉⠁⠈⠉⠀⠈⠁⠀⣿⡟⠛⠋⠀⠈⠁⠀⠉⠁⠀⠀⠀⠀⠀⠀⠙⠛⠛⠋
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣿⡇
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⠋⠁
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠂
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⡄
+'''
+
 class ASCIIInteface:
     '''
     Класс интерфейса. По причине того, что ASCII-графика несколько
@@ -57,6 +84,9 @@ class ASCIIInteface:
         команду.
         '''
         print('-' * SIZE)
+        if not self.game is None:
+            print('Хотит игрок №' + str(self.game.player))
+        print('-' * SIZE)
         for i in enumerate(cmd):
             print(i[0] + 1, '. ', i[1][TITLE_CMD], sep='')
         cmd_complete = ASCIIInteface.read_number('ВВОД: ')
@@ -88,6 +118,7 @@ class ASCIIInteface:
         Главное меню игры.
         '''
         ASCIIInteface.cls()
+        print(IMAGE)
         mass = [
             ('Новая игра', ASCIIInteface.new_game),
             ('Загрузить игру', ASCIIInteface.load_game),
@@ -108,10 +139,11 @@ class ASCIIInteface:
         ASCIIInteface.cls()
         print('Звёзды:')
         for i in enumerate(self.game.stars):
-            print(i[0] + 1, '. ', i[1].name, sep='')
+            print(i[0] + 1, '. ', (i[1].name if self.game.player in i[1].can_be_seen else 'СКРЫТО!'), sep='')
         mass = [
             ('Главное меню', ASCIIInteface.start),
-            ('Просмотр звезды', ASCIIInteface.show_one_star)
+            ('Просмотр звезды', ASCIIInteface.show_one_star),
+            ('Завершить ход', ASCIIInteface.end_turn)
         ]
         self.print_cmd(mass)
 
@@ -120,7 +152,10 @@ class ASCIIInteface:
         Отрисовывает все планеты системы, её корабли и предлагает перейти
         к чему-то из этого.
         '''
-        self.scouted_star = ASCIIInteface.read_number('Номер звезды: ')
+        star = ASCIIInteface.read_number('Номер звезды: ')
+        if not self.game.player in self.game.stars[star].can_be_seen:
+            raise ValueError('Вы не можете рассматривать систему, где нет ваших кораблей!')
+        self.scouted_star = star
         self.now_star()
 
     def now_star(self):
@@ -151,6 +186,7 @@ class ASCIIInteface:
             ('Просмотр звезды', ASCIIInteface.show_one_star),
             ('Просмотр планеты', ASCIIInteface.show_planet),
             ('Просмотр корабля', ASCIIInteface.show_ship),
+            ('Завершить ход', ASCIIInteface.end_turn)
         ]
         self.print_cmd(mass)
 
@@ -285,6 +321,17 @@ class ASCIIInteface:
         self.game.ships[self.scouted_ship].use(self.scouted_card,\
         'move', my_math.Coords(x, y))
         self.now_star()
+
+    def end_turn(self):
+        '''
+        Переводит игру на следующий ход.
+        '''
+        ASCIIInteface.cls()
+        self.game.next_turn()
+        print('Хотит игрок №' + str(self.game.player))
+        ASCIIInteface.wait()
+        ASCIIInteface.cls()
+        self.show_stars()
 
 if __name__ == "__main__":
     TEST_INTERFACE = ASCIIInteface()

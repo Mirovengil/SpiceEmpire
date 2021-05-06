@@ -39,6 +39,7 @@ class Star:
         self.planets = None
         self.size_x = 0
         self.size_y = 0
+        self.can_be_seen = set()
 
     def set_size(self, size_x, size_y):
         '''
