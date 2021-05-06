@@ -55,6 +55,18 @@ def rdf(file_opened):
     '''
     return file_opened.readline().replace("\n", "")
 
+def rdf_all(file_name):
+    '''
+    Открывает существующий файл ./file_name и считывает его содержимое, которое и
+    возвращает.
+    '''
+    file_name = open('./' + file_name, 'r')
+    string = ""
+    for i in file_name:
+        string = string + i
+    file_name.close()
+    return string
+
 def equal(real_1, real_2):
     '''
     equal(real_1 : float, real_2 : float) : bool -- возвращает True,

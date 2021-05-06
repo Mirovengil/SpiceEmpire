@@ -20,28 +20,10 @@ SIZE = 30
 '''
 Типа, ASCII-графений.
 '''
-IMAGE = '''
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠹⠏⠀⣠⣤⡀⠀⠻⠃
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣶⠛⠛⢻⣦
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠿⣤⣤⣼⠟
-⠀⠀⠀⠀⣴⣶⣶⣦⠀⠀⢠⣦⠀⠀⠀⠀⣴⠄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⡆⠀⠙⠛⠁⠀⣴⠄
-⠀⠀⠀⠀⣿⡏⠙⠟⠀⠀⢸⣿⣤⣤⡀⠀⣀⡀⠀⠀⣿⡿⠿⠟⠀⠀⠀⠀⣠⣤⡀
-⠀⠀⠀⠀⣿⣷⣶⣶⣶⡄⢸⣿⡛⣿⣿⠀⣿⡇⠀⠀⣿⣷⣶⣦⠀⠀⢠⣶⡛⠛⣻⣦
-⠀⠀⠀⠀⣠⣤⣤⣬⣿⡇⢸⣿⡿⠿⠏⠀⣿⣧⡀⠀⣠⣤⣽⣿⠀⠀⢸⣿⡿⠿⠿⠟
-⠀⠀⠀⠀⠙⠛⠛⠛⠋⠁⢸⣿⠀⠀⠀⠀⠙⠛⠁⠀⠙⠛⠛⠋⠀⠀⠈⠙⣶⣶⣶⣦
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉
-⠀⢀⣤⣤⣤⣤⡀
-⠀⣿⣿⠛⠛⠛⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⡆
-⠀⣿⣿⣤⣄⡀⠀⠀⣠⣤⣤⣤⣤⣤⡀⠀⣠⣤⣤⣄⠀⢀⡀⠀⣠⡾⠿⠿⣄⡀⢀⣠⠿⠿⢷⣄
-⠀⣿⣿⠛⠋⠁⠀⠀⣿⡟⢻⣿⠛⣿⣿⠀⣿⡟⢻⣿⠀⣿⣿⠀⣿⡇⠀⠀⠉⠁⢸⣿⣷⣶⣾⣿
-⠀⣿⣿⣤⣤⣤⡀⠀⣿⡇⢸⣿⠀⣿⣿⠀⣿⣧⣼⣿⠀⣿⣿⠀⣿⡇⠀⠀⠀⠀⠘⠿⣥⣤⣤⣄
-⠀⠈⠛⠛⠛⠛⠁⠀⠉⠁⠈⠉⠀⠈⠁⠀⣿⡟⠛⠋⠀⠈⠁⠀⠉⠁⠀⠀⠀⠀⠀⠀⠙⠛⠛⠋
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣿⡇
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⠋⠁
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠂
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⡄
-'''
+INTRO_IMG = my_math.rdf_all('./ASCII/Intro.txt')
+PLANET_IMG = my_math.rdf_all('./ASCII/Planet.txt')
+STAR_IMG = my_math.rdf_all("./ASCII/Star.txt")
+SHIP_IMG = my_math.rdf_all("./ASCII/Ship.txt")
 
 class ASCIIInteface:
     '''
@@ -118,7 +100,7 @@ class ASCIIInteface:
         Главное меню игры.
         '''
         ASCIIInteface.cls()
-        print(IMAGE)
+        print(INTRO_IMG)
         mass = [
             ('Новая игра', ASCIIInteface.new_game),
             ('Загрузить игру', ASCIIInteface.load_game),
@@ -164,6 +146,7 @@ class ASCIIInteface:
         '''
         ASCIIInteface.cls()
         print('Звезда: ' + self.game.stars[self.scouted_star].name)
+        print(STAR_IMG)
         print('Соседи:')
         for i in enumerate(self.game.stars[self.scouted_star].neighbours):
             print(str(i[0] + 1) + '. ' +\
@@ -183,9 +166,9 @@ class ASCIIInteface:
                 cnt += 1
         mass = [
             ('Главное меню', ASCIIInteface.start),
-            ('Просмотр звезды', ASCIIInteface.show_one_star),
             ('Просмотр планеты', ASCIIInteface.show_planet),
             ('Просмотр корабля', ASCIIInteface.show_ship),
+            ('Назад, к звёздам', ASCIIInteface.show_stars),
             ('Завершить ход', ASCIIInteface.end_turn)
         ]
         self.print_cmd(mass)
@@ -195,6 +178,7 @@ class ASCIIInteface:
         Отрисовывает тот корабль, который рассматривали последним.
         '''
         ASCIIInteface.cls()
+        print(SHIP_IMG)
         print(self.game.ships[self.scouted_ship].str(self.game.stars))
         print(self.game.stars[self.scouted_star].to_matrix(\
         self.game.ships[self.scouted_ship].x_y))
@@ -215,6 +199,7 @@ class ASCIIInteface:
         '''
         planet = ASCIIInteface.read_number('Номер планеты: ')
         ASCIIInteface.cls()
+        print(PLANET_IMG)
         print(self.game.stars[self.scouted_star].planets[planet])
         mass = [
             ('Главное меню', ASCIIInteface.start),

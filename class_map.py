@@ -82,7 +82,7 @@ class GameMap:
         #2.
         i = 0
         while i < len(self.stars):
-            self.stars[i].can_be_seen = []
+            self.stars[i].can_be_seen = set()
             i += 1
         i = 0
         while i < len(self.ships):
