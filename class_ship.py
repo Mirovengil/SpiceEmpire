@@ -54,6 +54,12 @@ class Ship:
         #"Корабль видят игроки под номерами: {}".format(str(self.visible_to)) + "\n"
         return string
 
+    def restore_card(self):
+        '''
+        Восстанавливает ту карточку корабля, которая имеет наибольший приоритет.
+        '''
+        self.card_store.restore_card()
+
     def cache(self):
         '''
         Кеширует корабль. Необходимо для реализации сохранений.

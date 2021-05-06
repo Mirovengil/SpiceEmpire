@@ -112,6 +112,17 @@ class CardStore:
         to_return = copy.copy(self.cards[index])
         return to_return
 
+    def restore_card(self):
+        '''
+        Восстанавливает карточку с самым большим приоритетом восстановления.
+        '''
+        i = CardStore.cards_nummer - 1
+        while i >= 0:
+            if not self.cards[i].usb:
+                self.cards[i].usb = True
+                break
+            i -= 1
+
     def __str__(self):
         '''
         Можно применять для логгирования, например, тащемта.

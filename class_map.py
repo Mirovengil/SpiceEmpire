@@ -10,6 +10,7 @@ class GameMap:
     '''
     Класс игровой карты.
     '''
+
     def __init__(self):
         self.stars = []
         self.ships = []
@@ -18,6 +19,7 @@ class GameMap:
         self.number_of_players = None
         self.player = 0
         self.option = None
+        self.turn = 0
 
     def set_size(self, size_x, size_y):
         '''
@@ -72,14 +74,16 @@ class GameMap:
     def next_turn(self):
         '''
         Сделать следующий игровой ход.
-        1. Ход переходит к следующему игроку.
-        2. Обновляется видимость (т.н. "Туман войны") для игроков.
+        10. Ход переходит к следующему игроку.
+        20. Обновляется видимость (т.н. "Туман войны") для игроков.
+        30. Вернуть, не закончилась ли игра.
+        Если круг хождения завершился.
+        10. Перейти к первому игроку.
+        20. Разрешить всем кораблям двигаться.
         '''
-
-        #1.
-        self.player = (self.player + 1) % self.number_of_players
-
-        #2.
+        #10.
+        self.player = self.player + 1
+        #20.
         i = 0
         while i < len(self.stars):
             self.stars[i].can_be_seen = set()
@@ -88,6 +92,23 @@ class GameMap:
         while i < len(self.ships):
             self.stars[i].can_be_seen.add(self.ships[i].master)
             i += 1
+
+        if self.player == self.number_of_players:
+            self.player = 0
+
+        #30.
+        return self.check_to_finish()
+        
+    def check_to_finish(self):
+        '''
+        Если игра закончилась, возвращает True.
+        Игра заканчивается, если остаются корабли только одного игрока.
+        '''
+        i = 0
+        while i + 1 < len(self.ships):
+            if self.ships[i].master != self.ships[i + 1].master:
+                return False
+        return True
 
     def cache(self):
         '''
