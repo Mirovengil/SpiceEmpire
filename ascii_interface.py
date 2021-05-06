@@ -67,6 +67,7 @@ class ASCIIInteface:
         '''
         print('-' * SIZE)
         if not self.game is None:
+            print('Ход №' + str(self.game.turn))
             print('Хотит игрок №' + str(self.game.player))
         print('-' * SIZE)
         for i in enumerate(cmd):
