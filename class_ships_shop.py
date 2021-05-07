@@ -27,3 +27,7 @@ def add_limits(game_map, possibility=3):
                 game_map.stars[star].planets[planet].limits[class_planet.Planet.LIM_SIZE]
             planet += 1
         star += 1
+    ship = 0
+    while ship < len(game_map.ships):
+        game_map.limits[game_map.ships[ship].master] -= game_map.ships[ship].limit
+        ship += 1
