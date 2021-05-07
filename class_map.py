@@ -5,6 +5,7 @@
 from class_star import Star
 from my_math import rdf
 from class_ship import Ship
+import class_ships_shop
 
 class GameMap:
     '''
@@ -20,6 +21,7 @@ class GameMap:
         self.player = 0
         self.option = None
         self.turn = 0
+        self.limits = []
 
     def set_size(self, size_x, size_y):
         '''
@@ -74,12 +76,13 @@ class GameMap:
     def next_turn(self):
         '''
         Сделать следующий игровой ход.
-        10. Ход переходит к следующему игроку.
-        20. Обновляется видимость (т.н. "Туман войны") для игроков.
-        30. Вернуть, не закончилась ли игра.
+        Ход переходит к следующему игроку.
+        Обновляется видимость (т.н. "Туман войны") для игроков.
+        Вернуть, не закончилась ли игра.
         Если круг хождения завершился.
-        10. Перейти к первому игроку.
-        20. Разрешить всем кораблям двигаться.
+        Перейти к первому игроку.
+        Разрешить всем кораблям двигаться.
+        Обновить состояние лимитов игроков.
         '''
         #10.
         self.player = self.player + 1
@@ -95,7 +98,7 @@ class GameMap:
 
         if self.player == self.number_of_players:
             self.player = 0
-
+            class_ships_shop.add_limits(self)
         #30.
         return self.check_to_finish()
         
