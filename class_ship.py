@@ -7,13 +7,17 @@ import my_math
 from my_math import rdf
 from class_card import CardStore
 
+SHIPS_PARAMS = {
+'test' : {
+                'speed' : 5,
+                'limit' : 2
+            }
+}
+
 class Ship:
     '''
     Класс корабля.
     '''
-    speeds = {
-        'test' : 5.0
-    }
     classes = ['test']
     def __init__(self):
         self.x_y = my_math.Coords()
@@ -25,6 +29,7 @@ class Ship:
         self.card_store = CardStore()
         self.dfc = float(0)
         self.speed = None
+        self.limit = None
 
     def is_live(self):
         '''
@@ -46,7 +51,8 @@ class Ship:
         "Тип корабля: {}".format(self.name) + "\n"
         string = string + \
         'HP: {}'.format(str(self.hp)) + "\n"
-        string = string + 'Защита: ' + str(self.dfc) + "\n"
+        string = string + 'Занимает лимитов: ' + str(self.limit) + '\n'
+        string = string + 'Скорость перемещения: ' + str(self.speed) + "\n"
         string = string + \
         "Координаты корабля: {}".format(str(self.x_y)) + "\n"
         string = string + \
@@ -97,6 +103,8 @@ class Ship:
         ship.set_master(master)
         ship.set_system(system)
         ship.card_store = card_store
+        ship.speed = SHIPS_PARAMS[self.name]['speed']
+        ship.limit = SHIPS_PARAMS[self.name]['limit']
         return ship
 
     @staticmethod
@@ -111,7 +119,8 @@ class Ship:
         ship.set_name(class_of_ship)
         ship.set_img('./img/' + class_of_ship + '.img')
         ship.card_store = CardStore(class_of_ship)
-        ship.speed = Ship.speeds[class_of_ship]
+        ship.speed = SHIPS_PARAMS[class_of_ship]['speed']
+        ship.limit = SHIPS_PARAMS[class_of_ship]['limit']
         return ship
 
     def attack(self, card, enemy):
