@@ -8,9 +8,9 @@ from my_math import rdf
 import my_math
 
 LIMITS = [
-('Большая', 15),
-('Средняя' : 10),
-('Малая' : 5)
+('Богатая', 15),
+('Средняя', 10),
+('Бедная', 5)
 ]
 
 class Planet:
@@ -23,7 +23,12 @@ class Planet:
     image : string --  имя изображения, соответствующего планете;
     master : int -- номер игрока, которому принадлежит планета;
     нейтральные планеты имеют хозяина -1;
+    limits : int -- кол-во лимитов, которые планета приносит империи.
     '''
+
+    LIM_SIZE = 1
+    LIM_NAME = 0
+
     types = ['lave', 'ice', 'earth', 'desert', 'water', 'rock', 'air']
     def __init__(self, name, coordinates):
         self.limits = None
@@ -46,6 +51,7 @@ class Planet:
         + "\n"
         string = string + 'Стратегический тип планеты: ' +\
         self.type + "\n"
+        string = string + 'Вместимость: ' + self.limits[Planet.LIM_NAME] + "\n"
         string = string + 'Описание планеты: ' +\
         self.get_description() + "\n"
         string = string + 'Координаты в системе: ' +\
@@ -68,6 +74,7 @@ class Planet:
         string = string + str(self.coordinates.get_y()) + "\n"
         string = string + self.image + "\n"
         string = string + str(self.master) + "\n"
+        string = string + str(self.limits[Planet.LIM_SIZE]) + "\n"
         return string
 
     #Геттеры и сеттеры (сгенерированы автоматически)
@@ -139,6 +146,11 @@ class Planet:
         rez.set_type(typeplanet)
         description = Planet.load_description(rez.get_type())
         rez.set_description(description)
+        limits_size = int(rdf(fin))
+        for i in LIMITS:
+            if i[Planet.LIM_SIZE] == limits_size:
+                rez.limits = i
+                break
         return rez
 
     @staticmethod
