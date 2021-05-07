@@ -18,9 +18,7 @@ CMD = 1
 SIZE = 30
 
 
-'''
-Типа, ASCII-графений.
-'''
+#Типа, ASCII-графений.
 INTRO_IMG = my_math.rdf_all('./ASCII/Intro.txt')
 PLANET_IMG = my_math.rdf_all('./ASCII/Planet.txt')
 STAR_IMG = my_math.rdf_all("./ASCII/Star.txt")
