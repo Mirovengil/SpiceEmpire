@@ -11,6 +11,7 @@ from class_planet import Planet
 from class_star import Star
 from class_map import GameMap
 from class_ship import Ship
+import class_ships_shop
 
 class GeneratorOptions:
     '''
@@ -202,6 +203,7 @@ def generate_map(option):
     game_map.set_size(option.get_size_x(), option.get_size_y())
     game_map.number_of_players = option.players_number
     add_players(game_map)
+    class_ships_shop.add_limits(game_map, 1)
     return game_map
 
 
