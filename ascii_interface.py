@@ -11,6 +11,7 @@ import generate_map
 import class_map
 import class_star
 import my_math
+import random
 
 TITLE_CMD = 0
 CMD = 1
@@ -100,6 +101,7 @@ class ASCIIInteface:
         '''
         Главное меню игры.
         '''
+        random.seed()
         ASCIIInteface.cls()
         print(INTRO_IMG)
         mass = [
@@ -239,12 +241,11 @@ class ASCIIInteface:
         '''
         Сохраняет начатую игру в файл log.txt.
         '''
+        ASCIIInteface.cls()
         print('Игра успешно сохранена.')
         file_to_save = open('./log.txt', 'w')
         print(self.game.cache(), file=file_to_save)
         file_to_save.close()
-        ASCIIInteface.wait()
-        ASCIIInteface.cls()
 
     def use_card(self):
         '''

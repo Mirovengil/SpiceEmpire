@@ -90,7 +90,7 @@ class GameMap:
             i += 1
         i = 0
         while i < len(self.ships):
-            self.stars[i].can_be_seen.add(self.ships[i].master)
+            self.stars[self.ships[i].system].can_be_seen.add(self.ships[i].master)
             i += 1
 
         if self.player == self.number_of_players:

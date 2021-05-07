@@ -11,6 +11,9 @@ class Ship:
     '''
     Класс корабля.
     '''
+    speeds = {
+        'test' : 5.0
+    }
     classes = ['test']
     def __init__(self):
         self.x_y = my_math.Coords()
@@ -21,6 +24,7 @@ class Ship:
         self.master = None
         self.card_store = CardStore()
         self.dfc = float(0)
+        self.speed = None
 
     def is_live(self):
         '''
@@ -107,6 +111,7 @@ class Ship:
         ship.set_name(class_of_ship)
         ship.set_img('./img/' + class_of_ship + '.img')
         ship.card_store = CardStore(class_of_ship)
+        ship.speed = Ship.speeds[class_of_ship]
         return ship
 
     def attack(self, card, enemy):
