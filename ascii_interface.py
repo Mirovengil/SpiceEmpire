@@ -11,8 +11,8 @@ import generate_map
 import class_map
 import class_star
 import my_math
+import class_planet 
 import random
-
 TITLE_CMD = 0
 CMD = 1
 SIZE = 30
@@ -68,6 +68,7 @@ class ASCIIInteface:
         if not self.game is None:
             print('Ход №' + str(self.game.turn))
             print('Хотит игрок №' + str(self.game.player))
+            print('Лимитов: ' + str(self.game.limits[self.game.player]))
         print('-' * SIZE)
         for i in enumerate(cmd):
             print(i[0] + 1, '. ', i[1][TITLE_CMD], sep='')
