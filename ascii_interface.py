@@ -191,9 +191,25 @@ class ASCIIInteface:
             ('Главное меню', ASCIIInteface.start),
             ('Назад к звезде', ASCIIInteface.now_star),
             ('Просмотр карточки', ASCIIInteface.show_card),
-            ('Использование карточки', ASCIIInteface.use_card)
+            ('Перемещение корабля', ASCIIInteface.move_ship_on_map)
+            #('Использование карточки', ASCIIInteface.use_card)#Карточки не используются вне боя(
         ]
         self.print_cmd(mass)
+
+    def move_ship_on_map(self):
+        '''
+        Выбирает клетку и перемещает корабль на глобальной карте.
+        На это расходуются единицы перемещения.
+        '''
+        ASCIIInteface.cls()
+        print('Карта:')
+        print(self.game.stars[self.scouted_star].to_matrix(\
+        self.game.ships[self.scouted_ship].x_y))
+        print('Вы отмечены как @:')
+        x = ASCIIInteface.read_number('Введите х клетки: ')
+        y = ASCIIInteface.read_number('Введите y клетки: ')
+        self.game.ships[self.scouted_ship].move_on_global_map(my_math.Coords(x, y))
+        self.now_star()
 
     def show_planet(self):
         '''
@@ -219,7 +235,7 @@ class ASCIIInteface:
         mass = [
             ('Главное меню', ASCIIInteface.start),
             ('Назад к кораблю', ASCIIInteface.now_ship),
-            ('Использовать карточку', ASCIIInteface.use_now_card)
+            #('Использовать карточку', ASCIIInteface.use_now_card)
         ]
         self.print_cmd(mass)
 

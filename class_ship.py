@@ -52,9 +52,9 @@ class Ship:
         string = string + \
         'HP: {}'.format(str(self.hp)) + "\n"
         string = string + 'Занимает лимитов: ' + str(self.limit) + '\n'
-        string = string + 'Скорость перемещения: ' + str(self.speed) + "\n"
+        string = string + 'Единиц перемещения: ' + str(self.speed) + "\n"
         string = string + \
-        "Координаты корабля: {}".format(str(self.x_y)) + "\n"
+        "Координаты корабля: ({}, {})".format(self.x_y.x + 1, self.x_y.y + 1) + "\n"
         string = string + \
         "Хозяин корабля: игрок номер {}".format(str(self.master)) + "\n"
         string = string + \
@@ -136,14 +136,21 @@ class Ship:
         '''
         self.dfc += card.dfc
 
+    def move_on_global_map(self, place):
+        '''
+        Перемещает корабль на глобальной карте, расходуя единицы перемещения.
+        '''
+        if my_math.dist(self.x_y, place) > self.speed:
+            raise ValueError('Вы не можете переместиться так далеко!')
+        self.speed = int(self.speed - my_math.dist(self.x_y, place))
+        self.x_y = place
+
     def move(self, card, place):
         '''
         Применяет к кораблю карточку передвижения.
+        Используется на поле боя.
         '''
-        if my_math.dist(place, self.x_y) > card.mov:
-            raise ValueError('''Корабль не может переместиться на
-                такое расстояние!''')
-        self.x_y = place
+        raise ValueError('Функцию придётся переписывать!')
 
     def use(self, index, act, param):
         '''
