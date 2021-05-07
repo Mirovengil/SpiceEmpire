@@ -7,6 +7,12 @@ from random import randint
 from my_math import rdf
 import my_math
 
+LIMITS = [
+('Большая', 15),
+('Средняя' : 10),
+('Малая' : 5)
+]
+
 class Planet:
     '''
     Класс планеты.
@@ -20,6 +26,7 @@ class Planet:
     '''
     types = ['lave', 'ice', 'earth', 'desert', 'water', 'rock', 'air']
     def __init__(self, name, coordinates):
+        self.limits = None
         self.name = name
         self.coordinates = coordinates
         self.type = None
@@ -143,4 +150,5 @@ class Planet:
         planet.set_type(Planet.types[randint(0, len(Planet.types) - 1)])
         planet.set_image('/img/planets' + planet.get_type() + '.png')
         planet.set_description(Planet.load_description(planet.get_type()))
+        planet.limits = LIMITS[randint(0, len(LIMITS) - 1)]
         return planet
