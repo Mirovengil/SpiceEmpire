@@ -43,7 +43,10 @@ class ASCIIInteface:
         Считывает с клавиатуры номер чего-либо и приводит его к
         индексации.
         '''
-        return int(input(text)) - 1
+        value = input(text)
+        if value == "":
+            return None
+        return int(value) - 1
 
     @staticmethod
     def wait():
@@ -210,6 +213,8 @@ class ASCIIInteface:
         print('Вы отмечены как @:')
         x = ASCIIInteface.read_number('Введите х клетки: ')
         y = ASCIIInteface.read_number('Введите y клетки: ')
+        x = x if not x is None else self.game.ships[self.scouted_ship].x_y.x
+        y = y if not y is None else self.game.ships[self.scouted_ship].x_y.y
         self.game.ships[self.scouted_ship].move_on_global_map(my_math.Coords(x, y))
         self.now_star()
 
@@ -342,8 +347,13 @@ class ASCIIInteface:
         Перемещает корабль в другую систему.
         '''
         for i in enumerate(self.game.stars[self.scouted_star].neighbours):
-            print (i[0] + 1 + '. ' + self.game.stars[class_star.Star.get_neighbour(i[1])].name)
+            print (str(i[0] + 1) + '. ' + self.game.stars[class_star.Star.get_neighbour(i[1])].name)
         new_star = ASCIIInteface.read_number('В какую звезду-соседа вы хотите переместиться: ')
+        new_star = self.game.stars[self.scouted_star].neighbours[new_star]
+        new_star = class_star.Star.get_neighbour(new_star)
+        self.game.ships[self.scouted_ship].system = new_star
+        self.game.refresh_war_thunder()
+        self.show_stars()
 
 if __name__ == "__main__":
     TEST_INTERFACE = ASCIIInteface()

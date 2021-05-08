@@ -150,9 +150,9 @@ class Ship:
         Возвращает True, если корабль может совершить прыжок в другую систему.
         '''
         min_x = 0
-        max_x = game_map.size_x
+        max_x = game_map.size_x - 1
         min_y = 0
-        max_y = game_map.size_y
+        max_y = game_map.size_y - 1
         on_vertical_border = (self.x_y.x == min_x or self.x_y.x == max_x)
         on_horizontal_border = (self.x_y.y == min_y or self.x_y.y == max_y)
         return on_vertical_border or on_horizontal_border

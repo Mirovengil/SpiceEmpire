@@ -87,15 +87,7 @@ class GameMap:
         #10.
         self.player = self.player + 1
         #20.
-        star = 0
-        while star < len(self.stars):
-            self.stars[star].can_be_seen = set()
-            star += 1
-        ship = 0
-        while ship < len(self.ships):
-            self.stars[self.ships[ship].system].can_be_seen.add(self.ships[ship].master)
-            ship += 1
-
+        self.refresh_war_thunder()
         if self.player == self.number_of_players:
             self.player = 0
             class_ships_shop.add_limits(self)
@@ -133,6 +125,19 @@ class GameMap:
         string = string + str(self.player) + "\n"
         string = string + str(self.number_of_players) + "\n"
         return string
+
+    def refresh_war_thunder(self):
+        '''
+        Обновляет зоны видимости (т.н. "туман войны") для всех игроков
+        '''
+        star = 0
+        while star < len(self.stars):
+            self.stars[star].can_be_seen = set()
+            star += 1
+        ship = 0
+        while ship < len(self.ships):
+            self.stars[self.ships[ship].system].can_be_seen.add(self.ships[ship].master)
+            ship += 1
 
     @staticmethod
     def read_map(name):
