@@ -5,7 +5,7 @@
 from class_star import Star
 from my_math import rdf
 from class_ship import Ship
-import class_ships_shop
+import class_planet
 
 class GameMap:
     '''
@@ -90,7 +90,7 @@ class GameMap:
         self.refresh_war_thunder()
         if self.player == self.number_of_players:
             self.player = 0
-            class_ships_shop.add_limits(self)
+            self.refresh_limits()
             self.refresh_ships_speeds()
             self.refresh_ships_times()
         #30.
@@ -210,6 +210,6 @@ class GameMap:
         rez.player = int(rdf(fin))
         rez.number_of_players = int(rdf(fin))
         fin.close()
-        class_ships_shop.add_limits(rez, 1)
+        self.refresh_limits()
         rez.refresh_war_thunder()
         return rez
