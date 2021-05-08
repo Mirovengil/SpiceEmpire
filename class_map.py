@@ -87,18 +87,22 @@ class GameMap:
         #10.
         self.player = self.player + 1
         #20.
-        i = 0
-        while i < len(self.stars):
-            self.stars[i].can_be_seen = set()
-            i += 1
-        i = 0
-        while i < len(self.ships):
-            self.stars[self.ships[i].system].can_be_seen.add(self.ships[i].master)
-            i += 1
+        star = 0
+        while star < len(self.stars):
+            self.stars[star].can_be_seen = set()
+            star += 1
+        ship = 0
+        while ship < len(self.ships):
+            self.stars[self.ships[ship].system].can_be_seen.add(self.ships[ship].master)
+            ship += 1
 
         if self.player == self.number_of_players:
             self.player = 0
             class_ships_shop.add_limits(self)
+            ship = 0
+            while ship < len(self.ships):
+                self.ships[ship].restore_speed()
+                ship += 1
         #30.
         return self.check_to_finish()
         

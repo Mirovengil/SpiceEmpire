@@ -194,6 +194,8 @@ class ASCIIInteface:
             ('Перемещение корабля', ASCIIInteface.move_ship_on_map)
             #('Использование карточки', ASCIIInteface.use_card)#Карточки не используются вне боя(
         ]
+        if self.game.ships[self.scouted_ship].on_side(self.game):
+            mass.append(('Перемещение в другую систему', ASCIIInteface.change_system_for_ship))
         self.print_cmd(mass)
 
     def move_ship_on_map(self):
@@ -334,6 +336,14 @@ class ASCIIInteface:
         ASCIIInteface.wait()
         ASCIIInteface.cls()
         self.show_stars()
+
+    def change_system_for_ship(self):
+        '''
+        Перемещает корабль в другую систему.
+        '''
+        for i in enumerate(self.game.stars[self.scouted_star].neighbours):
+            print (i[0] + 1 + '. ' + self.game.stars[class_star.Star.get_neighbour(i[1])].name)
+        new_star = ASCIIInteface.read_number('В какую звезду-соседа вы хотите переместиться: ')
 
 if __name__ == "__main__":
     TEST_INTERFACE = ASCIIInteface()

@@ -145,6 +145,24 @@ class Ship:
         self.speed = int(self.speed - my_math.dist(self.x_y, place))
         self.x_y = place
 
+    def on_side(self, game_map):
+        '''
+        Возвращает True, если корабль может совершить прыжок в другую систему.
+        '''
+        min_x = 0
+        max_x = game_map.size_x
+        min_y = 0
+        max_y = game_map.size_y
+        on_vertical_border = (self.x_y.x == min_x or self.x_y.x == max_x)
+        on_horizontal_border = (self.x_y.y == min_y or self.x_y.y == max_y)
+        return on_vertical_border or on_horizontal_border
+
+    def restore_speed(self):
+        '''
+        Восстанавливает единицы перемещения корабля.
+        '''
+        self.speed = SHIPS_PARAMS[self.name]['speed']
+
     def move(self, card, place):
         '''
         Применяет к кораблю карточку передвижения.
