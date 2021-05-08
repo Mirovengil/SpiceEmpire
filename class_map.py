@@ -172,6 +172,26 @@ class GameMap:
             self.stars[self.ships[ship].system].can_be_seen.add(self.ships[ship].master)
             ship += 1
 
+    def refresh_limits(self):
+        '''
+        Обновляет количество доступных игроку лимитов.
+        '''
+        self.limits = [0 for i in range(self.number_of_players)]
+        star = 0
+        while star < len(self.stars):
+            planet = 0
+            while planet < len(self.stars[star].planets):
+                if self.stars[star].planets[planet].master != -1:
+                    self.limits[self.stars[star].planets[planet].master] +=\
+                    self.stars[star].planets[planet].limits[class_planet.Planet.LIM_SIZE]
+                planet += 1
+            star += 1
+        ship = 0
+        while ship < len(self.ships):
+            self.limits[self.ships[ship].master] -= self.ships[ship].limit
+            ship += 1
+
+
     @staticmethod
     def read_map(name):
         '''
