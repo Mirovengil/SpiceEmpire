@@ -91,13 +91,46 @@ class GameMap:
         if self.player == self.number_of_players:
             self.player = 0
             class_ships_shop.add_limits(self)
-            ship = 0
-            while ship < len(self.ships):
-                self.ships[ship].restore_speed()
-                ship += 1
+            self.refresh_ships_speeds()
+            self.refresh_ships_times()
         #30.
         return self.check_to_finish()
-        
+
+    def refresh_ships_speeds(self):
+        '''
+        Восстанавливает всем кораблям скорости перемещения.
+        '''
+        ship = 0
+        while ship < len(self.ships):
+            self.ships[ship].restore_speed()
+            ship += 1
+
+    def refresh_ships_times(self):
+        '''
+        Обновляет всем кораблям время ожидания.
+        '''
+        ship = 0
+        while ship < len(self.ships):
+            self.ships[ship].decrease_time()
+            ship += 1
+
+    def move_ship_to_system(self, ship_index, system_index):
+        '''
+        Перемещает корабль под номером ship_index : int в систему номером system_index : int.
+        '''
+        if self.ships[ship_index].will_be_available > 0:
+            raise ValueError('Корабль перезаряжает двигатели!!11')
+        if not self.ships[ship_index].has_full_fuel():
+            raise ValueError('Корабль должен зарядить двигатели полностью!')
+        #В массиве соседей ищется та звезда, куда летит корабль; берётся длина пути до неё.
+        #И по прилёте корабль будет бездействовать эту же величину.
+        for i in self.stars[self.ships[ship_index].system].neighbours:
+            if Star.get_neighbour(i) == system_index:
+                self.ships[ship_index].will_be_available = Star.get_way_len(i)
+                break
+        self.ships[ship_index].system = system_index
+        self.refresh_war_thunder()
+
     def check_to_finish(self):
         '''
         Если игра закончилась, возвращает True.
@@ -157,4 +190,6 @@ class GameMap:
         rez.player = int(rdf(fin))
         rez.number_of_players = int(rdf(fin))
         fin.close()
+        class_ships_shop.add_limits(rez, 1)
+        rez.refresh_war_thunder()
         return rez

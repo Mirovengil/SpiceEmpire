@@ -215,7 +215,7 @@ class ASCIIInteface:
         y = ASCIIInteface.read_number('Введите y клетки: ')
         x = x if not x is None else self.game.ships[self.scouted_ship].x_y.x
         y = y if not y is None else self.game.ships[self.scouted_ship].x_y.y
-        self.game.ships[self.scouted_ship].move_on_global_map(my_math.Coords(x, y))
+        self.game.ships[self.scouted_ship].move_on_global_map(my_math.Coords(x, y), self.game)
         self.now_star()
 
     def show_planet(self):
@@ -348,11 +348,10 @@ class ASCIIInteface:
         '''
         for i in enumerate(self.game.stars[self.scouted_star].neighbours):
             print (str(i[0] + 1) + '. ' + self.game.stars[class_star.Star.get_neighbour(i[1])].name)
-        new_star = ASCIIInteface.read_number('В какую звезду-соседа вы хотите переместиться: ')
+        new_star = ASCIIInteface.read_number('В какую систему-соседа вы хотите переместиться: ')
         new_star = self.game.stars[self.scouted_star].neighbours[new_star]
         new_star = class_star.Star.get_neighbour(new_star)
-        self.game.ships[self.scouted_ship].system = new_star
-        self.game.refresh_war_thunder()
+        self.game.move_ship_to_system(self.scouted_ship, new_star)
         self.show_stars()
 
 if __name__ == "__main__":

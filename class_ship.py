@@ -30,6 +30,7 @@ class Ship:
         self.dfc = float(0)
         self.speed = None
         self.limit = None
+        self.will_be_available = None
 
     def is_live(self):
         '''
@@ -48,7 +49,7 @@ class Ship:
         для логгирования или для ASCII-графики.'''
         string = ""
         string = string + \
-        "Тип корабля: {}".format(self.name) + "\n"
+        "Тип корабля: {}".format(self.name) + (" (НЕ НА ХОДУ!)" if self.will_be_available > 0 else "") + "\n"
         string = string + \
         'HP: {}'.format(str(self.hp)) + "\n"
         string = string + 'Занимает лимитов: ' + str(self.limit) + '\n'
@@ -82,6 +83,7 @@ class Ship:
         string = string + str(self.system) + "\n"
         string = string + self.card_store.cache()
         string = string + str(self.dfc) + "\n"
+        string = string + str(self.will_be_available) + "\n"
         return string
 
     @staticmethod
@@ -103,8 +105,9 @@ class Ship:
         ship.set_master(master)
         ship.set_system(system)
         ship.card_store = card_store
-        ship.speed = SHIPS_PARAMS[self.name]['speed']
-        ship.limit = SHIPS_PARAMS[self.name]['limit']
+        ship.speed = SHIPS_PARAMS[ship.name]['speed']
+        ship.limit = SHIPS_PARAMS[ship.name]['limit']
+        ship.will_be_available = int(rdf(fin))
         return ship
 
     @staticmethod
@@ -121,6 +124,7 @@ class Ship:
         ship.card_store = CardStore(class_of_ship)
         ship.speed = SHIPS_PARAMS[class_of_ship]['speed']
         ship.limit = SHIPS_PARAMS[class_of_ship]['limit']
+        ship.will_be_available = 0
         return ship
 
     def attack(self, card, enemy):
@@ -130,18 +134,28 @@ class Ship:
         '''
         enemy.hp -= card.dmg
 
+    def decrease_time(self):
+        '''
+        Уменьшает время, через которое корабль станет доступным, на единицу.
+        '''
+        self.will_be_available = max(self.will_be_available - 1, 0)
+
     def defence(self, card, stub):
         '''
         Применяет к кораблю карточку защиты.
         '''
         self.dfc += card.dfc
 
-    def move_on_global_map(self, place):
+    def move_on_global_map(self, place, game_map):
         '''
         Перемещает корабль на глобальной карте, расходуя единицы перемещения.
         '''
+        if place.x < 0 or place.x >= game_map.size_x or place.y < 0 or place.y >= game_map.size_y:
+            raise ValueError('Координаты точки должны находиться в пределах системы!!11')
         if my_math.dist(self.x_y, place) > self.speed:
             raise ValueError('Вы не можете переместиться так далеко!')
+        if self.will_be_available > 0:
+            raise ValueError('Корабль перезаряжает двигатели!!11')
         self.speed = int(self.speed - my_math.dist(self.x_y, place))
         self.x_y = place
 
@@ -221,3 +235,9 @@ class Ship:
     def set_master(self, value):
         '''Сеттер поля master'''
         self.master = value
+
+    def has_full_fuel(self):
+        '''
+        Возвращает True, если корабль полностью заправлен.
+        '''
+        return self.speed == SHIPS_PARAMS[self.name]['speed']
