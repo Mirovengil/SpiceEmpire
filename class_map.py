@@ -133,6 +133,8 @@ class GameMap:
                 break
         self.ships[ship_index].system = system_index
         self.refresh_war_thunder()
+        #Корабль мог прилететь в клетку, где стоит противник. Это надо обработать.
+        self.try_to_battle(ship_index)
 
     def check_to_finish(self):
         '''
@@ -194,6 +196,17 @@ class GameMap:
             self.limits[self.ships[ship].master] -= self.ships[ship].limit
             ship += 1
 
+    def move_ship_on_global_map(self, ship, place):
+        '''
+        Выполняет некоторые проверки, после чего перемещает корабль ship : Ship в клетку
+        place : Coords той системы, где он сейчас находится.
+        '''
+        if place.x < 0 or place.x >= self.size_x or place.y < 0 or place.y >= self.size_y:
+            raise ValueError('Координаты точки должны находиться в пределах системы!!11')
+        self.ships[ship].move_on_global_map(place)
+        #Корабль мог переместиться в клетку с противником. Этот случай надо обработать.
+        self.try_to_battle(ship)
+
     @staticmethod
     def read_map(name):
         '''
@@ -212,7 +225,7 @@ class GameMap:
         rez.player = int(rdf(fin))
         rez.number_of_players = int(rdf(fin))
         fin.close()
-        self.refresh_limits()
+        rez.refresh_limits()
         rez.refresh_war_thunder()
         return rez
 

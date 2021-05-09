@@ -143,12 +143,10 @@ class Ship:
         '''
         self.dfc += card.dfc
 
-    def move_on_global_map(self, place, game_map):
+    def move_on_global_map(self, place):
         '''
         Перемещает корабль на глобальной карте, расходуя единицы перемещения.
         '''
-        if place.x < 0 or place.x >= game_map.size_x or place.y < 0 or place.y >= game_map.size_y:
-            raise ValueError('Координаты точки должны находиться в пределах системы!!11')
         if my_math.dist(self.x_y, place) > self.speed:
             raise ValueError('Вы не можете переместиться так далеко!')
         if self.will_be_available > 0:

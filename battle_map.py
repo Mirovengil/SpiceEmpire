@@ -31,6 +31,7 @@ class BattleMap:
         last_y_on_right_side = 0
         ship = 0
         while ship < len(self.ships):
+            self.ships[ship].battle_x_y = my_math.Coords()
             if self.ships[ship].master == left_player:
                 self.ships[ship].battle_x_y.x = 0
                 self.ships[ship].battle_x_y.y = last_y_on_left_side
@@ -42,7 +43,7 @@ class BattleMap:
             self.ships[ship].battle_mode_on()
             ship += 1
 
-    def to_str():
+    def __str__():
         '''
         Преобразовывает поле битвы в строку (использовать для отладки или логгирования).
         '''

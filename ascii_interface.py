@@ -111,7 +111,6 @@ class ASCIIInteface:
             ('Новая игра', ASCIIInteface.new_game),
             ('Загрузить игру', ASCIIInteface.load_game),
             ('Выйти из игры', ASCIIInteface.exit)
-            ('Сразиться', ASCIIInteface.battle)
         ]
         if not self.game is None:
             mass.append(('Продолжить игру', ASCIIInteface.show_stars))
@@ -151,6 +150,10 @@ class ASCIIInteface:
         '''
         Отрисовывает ту звезду, которую рассматривали последней.
         '''
+        #Все перемещения корабля в итоге приведут к этой функции --> здесь удобно сделать
+        #проверку на начало битвы (при необходимости -- переход в соответствующее меню).
+        if self.game.battle_is_on:
+            self.draw_battle_map()
         ASCIIInteface.cls()
         print('Звезда: ' + self.game.stars[self.scouted_star].name)
         print(STAR_IMG)
@@ -167,9 +170,7 @@ class ASCIIInteface:
         cnt = 1
         for i in self.game.ships:
             if i.system == self.scouted_star:
-                print(str(cnt) + '. ' + i.name + ' игрока №' +\
-                str(i.master) + ' (' + str(i.hp) + ' HP)' +\
-                (' -- ЗАЩИЩАЕТСЯ' if i.dfc > 0 else ''))
+                print(str(cnt) + '. ' + i.name + ' игрока №' + str(i.master))
                 cnt += 1
         mass = [
             ('Главное меню', ASCIIInteface.start),
@@ -179,6 +180,12 @@ class ASCIIInteface:
             ('Завершить ход', ASCIIInteface.end_turn)
         ]
         self.print_cmd(mass)
+
+    def draw_battle_map(self):
+        '''
+        Отрисовывает карту, где происходит сражение.
+        '''
+        print(self.game.battle_map)
 
     def now_ship(self):
         '''
@@ -217,8 +224,7 @@ class ASCIIInteface:
         y = ASCIIInteface.read_number('Введите y клетки: ')
         x = x if not x is None else self.game.ships[self.scouted_ship].x_y.x
         y = y if not y is None else self.game.ships[self.scouted_ship].x_y.y
-        self.game.ships[self.scouted_ship].move_on_global_map(my_math.Coords(x, y), self.game)
-        self.game.try_to_battle()
+        self.game.move_ship_on_global_map(self.scouted_ship, my_math.Coords(x, y))
         self.now_star()
 
     def show_planet(self):
@@ -256,10 +262,11 @@ class ASCIIInteface:
         self.scouted_ship = ASCIIInteface.read_number('Номер корабля: ')
         cnt = 0
         for i in enumerate(self.game.ships):
-            cnt += (i[1].system == self.scouted_star)
-            if cnt == self.scouted_ship:
-                self.scouted_ship = i[0]
-                break
+            if i[1].system == self.game.ships[self.scouted_ship].system:
+                if cnt == self.scouted_ship:
+                    self.scouted_ship = i[0]
+                    break
+                cnt += 1
         self.now_ship()
 
     def save_game(self):
@@ -355,7 +362,8 @@ class ASCIIInteface:
         new_star = self.game.stars[self.scouted_star].neighbours[new_star]
         new_star = class_star.Star.get_neighbour(new_star)
         self.game.move_ship_to_system(self.scouted_ship, new_star)
-        self.show_stars()
+        self.scouted_star = new_star
+        self.now_star()
 
 if __name__ == "__main__":
     TEST_INTERFACE = ASCIIInteface()
