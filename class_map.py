@@ -5,6 +5,7 @@
 from class_star import Star
 from my_math import rdf
 from class_ship import Ship
+from battle_map import BattleMap
 import class_planet
 
 class GameMap:
@@ -22,6 +23,8 @@ class GameMap:
         self.option = None
         self.turn = 0
         self.limits = []
+        self.battle_is_on = False
+        self.battle_map = None
 
     def set_size(self, size_x, size_y):
         '''
@@ -191,7 +194,6 @@ class GameMap:
             self.limits[self.ships[ship].master] -= self.ships[ship].limit
             ship += 1
 
-
     @staticmethod
     def read_map(name):
         '''
@@ -213,3 +215,37 @@ class GameMap:
         self.refresh_limits()
         rez.refresh_war_thunder()
         return rez
+
+    def try_to_battle(self, ship_index):
+        '''
+        На вход принимает ship_index : int -- номер корабля, который совершил какое-либо
+        перемещение на глобальной карте. Это сделано во избежание O(n * n), где n -- сумма
+        кораблей у всех игроков. Реализация же за O(n) гораздо жизнеспособнее (потому что до
+        n = 10 ** 5 работает практически неощутимо моментально, а такое количество кораблей
+        на поле уже невозможно физически (гарантируют правила игры).
+        Если на карте нет ситуации, когда корабли РАЗНЫХ игроков находятся в одной клетке, то
+        ничего  интересного функция не совершает.
+        Если же такая ситуация сложилась, то она переводит игру в режим битвы и создаёт поле
+        для сражения.
+        '''
+        ships_must_be_in_battle = []
+        for ship in self.ships:
+            if ship.x_y == self.ships[ship_index].x_y:
+                ships_must_be_in_battle.append(ship)
+        ship = 0
+        while ship + 1 < len(ships_must_be_in_battle):
+            if ships_must_be_in_battle[ship].master != ships_must_be_in_battle[ship + 1].master:
+                #Начинается битва.
+                self.battle_is_on = True
+                self.battle_map = BattleMap(ships_must_be_in_battle)
+                break
+            ship += 1
+
+    def try_to_finish_battle(self):
+        '''
+        Если бой окончен, то self.battle_map хранит номер победителя (необходимо для
+        интерфеса), а self.battle_is_on -- ложь.
+        '''
+        if self.battle_is_on and self.battle_map.is_finished() != -1:
+            self.battle_is_on = False
+            self.battle_map = self.battle_map.is_finished()

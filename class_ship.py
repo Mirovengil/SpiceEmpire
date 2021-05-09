@@ -10,7 +10,8 @@ from class_card import CardStore
 SHIPS_PARAMS = {
 'test' : {
                 'speed' : 5,
-                'limit' : 2
+                'limit' : 2,
+                'hp' : 10
             }
 }
 
@@ -22,15 +23,18 @@ class Ship:
     def __init__(self):
         self.x_y = my_math.Coords()
         self.system = None
-        self.hp = 100 #percents
         self.img = None
         self.name = None
         self.master = None
         self.card_store = CardStore()
-        self.dfc = float(0)
         self.speed = None
         self.limit = None
         self.will_be_available = None
+        #Следующие параметры не сохраняются, так как появляются только на время боя,
+        #а положение внутри боя не сохраняется (в "Героев" играли?).
+        self.battle_x_y = None
+        self.dfc = None
+        self.hp = None
 
     def is_live(self):
         '''
@@ -50,8 +54,6 @@ class Ship:
         string = ""
         string = string + \
         "Тип корабля: {}".format(self.name) + (" (НЕ НА ХОДУ!)" if self.will_be_available > 0 else "") + "\n"
-        string = string + \
-        'HP: {}'.format(str(self.hp)) + "\n"
         string = string + 'Занимает лимитов: ' + str(self.limit) + '\n'
         string = string + 'Единиц перемещения: ' + str(self.speed) + "\n"
         string = string + \
@@ -77,12 +79,10 @@ class Ship:
         '''
         string = ""
         string = string + self.name + "\n"
-        string = string + str(self.hp) + "\n"
         string = string + str(self.x_y) + "\n"
         string = string + str(self.master) + "\n"
         string = string + str(self.system) + "\n"
         string = string + self.card_store.cache()
-        string = string + str(self.dfc) + "\n"
         string = string + str(self.will_be_available) + "\n"
         return string
 
@@ -94,13 +94,10 @@ class Ship:
         '''
         ship = Ship()
         ship.set_name(rdf(fin))
-        hp = int(rdf(fin))
         x_y = rdf(fin).replace(")", "").replace("(", "").split(", ")
         master = int(rdf(fin))
         system = int(rdf(fin))
         card_store = CardStore.load(fin)
-        ship.dfc = float(rdf(fin))
-        ship.set_hp(hp)
         ship.set_x_y(my_math.Coords(int(x_y[0]), int(x_y[1])))
         ship.set_master(master)
         ship.set_system(system)
@@ -118,7 +115,7 @@ class Ship:
         if not class_of_ship in Ship.classes:
             raise ValueError('Корабль несуществующего типа!11')
         ship = Ship()
-        ship.set_hp(100)
+        ship.set_hp(SHIPS_PARAMS[class_of_ship]['hp'])
         ship.set_name(class_of_ship)
         ship.set_img('./img/' + class_of_ship + '.img')
         ship.card_store = CardStore(class_of_ship)
@@ -241,3 +238,18 @@ class Ship:
         Возвращает True, если корабль полностью заправлен.
         '''
         return self.speed == SHIPS_PARAMS[self.name]['speed']
+
+    def battle_mode_on(self):
+        '''
+        Переводит корабль в боевой режим: задаёт боевые характеристики.
+        '''
+        self.hp = SHIPS_PARAMS[self.name]['hp']
+        self.dfc = 0
+    
+    def battle_mode_off(self):
+        '''
+        Выводит корабль из боевого режима: удаляет боевые характеристики.
+        Не знаю, на кой она нужна, но пусть пока будет _/=(*~*)=\_.
+        '''
+        self.hp = None
+        self.dfc = None

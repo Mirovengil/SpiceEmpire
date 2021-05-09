@@ -13,12 +13,13 @@ import class_star
 import my_math
 import class_planet 
 import random
+
 TITLE_CMD = 0
 CMD = 1
 SIZE = 30
 
 
-#Типа, ASCII-графений.
+#Типа, тащемта, ASCII-графений.
 INTRO_IMG = my_math.rdf_all('./ASCII/Intro.txt')
 PLANET_IMG = my_math.rdf_all('./ASCII/Planet.txt')
 STAR_IMG = my_math.rdf_all("./ASCII/Star.txt")
@@ -110,6 +111,7 @@ class ASCIIInteface:
             ('Новая игра', ASCIIInteface.new_game),
             ('Загрузить игру', ASCIIInteface.load_game),
             ('Выйти из игры', ASCIIInteface.exit)
+            ('Сразиться', ASCIIInteface.battle)
         ]
         if not self.game is None:
             mass.append(('Продолжить игру', ASCIIInteface.show_stars))
@@ -216,6 +218,7 @@ class ASCIIInteface:
         x = x if not x is None else self.game.ships[self.scouted_ship].x_y.x
         y = y if not y is None else self.game.ships[self.scouted_ship].x_y.y
         self.game.ships[self.scouted_ship].move_on_global_map(my_math.Coords(x, y), self.game)
+        self.game.try_to_battle()
         self.now_star()
 
     def show_planet(self):
