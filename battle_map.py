@@ -21,22 +21,24 @@ class BattleMap:
         self.size_x = size_x
         self.size_y = size_y
         self.ships = ships
+        self.turn_left = True
         #Корабли также надобно расставить по полюшку ратному по следующему принципу:
         #сверху вниз, у левого края поля -- один игрок, а сверху вниз, у правого края поля --
         #второй.
         #Утверждается, что при такой механике, какая реализована в игре, в сражении не может
         #участвовать большее количество игроков, чем двое.
-        left_player = self.ships[0].master
+        self.left_player = self.ships[0].master
         last_y_on_left_side = 0
         last_y_on_right_side = 0
         ship = 0
         while ship < len(self.ships):
             self.ships[ship].battle_x_y = my_math.Coords()
-            if self.ships[ship].master == left_player:
+            if self.ships[ship].master == self.left_player:
                 self.ships[ship].battle_x_y.x = 0
                 self.ships[ship].battle_x_y.y = last_y_on_left_side
                 last_y_on_left_side += 1
             else:
+                self.right_player = self.ships[ship].master
                 self.ships[ship].battle_x_y.x = self.size_x - 1
                 self.ships[ship].battle_x_y.y = last_y_on_right_side
                 last_y_on_right_side += 1
@@ -102,3 +104,29 @@ class BattleMap:
                 return -1
             ship += 1
         return self.ships[0].master
+
+    def now_player(self):
+        '''
+        Возвращает номер (глобальный, не внутри битвы) игрока, которому принадлежит ход
+        в битве на данный момент.
+        '''
+        if self.turn_left:
+            return self.left_player
+        return self.right_player
+
+    def next_turn(self):
+        '''
+        Передаёт ход в битве следующему игроку в очереди.
+        '''
+        self.turn_left = not self.turn_left
+
+    def usable_ships(self):
+        '''
+        Возвращает массив кораблей, которыми может воспользоваться игрок, что ходит.
+        '''
+        ships = []
+        for ship in self.ships:
+            if (ship.master == self.left_player and self.turn_left) or (ship.master == self.right_player and\
+            not self.turn_left):
+                ships.append(ship)
+        return ships

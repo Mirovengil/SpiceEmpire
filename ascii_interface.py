@@ -24,6 +24,14 @@ INTRO_IMG = my_math.rdf_all('./ASCII/Intro.txt')
 PLANET_IMG = my_math.rdf_all('./ASCII/Planet.txt')
 STAR_IMG = my_math.rdf_all("./ASCII/Star.txt")
 SHIP_IMG = my_math.rdf_all("./ASCII/Ship.txt")
+MOVE_ILLUSTRATION_IMG = [
+    my_math.rdf_all("./ASCII/MoveIllustrationImg1.txt"),
+    my_math.rdf_all("./ASCII/MoveIllustrationImg2.txt"),
+    my_math.rdf_all("./ASCII/MoveIllustrationImg3.txt"),
+    my_math.rdf_all("./ASCII/MoveIllustrationImg4.txt"),
+    my_math.rdf_all("./ASCII/MoveIllustrationImg5.txt"),
+    my_math.rdf_all("./ASCII/MoveIllustrationImg6.txt"),
+]
 
 class ASCIIInteface:
     '''
@@ -185,8 +193,15 @@ class ASCIIInteface:
         '''
         Отрисовывает карту, где происходит сражение.
         '''
+        ASCIIInteface.cls()
+        print('Идёт сражение')
         print(self.game.battle_map)
-        input('Война началась!!!!')
+        print('Ходит игрок №' + str(self.game.battle_map.now_player()))
+        print('Ваши корабли:')
+        for ship in enumerate(self.game.battle_map.usable_ships()):
+            print(str(ship[0] + 1) + ". " + ship[1].name)
+        self.scouted_ship = ASCIIInteface.read_number('Выберите корабль:')
+        input()
 
     def now_ship(self):
         '''

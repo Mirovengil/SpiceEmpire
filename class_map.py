@@ -201,6 +201,8 @@ class GameMap:
         Выполняет некоторые проверки, после чего перемещает корабль ship : Ship в клетку
         place : Coords той системы, где он сейчас находится.
         '''
+        if self.ships[ship].master != self.player:
+            raise ValueError('Вы не можете управлять чужим кораблём!!')
         if place.x < 0 or place.x >= self.size_x or place.y < 0 or place.y >= self.size_y:
             raise ValueError('Координаты точки должны находиться в пределах системы!!11')
         self.ships[ship].move_on_global_map(place)
@@ -246,12 +248,12 @@ class GameMap:
             if ship.x_y == self.ships[ship_index].x_y:
                 ships_must_be_in_battle.append(ship)
         ship = 0
-        while ship + 1 < len(ships_must_be_in_battle):
-            if ships_must_be_in_battle[ship].master != ships_must_be_in_battle[ship + 1].master:
+        while ship < len(ships_must_be_in_battle):
+            if ships_must_be_in_battle[ship].master != self.player:
                 #Начинается битва.
                 self.battle_is_on = True
                 self.battle_map = BattleMap(ships_must_be_in_battle)
-                break
+                return 0
             ship += 1
 
     def try_to_finish_battle(self):

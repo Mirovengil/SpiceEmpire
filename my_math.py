@@ -123,5 +123,12 @@ def choose_from(objects):
     chosen = int(input('ВВОД: '))
     return objects[chosen]
 
+def print_array_with_index(array):
+    '''
+    Выводит элементы массива, нумеруя их с единицы.
+    '''
+    for element in enumerate(array):
+        print(str(element[0] + 1) + ". " + element[1])
+
 if __name__ == "__main__":
     main()
