@@ -43,7 +43,7 @@ class BattleMap:
             self.ships[ship].battle_mode_on()
             ship += 1
 
-    def __str__():
+    def __str__(self):
         '''
         Преобразовывает поле битвы в строку (использовать для отладки или логгирования).
         '''
@@ -56,6 +56,7 @@ class BattleMap:
         for y in range(self.size_x):
             for x in range(self.size_y):
                 string = string + (mass[y][x] + ' ' if y % 2 == 0 else ' ' + mass[y][x])
+            string = string + "\n"
         return string
 
     def generate_near(self, coords):

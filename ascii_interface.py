@@ -186,6 +186,7 @@ class ASCIIInteface:
         Отрисовывает карту, где происходит сражение.
         '''
         print(self.game.battle_map)
+        input('Война началась!!!!')
 
     def now_ship(self):
         '''
