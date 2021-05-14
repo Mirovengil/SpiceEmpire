@@ -78,7 +78,7 @@ class ASCIIInteface:
         команду.
         '''
         print('-' * SIZE)
-        if not self.game is None:
+        if not self.game is None and not self.game.battle_is_on:
             print('Ход №' + str(self.game.turn))
             print('Хотит игрок №' + str(self.game.player))
             print('Лимитов: ' + str(self.game.limits[self.game.player]))
@@ -206,6 +206,14 @@ class ASCIIInteface:
         self.game.battle_index_from_usable_to_real(ASCIIInteface.read_number('Выберите корабль: '))
         self.draw_battle_ship()
 
+    def restore_card(self):
+        '''
+        Восстанавливает одну карточку кораблю и возвращает интерфейс в режим просмотра
+        поля боя.
+        Ход игрока, естественно, заканчивается.
+        '''
+        
+
     def draw_battle_ship(self):
         '''
         Выводит данные (для сражения) о том корабле, который сейчас рассматривается (если
@@ -217,6 +225,7 @@ class ASCIIInteface:
         self.print_cmd([
             ('Просмотр карточки', ASCIIInteface.show_card),
             ('Использовать карточку', ASCIIInteface.use_card),
+            ('Восстановить карточку', ASCIIInteface.restore_card),
             ('Назад к карте битвы', ASCIIInteface.draw_battle_map),
         ])
 
@@ -327,6 +336,7 @@ class ASCIIInteface:
         print('Выберите действие: ')
         card = self.game.ships[self.scouted_ship].card_store.cards[\
         self.scouted_card]
+        self.is_available = False
         self.print_cmd([
             ('Атака ({} ед.)'.format(card.dmg), ASCIIInteface.attack),
             ('Защита ({} ед.)'.format(card.dfc), ASCIIInteface.defence),

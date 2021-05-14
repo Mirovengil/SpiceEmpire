@@ -29,7 +29,7 @@ class Ship:
         self.card_store = CardStore()
         self.speed = None
         self.limit = None
-        self.will_be_available = None
+        self.is_available = None
         #Следующие параметры не сохраняются, так как появляются только на время боя,
         #а положение внутри боя не сохраняется (в "Героев" играли?).
         self.battle_x_y = None
@@ -53,7 +53,7 @@ class Ship:
         для логгирования или для ASCII-графики.'''
         string = ""
         string = string + \
-        "Тип корабля: {}".format(self.name) + (" (НЕ НА ХОДУ!)" if self.will_be_available > 0 else "") + "\n"
+        "Тип корабля: {}".format(self.name) + "\n"
         string = string + 'Занимает лимитов: ' + str(self.limit) + '\n'
         string = string + 'Единиц перемещения: ' + str(self.speed) + "\n"
         string = string + \
@@ -102,7 +102,6 @@ class Ship:
         string = string + str(self.master) + "\n"
         string = string + str(self.system) + "\n"
         string = string + self.card_store.cache()
-        string = string + str(self.will_be_available) + "\n"
         return string
 
     @staticmethod
@@ -123,7 +122,6 @@ class Ship:
         ship.card_store = card_store
         ship.speed = SHIPS_PARAMS[ship.name]['speed']
         ship.limit = SHIPS_PARAMS[ship.name]['limit']
-        ship.will_be_available = int(rdf(fin))
         return ship
 
     @staticmethod
@@ -140,7 +138,6 @@ class Ship:
         ship.card_store = CardStore(class_of_ship)
         ship.speed = SHIPS_PARAMS[class_of_ship]['speed']
         ship.limit = SHIPS_PARAMS[class_of_ship]['limit']
-        ship.will_be_available = 0
         return ship
 
     def attack(self, card, enemy):
@@ -149,12 +146,6 @@ class Ship:
         Корабль self наносит урон кораблю enemy.
         '''
         enemy.hp -= card.dmg
-
-    def decrease_time(self):
-        '''
-        Уменьшает время, через которое корабль станет доступным, на единицу.
-        '''
-        self.will_be_available = max(self.will_be_available - 1, 0)
 
     def defence(self, card, stub):
         '''
@@ -168,8 +159,6 @@ class Ship:
         '''
         if my_math.dist(self.x_y, place) > self.speed:
             raise ValueError('Вы не можете переместиться так далеко!')
-        if self.will_be_available > 0:
-            raise ValueError('Корабль перезаряжает двигатели!!11')
         self.speed = int(self.speed - my_math.dist(self.x_y, place))
         self.x_y = place
 
@@ -262,6 +251,7 @@ class Ship:
         '''
         self.hp = SHIPS_PARAMS[self.name]['hp']
         self.dfc = 0
+        self.is_available = True
     
     def battle_mode_off(self):
         '''
@@ -270,3 +260,4 @@ class Ship:
         '''
         self.hp = None
         self.dfc = None
+        self.is_available = False

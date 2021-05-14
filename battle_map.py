@@ -105,8 +105,8 @@ class BattleMap:
         '''
         ship = 0
         while ship < len(self.ships):
-            if self.ships[ship].master != self.ships[ship + 1].master and self.ships[ship].is_live() and\
-            self.ships[ship + 1].is_live():
+            if self.ships[ship].master != self.ships[ship + 1].master and\
+            self.ships[ship].is_live() and self.ships[ship + 1].is_live():
                 return -1
             ship += 1
         return self.ships[0].master
@@ -132,7 +132,7 @@ class BattleMap:
         '''
         ships = []
         for ship in self.ships:
-            if ship.master == self.player_turns_now():
+            if ship.master == self.player_turns_now() and ship.is_available:
                 ships.append(ship)
         return ships
 

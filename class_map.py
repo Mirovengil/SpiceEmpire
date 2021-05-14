@@ -93,7 +93,6 @@ class GameMap:
             self.player = 0
             self.refresh_limits()
             self.refresh_ships_speeds()
-            self.refresh_ships_times()
         return self.check_to_finish()
 
     def refresh_ships_speeds(self):
@@ -105,21 +104,10 @@ class GameMap:
             self.ships[ship].restore_speed()
             ship += 1
 
-    def refresh_ships_times(self):
-        '''
-        Обновляет всем кораблям время ожидания.
-        '''
-        ship = 0
-        while ship < len(self.ships):
-            self.ships[ship].decrease_time()
-            ship += 1
-
     def move_ship_to_system(self, ship_index, system_index):
         '''
         Перемещает корабль под номером ship_index : int в систему номером system_index : int.
         '''
-        if self.ships[ship_index].will_be_available > 0:
-            raise ValueError('Корабль перезаряжает двигатели!!11')
         if not self.ships[ship_index].has_full_fuel():
             raise ValueError('Корабль должен зарядить двигатели полностью!')
         #В массиве соседей ищется та звезда, куда летит корабль; берётся длина пути до неё.
@@ -269,7 +257,8 @@ class GameMap:
         cnt = 0
         ship = 0
         while ship < len(self.battle_map.ships):
-            if self.battle_map.ships[ship].master == self.battle_map.player_turns_now():
+            if self.battle_map.ships[ship].master == self.battle_map.player_turns_now() and\
+            ship.is_available:
                 if cnt == index:
                     return ship
                 cnt += 1
