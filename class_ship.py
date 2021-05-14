@@ -67,6 +67,25 @@ class Ship:
         #"Корабль видят игроки под номерами: {}".format(str(self.visible_to)) + "\n"
         return string
 
+    def battle_str(self):
+        '''
+        Выводит информацию, которая влияет на ход сражения, о корабле.
+        Записывает данные о корабле в строковом виде. Использовать
+        для логгирования или для ASCII-графики.
+        '''
+        string = ""
+        string = string + \
+        "Тип корабля: {}".format(self.name) + "\n"
+        string = string + \
+        "Хозяин корабля: игрок номер {}".format(str(self.master)) + "\n"
+        string = string + "HP: " + str(self.hp) + "\n"
+        string = string + "Защита корабля: " + str(self.dfc) +\
+        (' (НЕ ЗАЩИЩАЕТСЯ)' if self.dfc == 0 else '') + "\n"
+        string = string + "Карточки: " + "\n"
+        for card in enumerate(self.card_store.cards):
+            string = string + str(card[0] + 1) + ". " + card[1].tit + '\n'
+        return string
+
     def restore_card(self):
         '''
         Восстанавливает ту карточку корабля, которая имеет наибольший приоритет.

@@ -3,6 +3,8 @@
 '''
 
 import my_math
+MARKER = ' @'
+NONE = '.'
 
 class BattleMap:
     '''
@@ -45,15 +47,19 @@ class BattleMap:
             self.ships[ship].battle_mode_on()
             ship += 1
 
-    def __str__(self):
+    def str(self, marked=None):
         '''
         Преобразовывает поле битвы в строку (использовать для отладки или логгирования).
+        marked : int -- индекс корабля, котовый выделится особым символом
         '''
         if self.size_x is None or self.size_y is None or self.ships is None:
             raise ValueError('Карта не инициализирована!1')
-        mass = [['.' for x in range(self.size_x)] for y in range(self.size_y)]
+        mass = [[NONE for x in range(self.size_x)] for y in range(self.size_y)]
         for ship in self.ships:
             mass[ship.battle_x_y.y][ship.battle_x_y.x] = str(ship.master)
+        if not marked is None:
+            marked = self.ships[marked].battle_x_y
+            mass[marked.y][marked.x] = MARKER
         string = ''
         for y in range(self.size_x):
             for x in range(self.size_y):
@@ -126,7 +132,21 @@ class BattleMap:
         '''
         ships = []
         for ship in self.ships:
-            if (ship.master == self.left_player and self.turn_left) or (ship.master == self.right_player and\
-            not self.turn_left):
+            if ship.master == self.player_turns_now():
                 ships.append(ship)
         return ships
+
+    def ship_info(self, ship_index):
+        '''
+        Возвращает данные корабля с индексом ship_index : int в виде описания
+        (данные + словесные пояснения к ним).
+        '''
+        return self.ships[ship_index].battle_str()
+
+    def player_turns_now(self):
+        '''
+        Возвращает номер игрока, которому сейчас принадлежит ход в битве.
+        '''
+        if  self.turn_left:
+            return self.left_player
+        return self.right_player

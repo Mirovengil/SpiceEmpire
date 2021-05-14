@@ -24,6 +24,7 @@ INTRO_IMG = my_math.rdf_all('./ASCII/Intro.txt')
 PLANET_IMG = my_math.rdf_all('./ASCII/Planet.txt')
 STAR_IMG = my_math.rdf_all("./ASCII/Star.txt")
 SHIP_IMG = my_math.rdf_all("./ASCII/Ship.txt")
+BATTLE_IMG = my_math.rdf_all("./ASCII/BattleSymbol.txt")
 MOVE_ILLUSTRATION_IMG = [
     my_math.rdf_all("./ASCII/MoveIllustrationImg1.txt"),
     my_math.rdf_all("./ASCII/MoveIllustrationImg2.txt"),
@@ -194,14 +195,30 @@ class ASCIIInteface:
         Отрисовывает карту, где происходит сражение.
         '''
         ASCIIInteface.cls()
+        print(BATTLE_IMG)
         print('Идёт сражение')
-        print(self.game.battle_map)
+        print(self.game.battle_map.str())
         print('Ходит игрок №' + str(self.game.battle_map.now_player()))
         print('Ваши корабли:')
         for ship in enumerate(self.game.battle_map.usable_ships()):
-            print(str(ship[0] + 1) + ". " + ship[1].name)
-        self.scouted_ship = ASCIIInteface.read_number('Выберите корабль:')
-        input()
+            print(str(ship[0] + 1) + ". " + ship[1].name + ' (' + str(ship[1].hp) + "HP)")
+        self.scouted_ship =\
+        self.game.battle_index_from_usable_to_real(ASCIIInteface.read_number('Выберите корабль: '))
+        self.draw_battle_ship()
+
+    def draw_battle_ship(self):
+        '''
+        Выводит данные (для сражения) о том корабле, который сейчас рассматривается (если
+        включён режим сражения).
+        '''
+        ASCIIInteface.cls()
+        print(self.game.battle_map.str(self.scouted_ship))
+        print(self.game.battle_map.ship_info(self.scouted_ship))
+        self.print_cmd([
+            ('Просмотр карточки', ASCIIInteface.show_card),
+            ('Использовать карточку', ASCIIInteface.use_card),
+            ('Назад к карте битвы', ASCIIInteface.draw_battle_map),
+        ])
 
     def now_ship(self):
         '''
@@ -212,9 +229,7 @@ class ASCIIInteface:
         print(self.game.ships[self.scouted_ship].str(self.game.stars))
         print(self.game.stars[self.scouted_star].to_matrix(\
         self.game.ships[self.scouted_ship].x_y))
-        print('Карточки:')
-        for i in enumerate(self.game.ships[self.scouted_ship].card_store.cards):
-            print(str(i[0] + 1) + ". " + i[1].tit)
+        self.print_ships_cards_list()
         mass = [
             ('Главное меню', ASCIIInteface.start),
             ('Назад к звезде', ASCIIInteface.now_star),
@@ -266,9 +281,11 @@ class ASCIIInteface:
         print(self.game.ships[self.scouted_ship].card_store.cards[card])
         mass = [
             ('Главное меню', ASCIIInteface.start),
-            ('Назад к кораблю', ASCIIInteface.now_ship),
-            #('Использовать карточку', ASCIIInteface.use_now_card)
         ]
+        if not self.game.battle_is_on:
+            mass.append(('Назад к кораблю', ASCIIInteface.now_ship))
+        else:
+            mass.append(('Назад к кораблю', ASCIIInteface.draw_battle_map))
         self.print_cmd(mass)
 
     def show_ship(self):
@@ -325,7 +342,7 @@ class ASCIIInteface:
         cnt = 1
         for i in self.game.ships:
             if i.system == self.scouted_star and\
-            i.master != self.game.ships[self.scouted_ship].master:
+            i.master != self.game.ships[self.scouted_ship].master and i in self.game.battle_map.ships:
                 mass.append(i)
                 print(str(cnt) + '. ' + i.name + ' игрока №' +\
                 str(i.master) + ' (' + str(i.hp) + ' HP)')
@@ -333,14 +350,16 @@ class ASCIIInteface:
         ship = ASCIIInteface.read_number('Выберите корабль: ')
         self.game.ships[self.scouted_ship].use(self.scouted_card, 'attack',\
         mass[ship])
-        self.now_star()
+        self.game.battle_map.next_turn()
+        self.draw_battle_map()
 
     def defence(self):
         '''
         Увеличивает защиту корабля.
         '''
         self.game.ships[self.scouted_ship].use(self.scouted_card, 'defence', None)
-        self.now_star()
+        self.game.battle_map.next_turn()
+        self.draw_battle_map()
 
     def move(self):
         '''
@@ -355,7 +374,8 @@ class ASCIIInteface:
         y = ASCIIInteface.read_number('Введите y клетки: ')
         self.game.ships[self.scouted_ship].use(self.scouted_card,\
         'move', my_math.Coords(x, y))
-        self.now_star()
+        self.game.battle_map.next_turn()
+        self.draw_battle_map()
 
     def end_turn(self):
         '''
@@ -380,6 +400,15 @@ class ASCIIInteface:
         self.game.move_ship_to_system(self.scouted_ship, new_star)
         self.scouted_star = new_star
         self.now_star()
+        
+    def print_ships_cards_list(self):
+        '''
+        Выводит карточки корабля без подробного описания.
+        Вынесено в отдельную функцию, чтобы избежать повторов в коде.
+        '''
+        print('Карточки:')
+        for ship in enumerate(self.game.ships[self.scouted_ship].card_store.cards):
+            print(str(ship[0] + 1) + ". " + ship[1].tit)
 
 if __name__ == "__main__":
     TEST_INTERFACE = ASCIIInteface()

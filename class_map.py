@@ -87,16 +87,13 @@ class GameMap:
         Разрешить всем кораблям двигаться.
         Обновить состояние лимитов игроков.
         '''
-        #10.
         self.player = self.player + 1
-        #20.
         self.refresh_war_thunder()
         if self.player == self.number_of_players:
             self.player = 0
             self.refresh_limits()
             self.refresh_ships_speeds()
             self.refresh_ships_times()
-        #30.
         return self.check_to_finish()
 
     def refresh_ships_speeds(self):
@@ -264,3 +261,16 @@ class GameMap:
         if self.battle_is_on and self.battle_map.is_finished() != -1:
             self.battle_is_on = False
             self.battle_map = self.battle_map.is_finished()
+
+    def battle_index_from_usable_to_real(self, index):
+        '''
+        Приводит корабль, который находится в массиве self.battle_map.usable_ships()
+        '''
+        cnt = 0
+        ship = 0
+        while ship < len(self.battle_map.ships):
+            if self.battle_map.ships[ship].master == self.battle_map.player_turns_now():
+                if cnt == index:
+                    return ship
+                cnt += 1
+            ship += 1
