@@ -112,14 +112,18 @@ class GameMap:
             raise ValueError('Корабль должен зарядить двигатели полностью!')
         #В массиве соседей ищется та звезда, куда летит корабль; берётся длина пути до неё.
         #И по прилёте корабль будет бездействовать эту же величину.
-        for i in self.stars[self.ships[ship_index].system].neighbours:
-            if Star.get_neighbour(i) == system_index:
-                self.ships[ship_index].will_be_available = Star.get_way_len(i)
-                break
-        self.ships[ship_index].system = system_index
+        self.ships[ship_index].system =\
+        Star.get_neighbour(self.stars[self.ships[ship_index].system].neighbours[system_index])
         self.refresh_war_thunder()
         #Корабль мог прилететь в клетку, где стоит противник. Это надо обработать.
         self.try_to_battle(ship_index)
+
+    def get_ships_star(self, ship_index):
+        '''
+        Возвращает номер звезды, около которой находится корабль под
+        номером ship_index : int.
+        '''
+        return self.ships[ship_index].system
 
     def check_to_finish(self):
         '''
@@ -230,7 +234,8 @@ class GameMap:
         '''
         ships_must_be_in_battle = []
         for ship in self.ships:
-            if ship.x_y == self.ships[ship_index].x_y:
+            if ship.x_y == self.ships[ship_index].x_y and\
+            ship.system == self.ships[ship_index].system:
                 ships_must_be_in_battle.append(ship)
         ship = 0
         while ship < len(ships_must_be_in_battle):
@@ -258,7 +263,7 @@ class GameMap:
         ship = 0
         while ship < len(self.battle_map.ships):
             if self.battle_map.ships[ship].master == self.battle_map.player_turns_now() and\
-            ship.is_available:
+            self.battle_map.ships[ship].is_available:
                 if cnt == index:
                     return ship
                 cnt += 1

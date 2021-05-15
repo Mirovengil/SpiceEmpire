@@ -212,7 +212,7 @@ class ASCIIInteface:
         поля боя.
         Ход игрока, естественно, заканчивается.
         '''
-        
+        pass
 
     def draw_battle_ship(self):
         '''
@@ -304,7 +304,7 @@ class ASCIIInteface:
         self.scouted_ship = ASCIIInteface.read_number('Номер корабля: ')
         cnt = 0
         for i in enumerate(self.game.ships):
-            if i[1].system == self.game.ships[self.scouted_ship].system:
+            if i[1].system == self.scouted_star:
                 if cnt == self.scouted_ship:
                     self.scouted_ship = i[0]
                     break
@@ -405,10 +405,8 @@ class ASCIIInteface:
         for i in enumerate(self.game.stars[self.scouted_star].neighbours):
             print (str(i[0] + 1) + '. ' + self.game.stars[class_star.Star.get_neighbour(i[1])].name)
         new_star = ASCIIInteface.read_number('В какую систему-соседа вы хотите переместиться: ')
-        new_star = self.game.stars[self.scouted_star].neighbours[new_star]
-        new_star = class_star.Star.get_neighbour(new_star)
         self.game.move_ship_to_system(self.scouted_ship, new_star)
-        self.scouted_star = new_star
+        self.scouted_star = self.game.get_ships_star(self.scouted_ship)
         self.now_star()
         
     def print_ships_cards_list(self):

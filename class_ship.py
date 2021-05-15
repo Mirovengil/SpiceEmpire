@@ -29,13 +29,12 @@ class Ship:
         self.card_store = CardStore()
         self.speed = None
         self.limit = None
-        self.is_available = None
         #Следующие параметры не сохраняются, так как появляются только на время боя,
         #а положение внутри боя не сохраняется (в "Героев" играли?).
         self.battle_x_y = None
         self.dfc = None
         self.hp = None
-
+        self.is_available = None
     def is_live(self):
         '''
         Возвращает, жив ли корабль.
