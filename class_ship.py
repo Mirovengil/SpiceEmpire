@@ -184,7 +184,8 @@ class Ship:
         Применяет к кораблю карточку передвижения.
         Используется на поле боя.
         '''
-        raise ValueError('Функцию придётся переписывать!')
+        self.battle_x_y = place
+        #raise ValueError('Функцию придётся переписывать!')
 
     def use(self, index, act, param):
         '''

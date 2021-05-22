@@ -18,6 +18,14 @@ TITLE_CMD = 0
 CMD = 1
 SIZE = 30
 
+#Если кто не понял, речь идёт о боевой карте. Внизу используются две пары:
+# (градус; координаты_перемещения)
+# (градус; иллюстрация_перемещения)
+#Их связь происходит через градус, так как обе пары размещены во множествах.
+
+MY_PAIR_DEGREE = 0
+MY_PAIR_COORD = 1
+MY_PAIR_IMG = 1
 
 #Типа, тащемта, ASCII-графений.
 INTRO_IMG = my_math.rdf_all('./ASCII/Intro.txt')
@@ -25,14 +33,14 @@ PLANET_IMG = my_math.rdf_all('./ASCII/Planet.txt')
 STAR_IMG = my_math.rdf_all("./ASCII/Star.txt")
 SHIP_IMG = my_math.rdf_all("./ASCII/Ship.txt")
 BATTLE_IMG = my_math.rdf_all("./ASCII/BattleSymbol.txt")
-MOVE_ILLUSTRATION_IMG = [
-    my_math.rdf_all("./ASCII/MoveIllustrationImg1.txt"),
-    my_math.rdf_all("./ASCII/MoveIllustrationImg2.txt"),
-    my_math.rdf_all("./ASCII/MoveIllustrationImg3.txt"),
-    my_math.rdf_all("./ASCII/MoveIllustrationImg4.txt"),
-    my_math.rdf_all("./ASCII/MoveIllustrationImg5.txt"),
-    my_math.rdf_all("./ASCII/MoveIllustrationImg6.txt"),
-]
+MOVE_ILLUSTRATION_IMG = {
+    60 : my_math.rdf_all("./ASCII/MoveIllustrationImg1.txt"),
+    0: my_math.rdf_all("./ASCII/MoveIllustrationImg2.txt"),
+    -60: my_math.rdf_all("./ASCII/MoveIllustrationImg3.txt"),
+    -120: my_math.rdf_all("./ASCII/MoveIllustrationImg4.txt"),
+    180: my_math.rdf_all("./ASCII/MoveIllustrationImg5.txt"),
+    120: my_math.rdf_all("./ASCII/MoveIllustrationImg6.txt"),
+}
 
 class ASCIIInteface:
     '''
@@ -377,15 +385,28 @@ class ASCIIInteface:
         '''
         ASCIIInteface.cls()
         print('Карта:')
-        print(self.game.stars[self.scouted_star].to_matrix(\
-        self.game.ships[self.scouted_ship].x_y))
-        print('Вы отмечены как @:')
-        x = ASCIIInteface.read_number('Введите х клетки: ')
-        y = ASCIIInteface.read_number('Введите y клетки: ')
-        self.game.ships[self.scouted_ship].use(self.scouted_card,\
-        'move', my_math.Coords(x, y))
+        print(self.game.battle_map.str(self.scouted_ship))
+        degrees = ASCIIInteface.get_hecses_directory(self.game.battle_map, self.scouted_ship)
+        place = self.game.battle_map.generate_near(\
+        self.game.battle_map.ships[self.scouted_ship].battle_x_y)
+        self.game.move_ship_on_battle_map(self.scouted_ship, place, self.scouted_card)
         self.game.battle_map.next_turn()
         self.draw_battle_map()
+
+    def get_hecses_directory(battle_map, ship):
+        '''
+        Выводит иллюстрации для направлений движения на боевой карте.
+        '''
+        ASCIIInteface.cls()
+        print(battle_map.str(ship))
+        directories = battle_map.generate_near(battle_map.ships[ship].battle_x_y)
+        places = [key for key, value in directories.items()]
+        for place in enumerate(places):
+            print(str(place[0] + 1) + ".\n" + MOVE_ILLUSTRATION_IMG[place[1]])
+        place = ASCIIInteface.read_number('Выберите направление для перемещения: ')
+        return places[place]
+        ASCIIInteface.wait()
+
 
     def end_turn(self):
         '''

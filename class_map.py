@@ -255,6 +255,19 @@ class GameMap:
             self.battle_is_on = False
             self.battle_map = self.battle_map.is_finished()
 
+    def move_ship_on_battle_map(self, ship_index, place, with_card):
+        '''
+        Перемещает корабль ship_index в позицию places, eсли это возможно.
+        Всё происходит на боевой карте и при условии, что бой начался.
+        '''
+        if not self.battle_is_on:
+            raise BaseException('''Бой не начат, поэтому нельзя переместить корабль на
+            боевой карте!''')
+        if not place in self.battle_map.get_possible(self.ships[ship_index].battle_x_y,\
+        self.ships[ship_index].card_store.cards[with_card].mov):
+            raise BaseException('''Вы не можете переместиться на данный гекс!''')
+        self.ships[ship_index].use(with_card, 'move', place)
+
     def battle_index_from_usable_to_real(self, index):
         '''
         Приводит корабль, который находится в массиве self.battle_map.usable_ships()
