@@ -220,7 +220,9 @@ class ASCIIInteface:
         поля боя.
         Ход игрока, естественно, заканчивается.
         '''
-        pass
+        self.game.ships[self.scouted_ship].restore_card()
+        self.game.battle_map.next_turn()
+        self.draw_battle_map()
 
     def draw_battle_ship(self):
         '''
@@ -389,7 +391,7 @@ class ASCIIInteface:
         degrees = ASCIIInteface.get_hecses_directory(self.game.battle_map, self.scouted_ship)
         place = self.game.battle_map.generate_near(\
         self.game.battle_map.ships[self.scouted_ship].battle_x_y)
-        self.game.move_ship_on_battle_map(self.scouted_ship, place, self.scouted_card)
+        self.game.move_ship_on_battle_map(self.scouted_ship, place[degrees], self.scouted_card)
         self.game.battle_map.next_turn()
         self.draw_battle_map()
 

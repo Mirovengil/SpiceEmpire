@@ -36,6 +36,18 @@ class Coords:
         '''Сеттер поля y'''
         self.y = value
 
+    def to_pair(self):
+        '''
+        Преобразует координаты в пару (х; у).
+        Под "парой" имеется ввиду кортеж, если что.
+        '''
+        return self.x, self.y
+
+    @staticmethod
+    def from_pair(pair):
+        x_value = 0
+        y_value = 1
+        return Coords(pair[x_value], pair[y_value])
 
 def dist(coords1, coords2):
     '''

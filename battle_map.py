@@ -82,20 +82,24 @@ class BattleMap:
         Возвращает множество, содержащее координаты клеток, смежных с
         coords : Coords, при условии, что всё происходит в гексагональном измерении.
         '''
-        near = set(
-            my_math.Coords(x - 1, y), 
-            my_math.Coords(x + 1, y),
-        )
+        x_value = 0
+        y_value = 1
+        x = coords[x_value]
+        y = coords[y_value]
+        near = set()
+        near.add(my_math.Coords(x - 1, y).to_pair())
+        near.add(my_math.Coords(x + 1, y).to_pair())
+       
         if y % 2 != 0:
-            near.add(my_math.Coords(x, y - 1))
-            near.add(my_math.Coords(x, y + 1))
-            near.add(my_math.Coords(x + 1, y - 1))
-            near.add(my_math.Coords(x + 1, y + 1))
+            near.add(my_math.Coords(x, y - 1).to_pair())
+            near.add(my_math.Coords(x, y + 1).to_pair())
+            near.add(my_math.Coords(x + 1, y - 1).to_pair())
+            near.add(my_math.Coords(x + 1, y + 1).to_pair())
         else:
-            near.add(my_math.Coords(x - 1, y - 1))
-            near.add(my_math.Coords(x - 1, y + 1))
-            near.add(my_math.Coords(x, y - 1))
-            near.add(my_math.Coords(x, y + 1))
+            near.add(my_math.Coords(x - 1, y - 1).to_pair())
+            near.add(my_math.Coords(x - 1, y + 1).to_pair())
+            near.add(my_math.Coords(x, y - 1).to_pair())
+            near.add(my_math.Coords(x, y + 1).to_pair())
         true_near = set() #Не включает клетки, которые не могут существовать.
         for value in near:
             if self.ok_xy(value):
@@ -135,8 +139,14 @@ class BattleMap:
         Проверяет, удовлетворяют ли координаты данному полю (могут ли они на
         нём существовать).
         '''
-        x = coords.x
-        y = coords.y
+        if isinstance(coords, my_math.Coords): 
+            x = coords.x
+            y = coords.y
+        else:
+            x_value = 0
+            y_value = 1
+            x = coords[x_value]
+            y = coords[y_value]
         ok_x = x >= 0 and x < self.size_x
         ok_y = y >= 0 and y < self.size_y
         return ok_x and ok_y
@@ -198,12 +208,17 @@ class BattleMap:
         Возвращает те клетки, которые находятся на расстоянии, не большем
         len_of_way : int, от клетки place_from : Coords.
         '''
-        answer = set(place_from)
+        answer = set()
+        answer.add(place_from.to_pair())
         length = len_of_way
         while length > 0:
             possible = set()
             for near in answer:
+                print('near:', near)
                 possible = possible | self._get_near_coords_(near)
             answer = answer | possible
             length -= 1
-        return answer
+        ans = []
+        for value in answer:
+            ans.append(my_math.Coords.from_pair(value))
+        return ans
