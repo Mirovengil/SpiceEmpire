@@ -203,6 +203,14 @@ class BattleMap:
             return self.left_player
         return self.right_player
 
+    def player_waits_now(self):
+        '''
+        Возвращает номер игрока, который сейчас пропускает ход в битве.
+        '''
+        if  not self.turn_left:
+            return self.left_player
+        return self.right_player
+    
     def get_possible(self, place_from, len_of_way):
         '''
         Возвращает те клетки, которые находятся на расстоянии, не большем

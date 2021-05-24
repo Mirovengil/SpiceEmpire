@@ -349,7 +349,6 @@ class ASCIIInteface:
         self.is_available = False
         self.print_cmd([
             ('Атака ({} ед.)'.format(card.dmg), ASCIIInteface.attack),
-            ('Защита ({} ед.)'.format(card.dfc), ASCIIInteface.defence),
             ('Движение ({} ед.)'.format(card.mov), ASCIIInteface.move)
         ])
 
@@ -368,16 +367,9 @@ class ASCIIInteface:
                 str(i.master) + ' (' + str(i.hp) + ' HP)')
                 cnt += 1
         ship = ASCIIInteface.read_number('Выберите корабль: ')
+        self.try_to_defeat(mass[ship])
         self.game.ships[self.scouted_ship].use(self.scouted_card, 'attack',\
         mass[ship])
-        self.game.battle_map.next_turn()
-        self.draw_battle_map()
-
-    def defence(self):
-        '''
-        Увеличивает защиту корабля.
-        '''
-        self.game.ships[self.scouted_ship].use(self.scouted_card, 'defence', None)
         self.game.battle_map.next_turn()
         self.draw_battle_map()
 
@@ -409,6 +401,20 @@ class ASCIIInteface:
         return places[place]
         ASCIIInteface.wait()
 
+    def try_to_defeat(self, ship):
+        '''
+        Предлагает игроку, на корабль ship : Ship которого нападают, защититься.
+        '''
+        print('Игрок №' + str(self.game.battle_map.player_waits_now())\
+        +', игрок №' + str(self.game.battle_map.player_turns_now()) + " напал на ваш корабль!")
+        mass = ship.card_store.cards
+        print('Выберите карту, чтобы защититься (просто ENTER, если не хотите)')
+        for card in enumerate(mass):
+            print(str(card[0] + 1) + ". " + card[1].tit + ' (' + str(card[1].dfc) + 'ед. )')
+        card = ASCIIInteface.read_number('ВВОД: ')
+        if card is None:
+            return None
+        ship.use(card, 'defence', None)
 
     def end_turn(self):
         '''
