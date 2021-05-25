@@ -19,6 +19,7 @@ class Card:
         pri : int -- приоритет восстановления карточки;
         tit : string -- название карточки;
         usb : bool -- можно ли использовать карточку;
+        dst : int -- дальность атаки корабля.
     '''
 
     def __init__(self, fin):
@@ -32,6 +33,7 @@ class Card:
         self.mov = float(rdf(fin))
         self.pri = int(rdf(fin))
         self.tit = str(rdf(fin))
+        self.dst = int(rdf(fin))
         self.usb = True
         fin.close()
 
@@ -51,6 +53,7 @@ class Card:
         string = string + "Урон: " + str(self.dmg) + "\n"
         string = string + "Защита: " + str(self.dfc) + "\n"
         string = string + "Перемещение: " + str(self.mov) + "\n"
+        string = string + "Дальность атаки: " + str(self.dst) + "\n"
         string = string + "Приоритет: " + str(self.pri) + "\n"
         string = string + "Готова к использованию: " + str(self.usb) + "\n"
         return string

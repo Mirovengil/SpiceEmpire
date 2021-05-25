@@ -255,18 +255,32 @@ class GameMap:
             self.battle_is_on = False
             self.battle_map = self.battle_map.is_finished()
 
-    def move_ship_on_battle_map(self, ship_index, place, with_card):
+    def ship_can_move_on_battle_map(self, ship_index):
+        '''
+        Возвращает истину, если корабль под индексом ship_index : int v
+        '''
+        return self.ships[ship_index].can_move_on_battle_map()
+
+    def start_ships_moving(self, ship_index, card_index):
+        '''
+        Выдаёт кораблю очки на перемещение по боевой карте (берутся из
+        карточки свойств под индексом card_index : int корабля под индексом ship_index : int).
+        '''
+        self.ships[ship_index].use(card_index, 'move', None)
+
+    def move_ship_on_battle_map(self, ship_index, place):
         '''
         Перемещает корабль ship_index в позицию places, eсли это возможно.
-        Всё происходит на боевой карте и при условии, что бой начался.
+        Всё происходит на боевой kарте и при условии, что бой начался.
         '''
         if not self.battle_is_on:
             raise BaseException('''Бой не начат, поэтому нельзя переместить корабль на
             боевой карте!''')
         if not place in self.battle_map.get_possible(self.ships[ship_index].battle_x_y,\
-        self.ships[ship_index].card_store.cards[with_card].mov):
+        self.ships[ship_index].can_move_in_battle):
             raise BaseException('''Вы не можете переместиться на данный гекс!''')
-        self.ships[ship_index].use(with_card, 'move', place)
+        self.ships[ship_index].battle_x_y = place
+        self.ships[ship_index].use_fuel()
 
     def battle_index_from_usable_to_real(self, index):
         '''
@@ -281,3 +295,19 @@ class GameMap:
                     return ship
                 cnt += 1
             ship += 1
+
+
+    def try_to_attack(self, ship_index, card_index, enemy_object):
+        '''
+        Пытается атаковать кораблём с индексом ship_index : int при помощи карточки
+        с индексом card_index : int корабль противника enemy_object.
+        Выполняются проверки на:
+            Принадлежность обоих кораблей одному игроку.
+            Нахождение противника в пределах досягаемости.
+        '''
+        if self.ships[ship_index].master == enemy_object.master:
+            raise BaseException('Какой-то душевнобольной атакует своих!!1')
+        if not enemy_object.battle_x_y in self.battle_map.get_possible(\
+        self.ships[ship_index].battle_x_y, self.ships[ship_index].card_store.cards[card_index].dst):
+            raise BaseException('Дальности атаки не хватает!')
+        self.ships[ship_index].use(card_index, 'attack', enemy_object)

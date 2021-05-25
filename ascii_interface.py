@@ -368,22 +368,25 @@ class ASCIIInteface:
                 cnt += 1
         ship = ASCIIInteface.read_number('Выберите корабль: ')
         self.try_to_defeat(mass[ship])
-        self.game.ships[self.scouted_ship].use(self.scouted_card, 'attack',\
-        mass[ship])
+        self.game.try_to_attack(self.scouted_ship, self.scouted_card, mass[ship])
         self.game.battle_map.next_turn()
         self.draw_battle_map()
 
     def move(self):
         '''
-        Выбирает клетку и перемещает корабль.
+        Выдаёт кораблю единицы для перемещения по боевой карте и предлагает
+        осуществить оное.
         '''
         ASCIIInteface.cls()
-        print('Карта:')
-        print(self.game.battle_map.str(self.scouted_ship))
-        degrees = ASCIIInteface.get_hecses_directory(self.game.battle_map, self.scouted_ship)
-        place = self.game.battle_map.generate_near(\
-        self.game.battle_map.ships[self.scouted_ship].battle_x_y)
-        self.game.move_ship_on_battle_map(self.scouted_ship, place[degrees], self.scouted_card)
+        self.game.start_ships_moving(self.scouted_ship, self.scouted_card)
+        while self.game.ship_can_move_on_battle_map(self.scouted_ship):
+            print('Карта:')
+            ASCIIInteface.cls()
+            print(self.game.battle_map.str(self.scouted_ship))
+            degrees = ASCIIInteface.get_hecses_directory(self.game.battle_map, self.scouted_ship)
+            place = self.game.battle_map.generate_near(\
+            self.game.battle_map.ships[self.scouted_ship].battle_x_y)
+            self.game.move_ship_on_battle_map(self.scouted_ship, place[degrees])
         self.game.battle_map.next_turn()
         self.draw_battle_map()
 

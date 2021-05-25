@@ -35,6 +35,7 @@ class Ship:
         self.dfc = None
         self.hp = None
         self.is_available = None
+        self.can_move_in_battle = 0
     def is_live(self):
         '''
         Возвращает, жив ли корабль.
@@ -181,13 +182,30 @@ class Ship:
         '''
         self.speed = SHIPS_PARAMS[self.name]['speed']
 
-    def move(self, card, place):
+    def move(self, card, stub):
         '''
         Применяет к кораблю карточку передвижения.
         Используется на поле боя.
+        Выдаёт кораблю очки на перемещение по боевой карте.
         '''
-        self.battle_x_y = place
-        #raise ValueError('Функцию придётся переписывать!')
+        self.can_move_in_battle = card.mov
+
+    def use_fuel(self):
+        '''
+        Расходует единицу перемещения у корабля.
+        Используется только на боевой карте.
+        '''
+        self.can_move_in_battle -= 1
+        if self.can_move_in_battle < 0:
+            self.can_move_in_battle = 0
+
+    def can_move_on_battle_map(self):
+        '''
+        Возвращает True, если корабль может совершать перемещение на боевой
+        карте.
+        Метод необходим для реализации интерфейса в АСКИ.
+        '''
+        return self.can_move_in_battle > 0
 
     def use(self, index, act, param):
         '''
