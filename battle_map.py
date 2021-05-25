@@ -8,7 +8,7 @@ MY_PAIR_COORD = 1
 import my_math
 MARKER = '@'
 NONE = '.'
-ZONE_MARKER = '^'
+ZONE_MARKER = '+'
 
 class BattleMap:
     '''
@@ -61,15 +61,15 @@ class BattleMap:
         if self.size_x is None or self.size_y is None or self.ships is None:
             raise ValueError('Карта не инициализирована!1')
         mass = [[NONE for x in range(self.size_x)] for y in range(self.size_y)]
+        if marked_zone > 0:
+            marked_cells = self.get_possible(self.ships[marked].battle_x_y, marked_zone)
+            for cell in marked_cells:
+                mass[cell.y][cell.x] = ZONE_MARKER
         for ship in self.ships:
             mass[ship.battle_x_y.y][ship.battle_x_y.x] = str(ship.master)
         if not marked is None:
             marked = self.ships[marked].battle_x_y
             mass[marked.y][marked.x] = MARKER
-            if marked_zone > 0:
-                marked_cells = self.get_possible(marked, marked_zone)
-                for cell in marked_sells:
-                    mass[cell.y][cell.x] = ZONE_MARKER
         string = ''
         for y in range(self.size_y):
             for x in range(self.size_x):
@@ -222,7 +222,6 @@ class BattleMap:
         while length > 0:
             possible = set()
             for near in answer:
-                print('near:', near)
                 possible = possible | self._get_near_coords_(near)
             answer = answer | possible
             length -= 1

@@ -296,6 +296,13 @@ class GameMap:
                 cnt += 1
             ship += 1
 
+    def show_attack_distance(self, ship_index, card_index):
+        '''
+        Возвращает в формате str боевое поле, где отмечена дальность атаки
+        корабля ship_index : int, если он собирается атаковать через карточку
+        card_index : int.
+        '''
+        return self.battle_map.str(ship_index, self.ships[ship_index].card_store.cards[card_index].dst)
 
     def try_to_attack(self, ship_index, card_index, enemy_object):
         '''

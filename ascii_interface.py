@@ -298,6 +298,8 @@ class ASCIIInteface:
         card = ASCIIInteface.read_number('Номер карточки: ')
         ASCIIInteface.cls()
         print(self.game.ships[self.scouted_ship].card_store.cards[card])
+        print('Дальность атаки:')
+        print(self.game.show_attack_distance(self.scouted_ship, card))
         mass = [
             ('Главное меню', ASCIIInteface.start),
         ]
