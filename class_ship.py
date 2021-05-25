@@ -11,7 +11,7 @@ SHIPS_PARAMS = {
 'test' : {
                 'speed' : 5,
                 'limit' : 2,
-                'hp' : 10
+                'hp' : 4
             }
 }
 

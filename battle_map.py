@@ -156,12 +156,12 @@ class BattleMap:
         Возвращает индекс игрока-победителя, либо -1, если бой ещё не закончился.
         '''
         ship = 0
-        while ship < len(self.ships):
+        while ship + 1 < len(self.ships):
             if self.ships[ship].master != self.ships[ship + 1].master and\
             self.ships[ship].is_live() and self.ships[ship + 1].is_live():
                 return -1
             ship += 1
-        return self.ships[0].master
+        return self.player_waits_now()
 
     def now_player(self):
         '''
