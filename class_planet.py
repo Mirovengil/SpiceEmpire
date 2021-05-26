@@ -63,6 +63,12 @@ class Planet:
         + "\n"
         return string
 
+    def is_neitral(self):
+        '''
+        Возвращает True, если у планеты нет владельца.
+        '''
+        return self.master == Planet.NEITRAL
+
     def cache(self):
         '''
         Кеширует планету. Это необходимо для реализации сохранений.

@@ -134,7 +134,9 @@ class GameMap:
         while star < len(self.stars):
             planet = 0
             while planet + 1 < len(self.stars[star].planets):
-                if self.stars[star].planets[planet].master != self.stars[star].planets[planet + 1].master:
+                if self.stars[star].planets[planet].master != self.stars[star].planets[planet + 1].master\
+                and not (self.stars[star].planets[planet].is_neitral() or\
+                self.stars[star].planets[planet].is_neitral()):
                     return False
                 planet += 1
             star += 1

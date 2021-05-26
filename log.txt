@@ -107,7 +107,7 @@ lave
 4
 5
 /img/planetslave.png
-1
+-1
 5
 earth
 Япет

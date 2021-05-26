@@ -33,6 +33,9 @@ PLANET_IMG = my_math.rdf_all('./ASCII/Planet.txt')
 STAR_IMG = my_math.rdf_all("./ASCII/Star.txt")
 SHIP_IMG = my_math.rdf_all("./ASCII/Ship.txt")
 BATTLE_IMG = my_math.rdf_all("./ASCII/BattleSymbol.txt")
+FINAL_IMG = my_math.rdf_all("./ASCII/FinishOfBattle.txt")
+GMAIL = "Mirovengil@gmail.com"
+
 MOVE_ILLUSTRATION_IMG = {
     60 : my_math.rdf_all("./ASCII/MoveIllustrationImg1.txt"),
     0: my_math.rdf_all("./ASCII/MoveIllustrationImg2.txt"),
@@ -143,7 +146,7 @@ class ASCIIInteface:
         '''
         ASCIIInteface.cls()
         if self.game.check_to_finish():
-            print()
+            self.draw_win(self.game.get_winner())
         print('Звёзды:')
         for i in enumerate(self.game.stars):
             print(i[0] + 1, '. ', (i[1].name if self.game.player in i[1].can_be_seen else 'СКРЫТО!'), sep='')
@@ -460,6 +463,21 @@ class ASCIIInteface:
         print('Карточки:')
         for ship in enumerate(self.game.ships[self.scouted_ship].card_store.cards):
             print(str(ship[0] + 1) + ". " + ship[1].tit)
+
+    def draw_win(self, winner_index):
+        '''
+        Поздравляет игрока winner_index : int с победой, желает ему счастья,
+        добра и далее по списку.
+        '''
+        print(FINAL_IMG)
+        print('Поздравляем игрока №' + str(winner_index) + ' с блестящей и бесповоротной'\
+        + ' победой, которую он добыл в самом трудном противостоянии в истории!')
+        print('Также надеемся, что вам понравилась игра. Если так, то вы можете'\
+        + ' поблагодарить её разработчиков денежкой по почтовому адресу ' + GMAIL)
+        print('Чтобы перейти в главное меню, нажмите любую клавишу.')
+        self.game = None
+        ASCIIInteface.wait()
+        self.start()
 
 if __name__ == "__main__":
     TEST_INTERFACE = ASCIIInteface()
