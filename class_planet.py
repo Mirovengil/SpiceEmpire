@@ -59,7 +59,7 @@ class Planet:
         string = string + 'Изображение: ' +\
         self.get_image() + "\n"
         string = string + "Хозяин планеты: " +\
-        ("никто" if self.get_master() == Planet.NEITRAL else str(self.get_master()))\
+        ("никто" if self.is_neitral() else str(self.get_master()))\
         + "\n"
         return string
 

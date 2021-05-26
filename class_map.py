@@ -130,17 +130,12 @@ class GameMap:
         Если игра закончилась, возвращает True.
         Игра заканчивается, если остаются планеты только одного игрока.
         '''
-        star = 0
-        while star < len(self.stars):
-            planet = 0
-            while planet + 1 < len(self.stars[star].planets):
-                if self.stars[star].planets[planet].master != self.stars[star].planets[planet + 1].master\
-                and not (self.stars[star].planets[planet].is_neitral() or\
-                self.stars[star].planets[planet].is_neitral()):
-                    return False
-                planet += 1
-            star += 1
-        return True
+        players = set()
+        for star in self.stars:
+            for planet in star.planets:
+                if not planet.is_neitral():
+                    players.add(planet.master)
+        return len(players) == 1
 
     def get_winner(self):
         '''
@@ -154,7 +149,7 @@ class GameMap:
             игра ещё не закончилась!!1''')
         for star in self.stars:
             for planet in star.planets:
-                if planet.master != class_planet.Planet.NEITRAL:
+                if not planet.is_neitral():
                     return planet.master
 
     def cache(self):
@@ -196,7 +191,7 @@ class GameMap:
         while star < len(self.stars):
             planet = 0
             while planet < len(self.stars[star].planets):
-                if self.stars[star].planets[planet].master != class_planet.Planet.NEITRAL:
+                if not self.stars[star].planets[planet].is_neitral():
                     self.limits[self.stars[star].planets[planet].master] +=\
                     self.stars[star].planets[planet].limits[class_planet.Planet.LIM_SIZE]
                 planet += 1
