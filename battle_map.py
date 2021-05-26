@@ -66,7 +66,8 @@ class BattleMap:
             for cell in marked_cells:
                 mass[cell.y][cell.x] = ZONE_MARKER
         for ship in self.ships:
-            mass[ship.battle_x_y.y][ship.battle_x_y.x] = str(ship.master)
+            if ship.is_live():
+                mass[ship.battle_x_y.y][ship.battle_x_y.x] = str(ship.master)
         if not marked is None:
             marked = self.ships[marked].battle_x_y
             mass[marked.y][marked.x] = MARKER

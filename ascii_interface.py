@@ -214,7 +214,8 @@ class ASCIIInteface:
         print('Ходит игрок №' + str(self.game.battle_map.now_player()))
         print('Ваши корабли:')
         for ship in enumerate(self.game.battle_map.usable_ships()):
-            print(str(ship[0] + 1) + ". " + ship[1].name + ' (' + str(ship[1].hp) + "HP)")
+            if ship[1].is_live():
+                print(str(ship[0] + 1) + ". " + ship[1].name + ' (' + str(ship[1].hp) + "HP)")
         self.scouted_ship =\
         self.game.battle_index_from_usable_to_real(ASCIIInteface.read_number('Выберите корабль: '))
         self.draw_battle_ship()
@@ -366,13 +367,14 @@ class ASCIIInteface:
         ASCIIInteface.cls()
         mass = [] #Массив кораблей в системе для удобного обращения.
         cnt = 1
-        for i in self.game.ships:
-            if i.system == self.scouted_star and\
-            i.master != self.game.ships[self.scouted_ship].master and i in self.game.battle_map.ships:
-                mass.append(i)
-                print(str(cnt) + '. ' + i.name + ' игрока №' +\
-                str(i.master) + ' (' + str(i.hp) + ' HP)')
-                cnt += 1
+        for ship in self.game.ships:
+            if ship.system == self.scouted_star and\
+            ship.master != self.game.ships[self.scouted_ship].master and ship in self.game.battle_map.ships:
+                if ship.is_live():
+                    mass.append(ship)
+                    print(str(cnt) + '. ' + ship.name + ' игрока №' +\
+                    str(ship.master) + ' (' + str(ship.hp) + ' HP)')
+                    cnt += 1
         ship = ASCIIInteface.read_number('Выберите корабль: ')
         self.try_to_defeat(mass[ship])
         self.game.try_to_attack(self.scouted_ship, self.scouted_card, mass[ship])
