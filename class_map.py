@@ -257,6 +257,7 @@ class GameMap:
             self.battle_is_on = False
             self.battle_map = self.battle_map.is_finished()
             self.refresh_list_of_ships()
+            self.refresh_war_thunder()
 
     def refresh_list_of_ships(self):
         '''
