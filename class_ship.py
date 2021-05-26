@@ -19,7 +19,6 @@ class Ship:
     '''
     Класс корабля.
     '''
-    classes = ['test']
     def __init__(self):
         self.x_y = my_math.Coords()
         self.system = None
@@ -129,8 +128,6 @@ class Ship:
         '''
         Создаёт готовый корабль, подгружает картинку.
         '''
-        if not class_of_ship in Ship.classes:
-            raise ValueError('Корабль несуществующего типа!11')
         ship = Ship()
         ship.set_hp(SHIPS_PARAMS[class_of_ship]['hp'])
         ship.set_name(class_of_ship)
@@ -281,3 +278,50 @@ class Ship:
         self.hp = None
         self.dfc = None
         self.is_available = False
+
+class ShipsShop:
+    '''
+    Класс, отвечающий за покупку кораблей.
+    Гарантирует корректное распределение "лимит/покупка" и
+    выбор корректного класса корабля. 
+    points : int -- количество единиц чего-то-там ("лимитов") для
+    закупки корабля.
+    ships : [str] -- список кораблей, которые предполагается купить.
+    '''
+    SHIPS_LIST = ['test']
+    CANT_BUY = 'Вы не можете совершать покупки'
+    
+    def __init__(self, profit, max_limit):
+        '''
+        profit -- кол-во очков для закупки кораблей, пришедшее на очередном ходе.
+        max_limit -- кол-во очков, которые доступны игроку (зависит от количества планет,
+        находящихся в его распоряжении).
+        '''
+        available_points = min(max_limit - profit, profit)
+        self.points = available_points
+        self.
+
+    def get_available_points(self):
+        '''
+        Возвращает в виде строки (str) количество доступных для закупки очков.
+        '''
+        if self.available_points > 0:
+            return str(self.available_points)
+        return ShipsShop.CANT_BUY
+
+
+    def get_available_ships(self):
+        '''
+        Возвращает список типов кораблей ( [str] ), которые могут быть куплены
+        на имеющуюся сумму.
+        '''
+        list_of_available_ships = []
+        for ship in ShipsShop.SHIPS_LIST:
+            if SHIPS_PARAMS[ship]['limit'] <= self.available_points:
+                list_of_available_ships.append(ship)
+        return list_of_available_ships
+
+    def add_ship_to_list(self, ship, planet):
+        '''
+        Добавляет 
+        '''

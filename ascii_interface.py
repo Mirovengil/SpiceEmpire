@@ -442,6 +442,8 @@ class ASCIIInteface:
         print('Хотит игрок №' + str(self.game.player))
         ASCIIInteface.wait()
         ASCIIInteface.cls()
+        if self.game.profit != 0:
+            self.try_to_buy_ships()
         self.show_stars()
 
     def change_system_for_ship(self):
@@ -478,6 +480,12 @@ class ASCIIInteface:
         self.game = None
         ASCIIInteface.wait()
         self.start()
+
+    def try_to_buy_ships(self):
+        '''
+        
+        '''
+
 
 if __name__ == "__main__":
     TEST_INTERFACE = ASCIIInteface()

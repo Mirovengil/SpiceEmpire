@@ -7,12 +7,13 @@ from my_math import rdf
 from class_ship import Ship
 from battle_map import BattleMap
 import class_planet
+import random
 
 class GameMap:
     '''
     Класс игровой карты.
     '''
-
+    chance_of_profit = 100
     def __init__(self):
         self.stars = []
         self.ships = []
@@ -25,6 +26,7 @@ class GameMap:
         self.limits = []
         self.battle_is_on = False
         self.battle_map = None
+        self.profit = None
 
     def set_size(self, size_x, size_y):
         '''
@@ -86,6 +88,7 @@ class GameMap:
         Перейти к первому игроку.
         Разрешить всем кораблям двигаться.
         Обновить состояние лимитов игроков.
+        Если необходимо, выдать игрокам карточки кораблей.
         '''
         self.player = self.player + 1
         self.refresh_war_thunder()
@@ -93,6 +96,7 @@ class GameMap:
             self.player = 0
             self.refresh_limits()
             self.refresh_ships_speeds()
+            self.try_to_get_profit()
         return self.check_to_finish()
 
     def refresh_ships_speeds(self):
@@ -351,3 +355,14 @@ class GameMap:
         self.ships[ship_index].battle_x_y, self.ships[ship_index].card_store.cards[card_index].dst):
             raise BaseException('Дальности атаки не хватает!')
         self.ships[ship_index].use(card_index, 'attack', enemy_object)
+
+    def try_to_get_profit(self):
+        '''
+        При помощи корейской случайности определяет, необходимо ли
+        выдать игрокам лимиты, и определяет величину выдаваемого (если надо).
+        '''
+        chance = random.randint(0, 100)
+        if chance > GameMap.chance_of_profit:
+            return self.profit = 0
+        else:
+            self.profit = 5
