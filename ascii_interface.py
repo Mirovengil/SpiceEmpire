@@ -203,11 +203,11 @@ class ASCIIInteface:
         Отрисовывает карту, где происходит сражение.
         '''
         ASCIIInteface.cls()
-        if self.game.battle_map.is_finished() != -1:
-            print('Победил игрок №' + str(self.game.battle_map.is_finished()) + '!')
+        self.game.try_to_finish_battle()
+        if not self.game.battle_is_on:
+            print('Победил игрок №' + str(self.game.battle_map) + '!')
             ASCIIInteface.wait()
-            self.game.try_to_finish_battle()
-            self.now_star()
+            self.show_stars()
         print(BATTLE_IMG)
         print('Идёт сражение')
         print(self.game.battle_map.str())
