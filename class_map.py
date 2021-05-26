@@ -250,10 +250,26 @@ class GameMap:
         '''
         Если бой окончен, то self.battle_map хранит номер победителя (необходимо для
         интерфеса), а self.battle_is_on -- ложь.
+        Также, если бой окончен, то должен обновиться список кораблей (кто-то из участников
+        битвы погиб, раз последняя закончилась).
         '''
         if self.battle_is_on and self.battle_map.is_finished() != -1:
             self.battle_is_on = False
             self.battle_map = self.battle_map.is_finished()
+            self.refresh_list_of_ships()
+
+    def refresh_list_of_ships(self):
+        '''
+        Обновляет список кораблей, участвующих в игре.
+        Если кто-то погиб, то он удаляется из оного списка.
+        Также все корабли выводятся из боевого режима.
+        '''
+        new_ships_list = []
+        for ship in self.ships:
+            if ship.is_live():
+                ship.battle_mode_off()
+                new_ships_list.append(ship)
+        self.ships = new_ships_list
 
     def ship_can_move_on_battle_map(self, ship_index):
         '''
