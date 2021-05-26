@@ -13,6 +13,7 @@ import class_star
 import my_math
 import class_planet 
 import random
+import class_ship
 
 TITLE_CMD = 0
 CMD = 1
@@ -68,6 +69,18 @@ class ASCIIInteface:
         if value == "":
             return None
         return int(value) - 1
+
+    @staticmethod
+    def read_boolean(text):
+        '''
+        Считывает с клавиатуры вопрос, на который надо ответить, с припиской "(Yes/No)" и
+        возвращает ответ в типе Boolean.
+        '''
+        value = input(text + " (Yes or No): ")
+        value = value.lower()
+        if len(value) < 1 or (value[0] != 'y' and value[0] != 'n'):
+            return ASCIIInteface.read_boolean(text)
+        return (value[0] == 'y')
 
     @staticmethod
     def wait():
@@ -483,10 +496,30 @@ class ASCIIInteface:
 
     def try_to_buy_ships(self):
         '''
+        Предлагает составить список кораблей для покупки (при возможности).
+        '''
+        print('Вы -- игрок №' + str(self.game.player))
+        shop = class_ship.ShipsShop(self.game.profit, self.game.get_limits_of_now_player())
+        print('У вас есть столько очков для покупки: ' + str(shop.available_points))
+        if not ASCIIInteface.read_boolean('Вы хотите купить корабли (если нет, очки сгорят)?'):
+            self.show_stars()
+        print_cmd([
+            ('Заказать корабль', ASCIIInteface.buy_new_ship),
+            ('Отменить заказ корабля', ASCIIInteface.delete_booked_ship),
+            ('Купить и выйти', ASCIIInteface.buy_ship_and_to_stars),
+            ('Выйти', ASCIIInteface.show_stars),
+        ])
+
+    def buy_new_ship(self):
+        '''
+        Выводит список кораблей, считывает номер покупаемого, добавляет корабль в
+        список покупок.
+        '''
+    def delete_booked_ship(self):
+        '''
         
         '''
-
-
+    def buy_ship_and_to_stars(self):
 if __name__ == "__main__":
     TEST_INTERFACE = ASCIIInteface()
     TEST_INTERFACE.start()

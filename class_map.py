@@ -356,6 +356,12 @@ class GameMap:
             raise BaseException('Дальности атаки не хватает!')
         self.ships[ship_index].use(card_index, 'attack', enemy_object)
 
+    def get_limits_of_now_player(self):
+        '''
+        Возвращает количество лимитов, доступных данному игроку.
+        '''
+        return self.limits[self.player]
+    
     def try_to_get_profit(self):
         '''
         При помощи корейской случайности определяет, необходимо ли

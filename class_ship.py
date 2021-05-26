@@ -289,7 +289,7 @@ class ShipsShop:
     ships : [str] -- список кораблей, которые предполагается купить.
     '''
     SHIPS_LIST = ['test']
-    CANT_BUY = 'Вы не можете совершать покупки'
+    CANT_BUY = 'НИЧЕГО'
     
     def __init__(self, profit, max_limit):
         '''
@@ -299,7 +299,7 @@ class ShipsShop:
         '''
         available_points = min(max_limit - profit, profit)
         self.points = available_points
-        self.
+        self.ships = []
 
     def get_available_points(self):
         '''
@@ -321,7 +321,40 @@ class ShipsShop:
                 list_of_available_ships.append(ship)
         return list_of_available_ships
 
-    def add_ship_to_list(self, ship, planet):
+    def add_ship_to_list(self, ship, system, planet):
         '''
-        Добавляет 
+        Добавляет корабль ship : str в список покупок с учётом планеты planet : Planet и
+        системы system : int, где тот будет покупаться. 
         '''
+        if not ship in SHIPS_PARAMS:
+            raise ValueError('Вы пытаетесь купить несуществующий корабль!')
+        if SHIPS_PARAMS[ship]['limit']  > self.available_points:
+            raise ValueError('Вы пытаетесь купить слишком дорогой корабль!')
+        self.available_points -= SHIPS_PARAMS[ship]['limit'] 
+        ship = {
+            'ship' : ship,
+            'system' : system,
+            'planet' : planet
+        }
+        self.ships.append(ship)
+
+    def remove_ship_from_list(self, ship_index):
+        '''
+        Удаляет корабль под номером ship_index : int из "списка покупок".
+        '''
+        if ship_index < 0 or ship_index >= len(self.ships):
+            raise ValueError('Вы пытаетесь удалить корабль, которого нет в списке покупок!')
+        self.ships.pop(ship_index)
+
+    def buy_ships(self):
+        '''
+        Возвращает список купленных кораблей [Ship].
+        Предполагается, что после этого действия объект класса удаляется.
+        '''
+        ships_list = []
+        for ship in self.ships:
+            new_ship = Ship.new_ship(ship['ship'])
+            new_ship.system = ship['system']
+            new_ship.x_y = ship['planet'].coordinates
+            ships_list.append(new_ship)
+        return ships_list

@@ -8,9 +8,9 @@ from my_math import rdf
 import my_math
 
 LIMITS = [
-('Богатая', 15),
-('Средняя', 10),
-('Бедная', 5)
+    ('Богатая', 15),
+    ('Средняя', 10),
+    ('Бедная', 5)
 ]
 
 class Planet:
