@@ -22,13 +22,13 @@ class Planet:
     игрок;
     image : string --  имя изображения, соответствующего планете;
     master : int -- номер игрока, которому принадлежит планета;
-    нейтральные планеты имеют хозяина -1;
+    нейтральные планеты имеют хозяина NEITRAL;
     limits : int -- кол-во лимитов, которые планета приносит империи.
     '''
 
     LIM_SIZE = 1
     LIM_NAME = 0
-
+    NEITRAL = -1
     types = ['lave', 'ice', 'earth', 'desert', 'water', 'rock', 'air']
     def __init__(self, name, coordinates):
         self.limits = None
@@ -36,7 +36,7 @@ class Planet:
         self.coordinates = coordinates
         self.type = None
         self.image = None
-        self.master = -1
+        self.master = Planet.NEITRAL
         self.description = '''Какой-то дурачок создал планету общего
          вида. Ошибка в коде, извиняйте-с.'''
         '''Возможно,
@@ -59,7 +59,7 @@ class Planet:
         string = string + 'Изображение: ' +\
         self.get_image() + "\n"
         string = string + "Хозяин планеты: " +\
-        ("никто" if self.get_master() == -1 else str(self.get_master()))\
+        ("никто" if self.get_master() == Planet.NEITRAL else str(self.get_master()))\
         + "\n"
         return string
 

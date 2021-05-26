@@ -128,13 +128,32 @@ class GameMap:
     def check_to_finish(self):
         '''
         Если игра закончилась, возвращает True.
-        Игра заканчивается, если остаются корабли только одного игрока.
+        Игра заканчивается, если остаются планеты только одного игрока.
         '''
-        i = 0
-        while i + 1 < len(self.ships):
-            if self.ships[i].master != self.ships[i + 1].master:
-                return False
+        star = 0
+        while star < len(self.stars):
+            planet = 0
+            while planet + 1 < len(self.stars[star].planets):
+                if self.stars[star].planets[planet].master != self.stars[star].planets[planet + 1].master:
+                    return False
+                planet += 1
+            star += 1
         return True
+
+    def get_winner(self):
+        '''
+        Возвращает номер игрока победителя.
+        Если игра ещё не закончилась, роняет исключение (для соответствия логике и
+        чтобы никто не вздумал узнавать победителя до конца игры, а то это уже
+        какой-то договорной матч получается).
+        '''
+        if not self.check_to_finish():
+            raise BaseException('''Здесь вам не футбол! Нельзя получить победителя, если
+            игра ещё не закончилась!!1''')
+        for star in self.stars:
+            for planet in star.planets:
+                if planet.master != class_planet.Planet.NEITRAL:
+                    return planet.master
 
     def cache(self):
         '''
@@ -175,7 +194,7 @@ class GameMap:
         while star < len(self.stars):
             planet = 0
             while planet < len(self.stars[star].planets):
-                if self.stars[star].planets[planet].master != -1:
+                if self.stars[star].planets[planet].master != class_planet.Planet.NEITRAL:
                     self.limits[self.stars[star].planets[planet].master] +=\
                     self.stars[star].planets[planet].limits[class_planet.Planet.LIM_SIZE]
                 planet += 1

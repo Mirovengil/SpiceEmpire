@@ -142,6 +142,8 @@ class ASCIIInteface:
         Отрисовывает все звёзды и предлагает перейти к одной из них.
         '''
         ASCIIInteface.cls()
+        if self.game.check_to_finish():
+            print()
         print('Звёзды:')
         for i in enumerate(self.game.stars):
             print(i[0] + 1, '. ', (i[1].name if self.game.player in i[1].can_be_seen else 'СКРЫТО!'), sep='')

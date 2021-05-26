@@ -204,5 +204,3 @@ def generate_map(option):
     add_players(game_map)
     game_map.refresh_limits()
     return game_map
-
-
