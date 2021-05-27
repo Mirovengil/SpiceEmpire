@@ -684,9 +684,8 @@ class ASCIIInteface:
         for i in enumerate(self.game.stars[self.scouted_star].neighbours):
             print(str(i[0] + 1) + ". " + self.game.stars[class_star.Star.get_neighbour(i[1])].name)
         new_star = ASCIIInteface.read_number('В какую систему-соседа вы хотите переместиться: ')
-        new_star = self.game.star_index_to_normal(new_star,\
-        self.game.get_fleets_star(self.scouted_fleet))
-        self.game.move_fleet_to_system(self.scouted_fleet, new_star)
+        self.game.move_fleet_to_system(self.scouted_fleet,\
+        class_star.Star.get_neighbour(self.game.stars[self.scouted_star].neighbours[new_star]))
         self.scouted_star = self.game.get_fleets_star(self.scouted_fleet)
         self.now_star()
         

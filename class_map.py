@@ -157,7 +157,7 @@ class GameMap:
         Возвращает номер звезды, около которой находится флот под
         номером fleet_index : int.
         '''
-        return self.fleets[fleet_index].system
+        return self.get_fleets_of_player()[fleet_index].system
 
     def check_to_finish(self):
         '''
