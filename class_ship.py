@@ -349,6 +349,7 @@ class ShipsShop:
         '''
         if ship_index < 0 or ship_index >= len(self.ships):
             raise ValueError('Вы пытаетесь удалить корабль, которого нет в списке покупок!')
+        self.available_points += SHIPS_PARAMS[self.ships[ship_index]['ship']]['limit'] 
         self.ships.pop(ship_index)
 
     def buy_ships(self):

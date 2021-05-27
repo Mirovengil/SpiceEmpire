@@ -557,7 +557,14 @@ class ASCIIInteface:
         '''
         Выводит список кораблей, предлагает удалить корабль из списка покупок.
         '''
-        pass
+        ASCIIInteface.cls()
+        print('Ваши корабли:')
+        print(self.using_shop_of_ships)
+        delete_index = ASCIIInteface.read_number('ВВОД: ')
+        self.using_shop_of_ships.remove_ship_from_list(delete_index)
+        ASCIIInteface.cls()
+        print('Корабль успешно удалён!')
+        ASCIIInteface.cls()
 
     def buy_ship_and_to_stars(self):
         '''
