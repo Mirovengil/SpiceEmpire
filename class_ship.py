@@ -291,15 +291,17 @@ class ShipsShop:
     SHIPS_LIST = ['test']
     CANT_BUY = 'НИЧЕГО'
     
-    def __init__(self, profit, max_limit):
+    def __init__(self, profit, max_limit, player):
         '''
-        profit -- кол-во очков для закупки кораблей, пришедшее на очередном ходе.
-        max_limit -- кол-во очков, которые доступны игроку (зависит от количества планет,
+        profit : int -- кол-во очков для закупки кораблей, пришедшее на очередном ходе.
+        max_limit : int -- кол-во очков, которые доступны игроку (зависит от количества планет,
         находящихся в его распоряжении).
+        player : int -- номер игрока, который использует класс для покупки кораблей.
         '''
         available_points = min(max_limit - profit, profit)
         self.available_points = available_points
         self.ships = []
+        self.player = player
 
     def get_available_points(self):
         '''
@@ -359,12 +361,13 @@ class ShipsShop:
             new_ship = Ship.new_ship(ship['ship'])
             new_ship.system = ship['system']
             new_ship.x_y = ship['planet'].coordinates
+            new_ship.master = self.player
             ships_list.append(new_ship)
         return ships_list
 
     
     #Осторожно, дальше начинается быдлокод.
-    def str(self, game_map):
+    def __str__(self):
         '''
         Возвращает строку, которая являет собой представление информации о списке
         заказанных к покупке кораблей.
@@ -372,8 +375,9 @@ class ShipsShop:
         '''
         string = ""
         for ship in enumerate(self.ships):
-            string = string + str(ship[0] + 1) + ". " + ship[1]['ship'].name + " (появится на"\
-            + " планете " + game_map.stars[ship[1]['system']].planets[ship[1]['planet']].name + ")\n"
+            string = string + str(ship[0] + 1) + ". " + ship[1]['ship'] + " (появится на"\
+            + " планете " + ship[1]['planet'].name + ")\n"
+        string = (string if string != "" else "НИЧЕГО ВЫ НЕ ЗАКАЗЫВАЛИ!")
         return string
 
     @staticmethod

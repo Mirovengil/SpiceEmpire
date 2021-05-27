@@ -113,6 +113,10 @@ class ASCIIInteface:
         for i in enumerate(cmd):
             print(i[0] + 1, '. ', i[1][TITLE_CMD], sep='')
         cmd_complete = ASCIIInteface.read_number('ВВОД: ')
+        if not isinstance(cmd_complete, int):
+            self.print_cmd(cmd)
+        if cmd_complete < 0 or cmd_complete >= len(cmd):
+            self.print_cmd(cmd)
         cmd[cmd_complete][CMD](self)
 
     def new_game(self):
@@ -503,16 +507,20 @@ class ASCIIInteface:
         '''
         print('Вы -- игрок №' + str(self.game.player))
         self.using_shop_of_ships =\
-        class_ship.ShipsShop(self.game.profit, self.game.get_limits_of_now_player())
+        class_ship.ShipsShop(self.game.profit, self.game.get_limits_of_now_player(),\
+        self.game.player)
         print('У вас есть столько очков для покупки: ' +\
-        str(self.using_shop_of_ships.get_available_points()))
+        str(self.using_shop_of_ships.get_available_points()) + "$")
         if not ASCIIInteface.read_boolean('Вы хотите купить корабли (если нет, очки сгорят)?'):
             self.show_stars()
         #Так как функция show_stars гарантирует, что возврата в этот цикл не будет,
         #то его бесконечность вполне оправдана.
         while True:
             ASCIIInteface.cls()
-            print(self.using_shop_of_ships.str(self.game))
+            print('Вы уже заказали корабли:')
+            print(self.using_shop_of_ships)
+            print('У вас есть столько очков для покупки: ' +\
+            str(self.using_shop_of_ships.get_available_points()) + "$")
             self.print_cmd([
                 ('Заказать корабль', ASCIIInteface.buy_new_ship),
                 ('Отменить заказ корабля', ASCIIInteface.delete_booked_ship),
@@ -525,16 +533,25 @@ class ASCIIInteface:
         Выводит список кораблей, считывает номер покупаемого, добавляет корабль в
         список покупок.
         '''
+        ASCIIInteface.cls()
         print('Доступные корабли:')
         for ship in enumerate(self.using_shop_of_ships.get_available_ships()):
-            print(str(ship[0] + 1) + ". " + ship[1]['ship'] + ": " + ship[1]['cost'])
+            print(str(ship[0] + 1) + ". " + ship[1]['ship'] + ": " + str(ship[1]['cost']) + "$;" )
         buing_ship = ASCIIInteface.read_number('ВВОД: ')
         ASCIIInteface.cls()
         print('Доступные планеты:')
         for planet in enumerate(self.game.get_players_planets()):
-            planet = ShipsShop.get_planet_by_pair(planet[1], self.game)
-            print(str(planet[0] + 1) + '. ' + planet.name + " " + planet.coordinates)
+            planet_object = class_ship.ShipsShop.get_planet_by_pair(planet[1], self.game)
+            print(str(planet[0] + 1) + '. ' + planet_object.name + " " + str(planet_object.coordinates))
+        planet = ASCIIInteface.read_number('ВВОД: ')
+        system = self.game.get_players_planets()[planet]['system']
+        planet = self.game.get_players_planet_by_id(planet)
+        ship = self.using_shop_of_ships.get_available_ships()[buing_ship]['ship']
         self.using_shop_of_ships.add_ship_to_list(ship, system, planet)
+        ASCIIInteface.cls()
+        print('Корабль добавлен в список покупок!')
+        ASCIIInteface.wait()
+
 
     def delete_booked_ship(self):
         '''
@@ -546,7 +563,8 @@ class ASCIIInteface:
         '''
         Покупает все выбранные корабли, выставляет их на карту и переходит на звёзду.
         '''
-        pass
+        self.game.add_ships(self.using_shop_of_ships.buy_ships())
+        self.show_stars()
 
 if __name__ == "__main__":
     TEST_INTERFACE = ASCIIInteface()

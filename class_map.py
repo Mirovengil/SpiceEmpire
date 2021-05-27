@@ -394,3 +394,24 @@ class GameMap:
                 planet += 1
             star += 1
         return planets
+
+    def get_players_planet_by_id(self, index):
+        '''
+        Возвращает планету, которая находится на месте index : int в списке планет игрока,
+        который возвращается при помощи метода get_players_planets : [{
+            'planet' : int,
+            'system' : int
+        }].
+        '''
+        planet_index = self.get_players_planets()[index]['planet']
+        star_index = self.get_players_planets()[index]['system']
+        return self.stars[star_index].planets[planet_index]
+
+    def add_ships(self, list_of_ships):
+        '''
+        Добавляет корабли из списка list_of_ships : [Ship] в игру.
+        '''
+        for ship in list_of_ships:
+            self.ships.append(ship)
+        self.refresh_limits()
+        self.refresh_war_thunder()
