@@ -369,6 +369,28 @@ class GameMap:
         '''
         chance = random.randint(0, 100)
         if chance > GameMap.chance_of_profit:
-            return self.profit = 0
+            self.profit = 0
         else:
             self.profit = 5
+
+
+    def get_players_planets(self):
+        '''
+        Возвращает список планет, принадлежащих игроку, который сейчас совершает
+        ход, в следующем виде:
+        'planet' : int -- индекс планеты, принадлежаещей игроку.
+        'system' : int -- индекс системы, где находится оная планета.
+        '''
+        planets = []
+        star = 0
+        while star < len(self.stars):
+            planet = 0
+            while planet < len(self.stars[star].planets):
+                if self.stars[star].planets[planet].master == self.player:
+                    planets.append({
+                        'planet': planet,
+                        'system': star
+                    })
+                planet += 1
+            star += 1
+        return planets

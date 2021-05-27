@@ -153,10 +153,16 @@ class Planet:
         description = Planet.load_description(rez.get_type())
         rez.set_description(description)
         limits_size = int(rdf(fin))
+        #Проверка на то, что у планеты -- корректное кол-во лимитов.
+        has_true_limits = False
         for i in LIMITS:
             if i[Planet.LIM_SIZE] == limits_size:
                 rez.limits = i
+                has_true_limits = True
                 break
+        if not has_true_limits:
+            raise ValueError('''Вы либо повредили файлы с сохранениями, либо
+            играете против читера! Некорректные размеры лимитов планеты!!11''')
         return rez
 
     @staticmethod

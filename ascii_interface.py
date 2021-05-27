@@ -58,6 +58,9 @@ class ASCIIInteface:
         self.scouted_star = None
         self.scouted_ship = None
         self.scouted_card = None
+        self.using_shop_of_ships = None
+        #Оный необходимо хранить, чтобы его не требовалось передавать между
+        #методами покупки и удаления как параметр.
 
     @staticmethod
     def read_number(text):
@@ -499,27 +502,52 @@ class ASCIIInteface:
         Предлагает составить список кораблей для покупки (при возможности).
         '''
         print('Вы -- игрок №' + str(self.game.player))
-        shop = class_ship.ShipsShop(self.game.profit, self.game.get_limits_of_now_player())
-        print('У вас есть столько очков для покупки: ' + str(shop.available_points))
+        self.using_shop_of_ships =\
+        class_ship.ShipsShop(self.game.profit, self.game.get_limits_of_now_player())
+        print('У вас есть столько очков для покупки: ' +\
+        str(self.using_shop_of_ships.get_available_points()))
         if not ASCIIInteface.read_boolean('Вы хотите купить корабли (если нет, очки сгорят)?'):
             self.show_stars()
-        print_cmd([
-            ('Заказать корабль', ASCIIInteface.buy_new_ship),
-            ('Отменить заказ корабля', ASCIIInteface.delete_booked_ship),
-            ('Купить и выйти', ASCIIInteface.buy_ship_and_to_stars),
-            ('Выйти', ASCIIInteface.show_stars),
-        ])
+        #Так как функция show_stars гарантирует, что возврата в этот цикл не будет,
+        #то его бесконечность вполне оправдана.
+        while True:
+            ASCIIInteface.cls()
+            print(self.using_shop_of_ships.str(self.game))
+            self.print_cmd([
+                ('Заказать корабль', ASCIIInteface.buy_new_ship),
+                ('Отменить заказ корабля', ASCIIInteface.delete_booked_ship),
+                ('Купить и выйти', ASCIIInteface.buy_ship_and_to_stars),
+                ('Выйти', ASCIIInteface.show_stars),
+            ])
 
     def buy_new_ship(self):
         '''
         Выводит список кораблей, считывает номер покупаемого, добавляет корабль в
         список покупок.
         '''
+        print('Доступные корабли:')
+        for ship in enumerate(self.using_shop_of_ships.get_available_ships()):
+            print(str(ship[0] + 1) + ". " + ship[1]['ship'] + ": " + ship[1]['cost'])
+        buing_ship = ASCIIInteface.read_number('ВВОД: ')
+        ASCIIInteface.cls()
+        print('Доступные планеты:')
+        for planet in enumerate(self.game.get_players_planets()):
+            planet = ShipsShop.get_planet_by_pair(planet[1], self.game)
+            print(str(planet[0] + 1) + '. ' + planet.name + " " + planet.coordinates)
+        self.using_shop_of_ships.add_ship_to_list(ship, system, planet)
+
     def delete_booked_ship(self):
         '''
-        
+        Выводит список кораблей, предлагает удалить корабль из списка покупок.
         '''
+        pass
+
     def buy_ship_and_to_stars(self):
+        '''
+        Покупает все выбранные корабли, выставляет их на карту и переходит на звёзду.
+        '''
+        pass
+
 if __name__ == "__main__":
     TEST_INTERFACE = ASCIIInteface()
     TEST_INTERFACE.start()

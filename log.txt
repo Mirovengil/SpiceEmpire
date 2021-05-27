@@ -58,7 +58,7 @@ ice
 6
 3
 /img/planetsice.png
--1
+0
 15
 rock
 Лиситея

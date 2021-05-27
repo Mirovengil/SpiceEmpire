@@ -298,7 +298,7 @@ class ShipsShop:
         находящихся в его распоряжении).
         '''
         available_points = min(max_limit - profit, profit)
-        self.points = available_points
+        self.available_points = available_points
         self.ships = []
 
     def get_available_points(self):
@@ -318,7 +318,10 @@ class ShipsShop:
         list_of_available_ships = []
         for ship in ShipsShop.SHIPS_LIST:
             if SHIPS_PARAMS[ship]['limit'] <= self.available_points:
-                list_of_available_ships.append(ship)
+                list_of_available_ships.append({
+                'ship': ship,
+                'cost': SHIPS_PARAMS[ship]['limit']
+                })
         return list_of_available_ships
 
     def add_ship_to_list(self, ship, system, planet):
@@ -358,3 +361,29 @@ class ShipsShop:
             new_ship.x_y = ship['planet'].coordinates
             ships_list.append(new_ship)
         return ships_list
+
+    
+    #Осторожно, дальше начинается быдлокод.
+    def str(self, game_map):
+        '''
+        Возвращает строку, которая являет собой представление информации о списке
+        заказанных к покупке кораблей.
+        Использовать для логгирования и/или реализации интерфейса в ASCII.
+        '''
+        string = ""
+        for ship in enumerate(self.ships):
+            string = string + str(ship[0] + 1) + ". " + ship[1]['ship'].name + " (появится на"\
+            + " планете " + game_map.stars[ship[1]['system']].planets[ship[1]['planet']].name + ")\n"
+        return string
+
+    @staticmethod
+    def get_planet_by_pair(pair, game_map):
+        '''
+        Возвращает планету : Planet, которая описана парой pair :
+            'planet' : int -- индекс планеты.
+            'system' : int -- индекс системы, где находится оная планета.
+        Работает корректно при условии, что планета находится на карте game_map : GameMap.
+        '''
+        star_index = pair['system']
+        planet_index = pair['planet']
+        return game_map.stars[star_index].planets[planet_index]
