@@ -345,7 +345,7 @@ class Fleet:
 
     def add_ship(self, ship):
         '''
-        Добавляет корабль во флот, если это возможно.
+        Добавляет корабль ship : Ship во флот, если это возможно.
         '''
         if self.x_y != ship.x_y:
             raise BaseException('''Корабль корабль нельзя присоединить ко флоту, если
@@ -353,8 +353,46 @@ class Fleet:
         if self.system != ship.system:
             raise BaseException('''Корабль корабль нельзя присоединить ко флоту, если
             они находятся в разных системах!''')
+        if self.master != ship.master:
+            raise BaseException('''Нельзя добавлять чужой корабль в свой флот!
+            И вообще, почему не началась битва!!??''')
         ship.fleet = self.index
         self.ships.append(ship)
+
+    def remove_ship(self, ship_index):
+        '''
+        Переводит корабль ship_index : int в новый, свежесозданный флот из одного корабля.
+        '''
+        self.ships[ship_index].fleet = generate_fleet_index()
+        self.ships.pop(ship_index)
+
+    @staticmethod
+    def merge_two_different_fleets(first, second):
+        '''
+        Объединяет два флота: first : Fleet и second : Fleet.
+        При этом, новому флоту присваивается индекс того, который больше по размеру.
+        Также все корабли меньшего флота переводятся в большой.
+        Это сделано для того, чтобы избежать ситуации, когда при объединении флота
+        из одного корабля и флота из сотни кораблей, вместо добавления одной операции
+        по добавлению элемента в массив, будут произведены сотни. (НАГЛЯДНЫЙ
+        ПРИМЕР это, а не вода в комментариях для увеличения кол-ва строчек кода).
+        '''
+        if first.x_y != second.x_y:
+            raise BaseException('Нельзя объединять флоты, находящиеся на разных клетках!')
+        if first.system != second.system:
+            raise BaseException('Нельзя объединять флоты, находящиеся в разных системах!')
+        if first.master != second.master:
+            raise BaseException('''Нельзя объединить флоты разных игроков! Да
+            и как они вообще оказались на одной клетке, не вступив в бой!!??''')
+        if first.index == second.index:
+            raise BaseException('''Капитан болен шизофренией и пытается объединить
+            свой флот со своим же!''')
+        if first.size() < second.size():
+            first, second = second, first
+        for ship in second.ships:
+            ship.fleet = first.index
+            first.ships.append(ship)
+        del second
 
 class ShipsShop:
     '''

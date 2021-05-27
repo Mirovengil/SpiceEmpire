@@ -582,8 +582,8 @@ class ASCIIInteface:
         ASCIIInteface.cls()
         print('Ваши флоты:')
         fleets = self.game.get_fleets_of_player()
-        for fleet in fleets:
-            print(str(fleet.index + 1) + ". Флот из " + str(fleet.size()) + " ед. " + str(fleet.x_y))
+        for fleet in enumerate(self.game.get_fleets_of_player()):
+            print(str(fleet[0] + 1) + ". Флот из " + str(fleet[1].size()) + " ед. " + str(fleet[1].x_y))
         self.print_cmd([
             ('Перейти к местоположению флота', ASCIIInteface.open_fleet_place),
             ('Просмотреть флот', ASCIIInteface.open_fleet),
@@ -610,6 +610,43 @@ class ASCIIInteface:
     def open_fleet(self):
         '''
         Выводит содержимое флота
+        '''
+        self.scouted_fleet = ASCIIInteface.read_number('Номер флота: ')
+        ASCIIInteface.cls()
+        fleet = self.game.get_fleets_of_player()[self.scouted_fleet]
+        print('Флот находится в координате ' + str(fleet.x_y))
+        print('Корабли флота:')
+        for ship in enumerate(fleet.ships):
+            print(str(ship[0] + 1) + ". " + ship[1].name)
+        self.print_cmd([
+            ('Перейти к местоположению флота', ASCIIInteface.show_one_fleet_place),
+            ('Вывести корабль из флота', ASCIIInteface.remove_ship_from_fleet),
+            ('Соединить с другим флотом', ASCIIInteface.merge_two_fleets),
+            ('Назад к карте', ASCIIInteface.show_stars)
+        ])
+
+    def merge_two_fleets(self):
+        '''
+        Объединяет два флота в один.
+        Считывает номер второго флота.
+        '''
+        ASCIIInteface.cls()
+        print('Ваши флоты:')
+        for fleet in enumerate(self.game.get_fleets_of_player()):
+            print(str(fleet[0] + 1) + ". Флот из " + str(fleet[1].size()) + " ед. " + str(fleet[1] .x_y))
+        other_fleet_index = ASCIIInteface.read_number('Номер второго флота: ')
+        if other_fleet_index == self.scouted_fleet:
+            ASCIIInteface.cls()
+            print('Флот нельзя объединять с самим собой!')
+            ASCIIInteface.wait()
+            self.merge_two_fleets()
+        self.game.merge_players_fleets(self.scouted_fleet, other_fleet_index)
+        self.show_fleets()
+
+    def remove_ship_from_fleet(self):
+        '''
+        Удаляет корабль из рассматриваемого флота.
+        Запрашивает номер корабля.
         '''
         pass
 

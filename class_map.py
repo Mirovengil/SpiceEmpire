@@ -28,7 +28,7 @@ class GameMap:
         self.limits = []
         self.battle_is_on = False
         self.battle_map = None
-        self.profit = None
+        self.profit = 0
 
     def set_size(self, size_x, size_y):
         '''
@@ -240,6 +240,7 @@ class GameMap:
         fin.close()
         rez.refresh_limits()
         rez.refresh_war_thunder()
+        rez.refresh_fleets()
         return rez
 
     def try_to_battle(self, ship_index):
@@ -434,7 +435,9 @@ class GameMap:
         self.fleets = []
         ship = 0
         while ship < len(self.ships):
-            self.fleets.append(fleets[self.ships[ship].fleet])
+            if not fleets[self.ships[ship].fleet] is None:
+                self.fleets.append(fleets[self.ships[ship].fleet])
+                fleets[self.ships[ship].fleet] = None
             ship += 1
 
     def get_fleets_of_player(self):
@@ -446,3 +449,14 @@ class GameMap:
             if fleet.master == self.player:
                 fleets.append(fleet)
         return fleets
+
+    def merge_players_fleets(self, first_fleet_index, second_fleet_index):
+        '''
+        Объединяет два флота того игрока, который сейчас ходит, в один.
+        first_fleet_index : int и second_fleet_index : int -- индексы этих флотов в массиве
+        self.get_fleets_of_player(), соответственно.
+        '''
+        fleet_1 = self.get_fleets_of_player()[first_fleet_index]
+        fleet_2 = self.get_fleets_of_player()[second_fleet_index]
+        class_ship.Fleet.merge_two_different_fleets(fleet_1, fleet_2)
+        self.refresh_fleets()
