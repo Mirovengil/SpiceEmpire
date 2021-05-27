@@ -218,6 +218,7 @@ class ASCIIInteface:
             ('Главное меню', ASCIIInteface.start),
             ('Просмотр планеты', ASCIIInteface.show_planet),
             ('Просмотр корабля', ASCIIInteface.show_ship),
+            ('Просмотр флотов', ASCIIInteface.show_fleets),
             ('Назад, к звёздам', ASCIIInteface.show_stars),
             ('Завершить ход', ASCIIInteface.end_turn)
         ]
