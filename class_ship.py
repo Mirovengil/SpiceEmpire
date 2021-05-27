@@ -394,6 +394,25 @@ class Fleet:
             first.ships.append(ship)
         del second
 
+    def has_full_fuel(self):
+        '''
+        Возвращает True, если все корабли во флоте имеют полный бак топлива.
+        '''
+        for ship in self.ships:
+            if not ship.has_full_fuel():
+                return False
+        return True
+
+    def is_on_side(self, game_map):
+        '''
+        Возвращает True, если все корабли флота находятся на краю
+        карты game_map : GameMap.
+        '''
+        for ship in self.ships:
+            if not ship.on_side(game_map):
+                return False
+        return True
+
 class ShipsShop:
     '''
     Класс, отвечающий за покупку кораблей.

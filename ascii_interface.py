@@ -287,7 +287,6 @@ class ASCIIInteface:
             ('Назад к звезде', ASCIIInteface.now_star),
             ('Просмотр карточки', ASCIIInteface.show_card),
             ('Перемещение корабля', ASCIIInteface.move_ship_on_map)
-            #('Использование карточки', ASCIIInteface.use_card)#Карточки не используются вне боя(
         ]
         if self.game.ships[self.scouted_ship].on_side(self.game):
             mass.append(('Перемещение в другую систему', ASCIIInteface.change_system_for_ship))
@@ -475,6 +474,7 @@ class ASCIIInteface:
         for i in enumerate(self.game.stars[self.scouted_star].neighbours):
             print (str(i[0] + 1) + '. ' + self.game.stars[class_star.Star.get_neighbour(i[1])].name)
         new_star = ASCIIInteface.read_number('В какую систему-соседа вы хотите переместиться: ')
+        new_star = self.game.star_index_to_normal(new_star, self.scouted_star)
         self.game.move_ship_to_system(self.scouted_ship, new_star)
         self.scouted_star = self.game.get_ships_star(self.scouted_ship)
         self.now_star()
@@ -618,12 +618,16 @@ class ASCIIInteface:
         print('Корабли флота:')
         for ship in enumerate(fleet.ships):
             print(str(ship[0] + 1) + ". " + ship[1].name)
-        self.print_cmd([
+        mass = [
             ('Перейти к местоположению флота', ASCIIInteface.show_one_fleet_place),
             ('Вывести корабль из флота', ASCIIInteface.remove_ship_from_fleet),
             ('Соединить с другим флотом', ASCIIInteface.merge_two_fleets),
+            ('Переместить флот', ASCIIInteface.move_fleet),
             ('Назад к карте', ASCIIInteface.show_stars)
-        ])
+        ]
+        if self.game.fleet_is_on_side(self.scouted_fleet):
+            mass.append(('Перемещение в другую систему', ASCIIInteface.change_system_for_fleet))
+        self.print_cmd(mass)
 
     def merge_two_fleets(self):
         '''
@@ -648,7 +652,44 @@ class ASCIIInteface:
         Удаляет корабль из рассматриваемого флота.
         Запрашивает номер корабля.
         '''
-        pass
+        ship_index = ASCIIInteface.read_number('Номер удаляемого корабля: ')
+        self.game.remove_ship_from_fleet(self.scouted_fleet, ship_index)
+        self.show_fleets()
+
+    def move_fleet(self):
+        '''
+        Выбирает клетку и перемещает флот на глобальной карте.
+        На это расходуются единицы перемещения.
+        '''
+        ASCIIInteface.cls()
+        print('Карта:')
+        print(self.game.stars[self.game.fleets[self.scouted_fleet].system].to_matrix(\
+        self.game.fleets[self.scouted_fleet].x_y))
+        print('Вы отмечены как @:')
+        x = ASCIIInteface.read_number('Введите х клетки: ')
+        y = ASCIIInteface.read_number('Введите y клетки: ')
+        x = x if not x is None else self.game.fleets[self.scouted_fleet].x_y.x
+        y = y if not y is None else self.game.fleets[self.scouted_fleet].x_y.y
+        self.game.move_fleet(self.scouted_fleet, my_math.Coords(x, y))
+        self.scouted_star = self.game.fleets[self.scouted_fleet].system
+        self.now_star()
+
+    def change_system_for_fleet(self):
+        '''
+        Если флот находится на краю системы, то он может её поменять на соседнюю.
+        Считывает индекс другой системы и совершает перемещение в неё.
+        '''
+        print('Системы, куда вы можете переместиться:')
+        self.scouted_star = self.game.fleets[self.scouted_fleet].system
+        for i in enumerate(self.game.stars[self.scouted_star].neighbours):
+            print(str(i[0] + 1) + ". " + self.game.stars[class_star.Star.get_neighbour(i[1])].name)
+        new_star = ASCIIInteface.read_number('В какую систему-соседа вы хотите переместиться: ')
+        new_star = self.game.star_index_to_normal(new_star,\
+        self.game.get_fleets_star(self.scouted_fleet))
+        self.game.move_fleet_to_system(self.scouted_fleet, new_star)
+        self.scouted_star = self.game.get_fleets_star(self.scouted_fleet)
+        self.now_star()
+        
 
 if __name__ == "__main__":
     TEST_INTERFACE = ASCIIInteface()

@@ -566,7 +566,7 @@ rock
 10
 3
 test
-(15, 6)
+(15, 9)
 0
 5
 test_attack
@@ -575,9 +575,9 @@ test_defence
 1
 test_movement
 1
-2
+0
 test
-(15, 6)
+(15, 9)
 0
 5
 test_attack

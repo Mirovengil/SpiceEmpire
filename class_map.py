@@ -99,6 +99,7 @@ class GameMap:
             self.refresh_limits()
             self.refresh_ships_speeds()
             self.try_to_get_profit()
+            self.turn += 1
         return self.check_to_finish()
 
     def refresh_ships_speeds(self):
@@ -116,13 +117,33 @@ class GameMap:
         '''
         if not self.ships[ship_index].has_full_fuel():
             raise ValueError('Корабль должен зарядить двигатели полностью!')
-        #В массиве соседей ищется та звезда, куда летит корабль; берётся длина пути до неё.
-        #И по прилёте корабль будет бездействовать эту же величину.
         self.ships[ship_index].system =\
         Star.get_neighbour(self.stars[self.ships[ship_index].system].neighbours[system_index])
         self.refresh_war_thunder()
         #Корабль мог прилететь в клетку, где стоит противник. Это надо обработать.
         self.try_to_battle(ship_index)
+
+    def move_fleet_to_system(self, fleet_index, system_index):
+        '''
+        Перемещает корабль под номером ship_index : int в систему номером system_index : int.
+        '''
+        if not self.get_fleets_of_player()[fleet_index].has_full_fuel():
+            raise ValueError('Все корабли флота должны зарядить двигатели полностью!')
+        self.get_fleets_of_player()[fleet_index].set_system(system_index)
+        self.refresh_war_thunder()
+        #Корабль мог прилететь в клетку, где стоит противник. Это надо обработать.
+        self.try_to_battle(self.get_one_ship_from_fleet_index(fleet_index))
+
+    def get_one_ship_from_fleet_index(self, fleet_index):
+        '''
+        Возвращает индекс первого в массиве корабля : int, который состоит во флоте
+        fleet_index.
+        '''
+        ship = 0
+        while ship < len(self.ships):
+            if self.ships[ship].fleet == self.fleets[fleet_index].index:
+                return ship
+        raise ValueError('Такого флота не существует!')
 
     def get_ships_star(self, ship_index):
         '''
@@ -130,6 +151,13 @@ class GameMap:
         номером ship_index : int.
         '''
         return self.ships[ship_index].system
+
+    def get_fleets_star(self, fleet_index):
+        '''
+        Возвращает номер звезды, около которой находится флот под
+        номером fleet_index : int.
+        '''
+        return self.fleets[fleet_index].system
 
     def check_to_finish(self):
         '''
@@ -460,3 +488,50 @@ class GameMap:
         fleet_2 = self.get_fleets_of_player()[second_fleet_index]
         class_ship.Fleet.merge_two_different_fleets(fleet_1, fleet_2)
         self.refresh_fleets()
+
+    def remove_ship_from_fleet(self, scouted_fleet, ship_index):
+        '''
+        Удаляет из флота, принадлежащего ходящему в данный момент игроку, который
+        находится под индексом scouted_fleet : int, корабль под индексом ship_index : int. 
+        '''
+        fleet = self.get_fleets_of_player()[scouted_fleet]
+        fleet.remove_ship(ship_index)
+        self.refresh_fleets()
+
+    def move_fleet(self, fleet_index, place):
+        '''
+        Перемещает флот, который находится на месте fleet_index : int в
+        self.get_fleets_of_player(), на позицию place : Coords.
+        '''
+        fleet = self.get_fleets_of_player()[fleet_index]
+        if fleet.master != self.player:
+            raise ValueError('Вы не можете управлять чужим флотом!!')
+        if place.x < 0 or place.x >= self.size_x or place.y < 0 or place.y >= self.size_y:
+            raise ValueError('Координаты точки должны находиться в пределах системы!!11')
+        fleet.move(place)
+        self.try_to_battle(self.get_one_ship_from_fleet_index(fleet_index))
+
+    def fleet_is_on_side(self, fleet_index):
+        '''
+        Возвращает True, если флот под индексом fleet_index : int находится на краю системы.
+        '''
+        fleet = self.get_fleets_of_player()[fleet_index]
+        return fleet.is_on_side(self)
+
+    def star_index_to_normal(self, index, star):
+        '''
+        Переводит индекс звезды, которая находится в соседях у звезды star : index и
+        в списке соседей находится на месте index : int, в тот индекс, через который
+        можно обратиться к звезде в self.stars. 
+        '''
+        star = 0
+        cnt = 0
+        neighbours = [Star.get_neighbour(i) for i in self.stars[star].neighbours]
+        while star < len(self.stars):
+            if star in neighbours:
+                if cnt == index:
+                    return star
+                cnt += 1
+            star += 1
+        raise ValueError('Такой звезды не существует!!')
+        
