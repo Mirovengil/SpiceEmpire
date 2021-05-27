@@ -5,6 +5,7 @@
 from class_star import Star
 from my_math import rdf
 from class_ship import Ship
+import class_ship
 from battle_map import BattleMap
 import class_planet
 import random
@@ -17,6 +18,7 @@ class GameMap:
     def __init__(self):
         self.stars = []
         self.ships = []
+        self.fleets = []
         self.size_x = None
         self.size_y = None
         self.number_of_players = None
@@ -415,3 +417,32 @@ class GameMap:
             self.ships.append(ship)
         self.refresh_limits()
         self.refresh_war_thunder()
+
+    def refresh_fleets(self):
+        '''
+        Обновляет информацию о флотах в игре (корабль мог погибнуть, корабль мог
+        переместиться поотдельности от флота и т.п.).
+        '''
+        fleets = dict()
+        ship = 0
+        while ship < len(self.ships):
+            if not self.ships[ship].fleet in fleets:
+                fleets[self.ships[ship].fleet] = class_ship.Fleet(self.ships[ship])
+            else:
+                fleets[self.ships[ship].fleet].add_ship(self.ships[ship])
+            ship += 1
+        self.fleets = []
+        ship = 0
+        while ship < len(self.ships):
+            self.fleets.append(fleets[self.ships[ship].fleet])
+            ship += 1
+
+    def get_fleets_of_player(self):
+        '''
+        Возвращает массив : [Fleet], который содержит флоты того, кто сейчас ходит.
+        '''
+        fleets = []
+        for fleet in self.fleets:
+            if fleet.master == self.player:
+                fleets.append(fleet)
+        return fleets

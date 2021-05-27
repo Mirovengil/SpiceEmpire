@@ -58,6 +58,7 @@ class ASCIIInteface:
         self.scouted_star = None
         self.scouted_ship = None
         self.scouted_card = None
+        self.scouted_fleet = None
         self.using_shop_of_ships = None
         #Оный необходимо хранить, чтобы его не требовалось передавать между
         #методами покупки и удаления как параметр.
@@ -173,6 +174,7 @@ class ASCIIInteface:
         mass = [
             ('Главное меню', ASCIIInteface.start),
             ('Просмотр звезды', ASCIIInteface.show_one_star),
+            ('Просмотр флотов', ASCIIInteface.show_fleets),
             ('Завершить ход', ASCIIInteface.end_turn)
         ]
         self.print_cmd(mass)
@@ -218,7 +220,6 @@ class ASCIIInteface:
             ('Главное меню', ASCIIInteface.start),
             ('Просмотр планеты', ASCIIInteface.show_planet),
             ('Просмотр корабля', ASCIIInteface.show_ship),
-            ('Просмотр флотов', ASCIIInteface.show_fleets),
             ('Назад, к звёздам', ASCIIInteface.show_stars),
             ('Завершить ход', ASCIIInteface.end_turn)
         ]
@@ -573,6 +574,44 @@ class ASCIIInteface:
         '''
         self.game.add_ships(self.using_shop_of_ships.buy_ships())
         self.show_stars()
+
+    def show_fleets(self):
+        '''
+        Выводит на экран список флотов, их координаты и кол-во кораблей внутри них.
+        '''
+        ASCIIInteface.cls()
+        print('Ваши флоты:')
+        fleets = self.game.get_fleets_of_player()
+        for fleet in fleets:
+            print(str(fleet.index + 1) + ". Флот из " + str(fleet.size()) + " ед. " + str(fleet.x_y))
+        self.print_cmd([
+            ('Перейти к местоположению флота', ASCIIInteface.open_fleet_place),
+            ('Просмотреть флот', ASCIIInteface.open_fleet),
+            ('Назад к карте', ASCIIInteface.show_stars)
+        ])
+
+    def open_fleet_place(self):
+        '''
+        Считывает номер флота и переносит интерфейс на обзор
+        той системы, где флот, собственно, находится. 
+        '''
+        fleet_number = ASCIIInteface.read_number('Номер флота: ')
+        self.scouted_fleet = fleet_number
+        self.show_one_fleet_place()
+
+    def show_one_fleet_place(self):
+        '''
+        Переносит интерфейс на ту систему, где находится self.scouted_fleet : int.
+        '''
+        fleet_system = self.game.get_fleets_of_player()[self.scouted_fleet].system
+        self.scouted_star = fleet_system
+        self.now_star()
+
+    def open_fleet(self):
+        '''
+        Выводит содержимое флота
+        '''
+        pass
 
 if __name__ == "__main__":
     TEST_INTERFACE = ASCIIInteface()

@@ -203,4 +203,6 @@ def generate_map(option):
     game_map.number_of_players = option.players_number
     add_players(game_map)
     game_map.refresh_limits()
+    game_map.refresh_war_thunder()
+    game_map.refresh_fleets()
     return game_map

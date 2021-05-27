@@ -15,8 +15,15 @@ SHIPS_PARAMS = {
             }
 }
 
-#Номер флота, который будет присвоен следующему кораблю.
-global fleet_index = 0
+fleet_index = 0
+def generate_fleet_index():
+    '''
+    Создаёт уникальный номер для флота.
+    '''
+    global fleet_index
+    answer = fleet_index
+    fleet_index += 1
+    return answer
 
 class Ship:
     '''
@@ -105,6 +112,7 @@ class Ship:
         string = string + str(self.master) + "\n"
         string = string + str(self.system) + "\n"
         string = string + self.card_store.cache()
+        string = string + str(self.fleet) + "\n"
         return string
 
     @staticmethod
@@ -125,6 +133,7 @@ class Ship:
         ship.card_store = card_store
         ship.speed = SHIPS_PARAMS[ship.name]['speed']
         ship.limit = SHIPS_PARAMS[ship.name]['limit']
+        ship.fleet = int(rdf(fin))
         return ship
 
     @staticmethod
@@ -139,8 +148,7 @@ class Ship:
         ship.card_store = CardStore(class_of_ship)
         ship.speed = SHIPS_PARAMS[class_of_ship]['speed']
         ship.limit = SHIPS_PARAMS[class_of_ship]['limit']
-        ship.fleet = fleet_index
-        fleet_index += 1
+        ship.fleet = generate_fleet_index()
         return ship
 
     def attack(self, card, enemy):
@@ -284,6 +292,69 @@ class Ship:
         self.hp = None
         self.dfc = None
         self.is_available = False
+
+class Fleet:
+    '''
+    Класс флота, состоящего из кораблей.
+    Поля:
+        ships : [Ship] -- массив кораблей, из которых состоит флот.
+        x_y : Coords -- местонахождение флота.
+        master : int -- игрок, который может управлять флотом.
+        system : int -- номер системы, в которой находится флот.
+        index : int -- порядковый номер флота, который используется для
+        объединения кораблей в, собственно, флоты.
+    '''
+    def __init__(self, ship):
+        '''
+        ship : Ship -- корабль, который является "основой" флота.
+        Остальные следует добавлять / отсоединять.
+        Так как флотов не может быть больше, чем кораблей, то такая система вполне
+        жизнеспособна (мне нравится).
+        '''
+        self.ships = [ship]
+        self.x_y = ship.x_y
+        self.master = ship.master
+        self.system = ship.system
+        self.index = ship.fleet
+
+    def move(self, place):
+        '''
+        Перемещает все корабли флота в позицию place : Coords.
+        '''
+        ship = 0
+        while ship < len(self.ships):
+            self.ships[ship].move_on_global_map(place)
+            ship += 1
+        self.x_y = place
+
+    def set_system(self, value):
+        '''
+        Перемещает все корабли флота в систему value : int.
+        '''
+        ship = 0
+        while ship < len(self.ships):
+            self.ships[ship].set_system(value)
+            ship += 1
+        self.system = value
+
+    def size(self):
+        '''
+        Возвращает количество : int кораблей во флоте.
+        '''
+        return len(self.ships)
+
+    def add_ship(self, ship):
+        '''
+        Добавляет корабль во флот, если это возможно.
+        '''
+        if self.x_y != ship.x_y:
+            raise BaseException('''Корабль корабль нельзя присоединить ко флоту, если
+            они имеют разные координаты!''')
+        if self.system != ship.system:
+            raise BaseException('''Корабль корабль нельзя присоединить ко флоту, если
+            они находятся в разных системах!''')
+        ship.fleet = self.index
+        self.ships.append(ship)
 
 class ShipsShop:
     '''
