@@ -7,12 +7,59 @@ from random import randint
 from my_math import rdf
 import my_math
 
+TURNS_TO_GET_PLANET = 3
 LIMITS = [
     ('Богатая', 15),
     ('Средняя', 10),
     ('Бедная', 5)
 ]
 
+class AdditionalInfo:
+    '''
+    Класс дополнительной информации о планете.
+    На данный момент содержит:
+        will_be_occupied : int -- кол-во ходов, через которое планета будет захвачена.
+        will_be_occupied_by : int -- индекс игрока, который захватит планету по
+        окончании вышеупомянутого срока.
+    '''
+    def __init__(self):
+        self.will_be_occupied = TURNS_TO_GET_PLANET
+        self.will_be_occupied_by = Planet.NEITRAL 
+    
+    def __str__(self):
+        string = ""
+        if self.will_be_occupied_by != Planet.NEITRAL:
+            string = string + "Планету захватит через " + str(self.will_be_occupied)  +\
+            " игрок №" + str(self.will_be_occupied_by) + "\n"
+        return string
+        
+    def cache(self):
+        '''
+        Возвращает строку : str, которая содержит информацию об объекте класса.
+        '''
+        string = ""
+        string = string + str(self.will_be_occupied) + "\n"
+        string = string + str(self.will_be_occupied_by) + "\n"
+        return string
+
+    @staticmethod
+    def read(fin):
+        '''
+        Считывает закешированное при помощи self.cache() из файла fin, который
+        надо открыть заранее.
+        '''
+        rez = AdditionalInfo()
+        rez.will_be_occupied = int(rdf(fin))
+        rez.will_be_occupied_by = int(rdf(fin))
+        return rez
+
+    def new_master(self, master):
+        '''
+        Означает, что игрок под индексом master : int начал захват планеты.
+        '''
+        self.will_be_occupied = TURNS_TO_GET_PLANET
+        self.will_be_occupied_by = master
+        
 class Planet:
     '''
     Класс планеты.
@@ -24,6 +71,7 @@ class Planet:
     master : int -- номер игрока, которому принадлежит планета;
     нейтральные планеты имеют хозяина NEITRAL;
     limits : int -- кол-во лимитов, которые планета приносит империи.
+    adi : AdditionalInfo -- дополнительная информация о планете (см. соответствующий класс).
     '''
 
     LIM_SIZE = 1
@@ -44,6 +92,20 @@ class Planet:
         изображает звезду. Сделано это для того, чтобы обеспечить
         отсутствие планет на определённом расстоянии от того места,
         где в графическом интерфейсе будет изображаться звездa.'''
+        self.adi = AdditionalInfo()
+
+    def try_to_get_master_out(self, ships):
+        '''
+        Принимает на вход массив всех кораблей, имеющихся в игре, ships : [Ship].
+        Если корабль прекратил захват планеты, то информация о ней обновляется.
+        '''
+        has_ship_or_master = False
+        for ship in ships:
+            if ship.x_y == self.coordinates and ship.master != self.master:
+                self.adi.new_master(ship.master)
+                has_ship_or_master = True
+        if not has_ship_or_master:
+            self.adi.will_be_occupied_by = self.master
 
     def __str__(self):
         string = ""
@@ -81,6 +143,7 @@ class Planet:
         string = string + self.image + "\n"
         string = string + str(self.master) + "\n"
         string = string + str(self.limits[Planet.LIM_SIZE]) + "\n"
+        string = string + self.adi.cache()
         return string
 
     #Геттеры и сеттеры (сгенерированы автоматически)
@@ -163,6 +226,7 @@ class Planet:
         if not has_true_limits:
             raise ValueError('''Вы либо повредили файлы с сохранениями, либо
             играете против читера! Некорректные размеры лимитов планеты!!11''')
+        rez.adi = AdditionalInfo.read(fin)
         return rez
 
     @staticmethod
@@ -176,3 +240,14 @@ class Planet:
         planet.set_description(Planet.load_description(planet.get_type()))
         planet.limits = LIMITS[randint(0, len(LIMITS) - 1)]
         return planet
+
+    def refresh_master(self):
+        '''
+        Обновляет количество ходов, через которое будет захвачена данная планета.
+        '''
+        if self.adi.will_be_occupied_by ==  Planet.NEITRAL or\
+        self.adi.will_be_occupied_by == self.master:
+            return 0
+        self.adi.will_be_occupied = max(self.adi.will_be_occupied - 1, 0)
+        if self.adi.will_be_occupied == 0:
+            self.master = self.adi.will_be_occupied_by

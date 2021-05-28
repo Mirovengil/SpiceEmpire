@@ -91,6 +91,8 @@ class GameMap:
         Разрешить всем кораблям двигаться.
         Обновить состояние лимитов игроков.
         Если необходимо, выдать игрокам карточки кораблей.
+        Надо обновить состояния хозяев планет (если кто-то ведёт захват, надо
+        уменьшить время, оставшееся до смены руководства планеты).
         '''
         self.player = self.player + 1
         self.refresh_war_thunder()
@@ -100,6 +102,7 @@ class GameMap:
             self.refresh_ships_speeds()
             self.try_to_get_profit()
             self.turn += 1
+            self.refresh_planets_masters()
         return self.check_to_finish()
 
     def refresh_ships_speeds(self):
@@ -120,6 +123,8 @@ class GameMap:
         self.ships[ship_index].system =\
         Star.get_neighbour(self.stars[self.ships[ship_index].system].neighbours[system_index])
         self.refresh_war_thunder()
+        ship = self.ships[ship_index]
+        self.refresh_planet_masters(ship.x_y, ship.system, ship.master)
         #Корабль мог прилететь в клетку, где стоит противник. Это надо обработать.
         self.try_to_battle(ship_index)
 
@@ -131,6 +136,8 @@ class GameMap:
             raise ValueError('Все корабли флота должны зарядить двигатели полностью!')
         self.get_fleets_of_player()[fleet_index].set_system(system_index)
         self.refresh_war_thunder()
+        fleet = self.get_fleets_of_player()[fleet_index]
+        self.refresh_planet_masters(fleet.x_y, fleet.system, fleet.master)
         #Корабль мог прилететь в клетку, где стоит противник. Это надо обработать.
         self.try_to_battle(self.get_one_ship_from_fleet_index(fleet_index))
 
@@ -237,7 +244,7 @@ class GameMap:
 
     def move_ship_on_global_map(self, ship, place):
         '''
-        Выполняет некоторые проверки, после чего перемещает корабль ship : Ship в клетку
+        Выполняет некоторые проверки, после чего перемещает корабль ship : int в клетку
         place : Coords той системы, где он сейчас находится.
         '''
         if self.ships[ship].master != self.player:
@@ -245,6 +252,8 @@ class GameMap:
         if place.x < 0 or place.x >= self.size_x or place.y < 0 or place.y >= self.size_y:
             raise ValueError('Координаты точки должны находиться в пределах системы!!11')
         self.ships[ship].move_on_global_map(place)
+        self.refresh_planet_masters(self.ships[ship].x_y,\
+        self.ships[ship].system, self.ships[ship].master)
         #Корабль мог переместиться в клетку с противником. Этот случай надо обработать.
         self.try_to_battle(ship)
 
@@ -309,6 +318,7 @@ class GameMap:
             self.battle_map = self.battle_map.is_finished()
             self.refresh_list_of_ships()
             self.refresh_war_thunder()
+            self.refresh_fleets()
 
     def refresh_list_of_ships(self):
         '''
@@ -509,6 +519,7 @@ class GameMap:
         if place.x < 0 or place.x >= self.size_x or place.y < 0 or place.y >= self.size_y:
             raise ValueError('Координаты точки должны находиться в пределах системы!!11')
         fleet.move(place)
+        self.refresh_planet_masters(fleet.x_y, fleet.system, fleet.master)
         self.try_to_battle(self.get_one_ship_from_fleet_index(fleet_index))
 
     def fleet_is_on_side(self, fleet_index):
@@ -534,4 +545,28 @@ class GameMap:
                 cnt += 1
             star += 1
         raise ValueError('Такой звезды не существует!!')
-        
+
+    def refresh_planets_masters(self):
+        '''
+        Обновляет информацию о том, кто владеет планетами на игровой карте,
+        '''
+        star = 0
+        while star < len(self.stars):
+            planet = 0
+            while planet < len(self.stars[star].planets):
+                self.stars[star].planets[planet].refresh_master()
+                planet += 1
+            star += 1
+
+
+    def refresh_planet_masters(self, coordinates, system, master):
+        '''
+        Обновляет информацию о том, кто владеет планетой, расположенной в системе
+        system : int в координате coordinates : Coords.
+        Применять только при перемещении флотов / кораблей игрока master : int в
+        позицию coordinates : Coords внутри системы system. (для какого-никакого
+        быстродействия)
+        '''
+        for system in self.stars:
+            for planet in system.planets:
+                planet.try_to_get_master_out(self.ships)
