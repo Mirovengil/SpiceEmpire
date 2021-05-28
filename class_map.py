@@ -150,6 +150,7 @@ class GameMap:
         while ship < len(self.ships):
             if self.ships[ship].fleet == self.fleets[fleet_index].index:
                 return ship
+            ship += 1
         raise ValueError('Такого флота не существует!')
 
     def get_ships_star(self, ship_index):

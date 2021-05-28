@@ -671,7 +671,7 @@ class ASCIIInteface:
         x = x if not x is None else self.game.fleets[self.scouted_fleet].x_y.x
         y = y if not y is None else self.game.fleets[self.scouted_fleet].x_y.y
         self.game.move_fleet(self.scouted_fleet, my_math.Coords(x, y))
-        self.scouted_star = self.game.fleets[self.scouted_fleet].system
+        self.scouted_star = self.game.get_fleets_of_player()[self.scouted_fleet].system
         self.now_star()
 
     def change_system_for_fleet(self):
