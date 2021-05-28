@@ -2,10 +2,11 @@
 В этом классе реализовано поле битвы кораблей и некоторые функции, с ним связанные.
 '''
 
+import my_math
+
 MY_PAIR_DEGREE = 0
 MY_PAIR_COORD = 1
 
-import my_math
 MARKER = '@'
 NONE = '.'
 ZONE_MARKER = '+'
@@ -90,7 +91,7 @@ class BattleMap:
         near = set()
         near.add(my_math.Coords(x - 1, y).to_pair())
         near.add(my_math.Coords(x + 1, y).to_pair())
-       
+
         if y % 2 != 0:
             near.add(my_math.Coords(x, y - 1).to_pair())
             near.add(my_math.Coords(x, y + 1).to_pair())
@@ -116,7 +117,7 @@ class BattleMap:
         x = coords.x
         y = coords.y
         near = {
-            180: my_math.Coords(x - 1, y), 
+            180: my_math.Coords(x - 1, y),
             0: my_math.Coords(x + 1, y),
         }
         if y % 2 != 0:
@@ -140,7 +141,7 @@ class BattleMap:
         Проверяет, удовлетворяют ли координаты данному полю (могут ли они на
         нём существовать).
         '''
-        if isinstance(coords, my_math.Coords): 
+        if isinstance(coords, my_math.Coords):
             x = coords.x
             y = coords.y
         else:
@@ -211,7 +212,7 @@ class BattleMap:
         if  not self.turn_left:
             return self.left_player
         return self.right_player
-    
+
     def get_possible(self, place_from, len_of_way):
         '''
         Возвращает те клетки, которые находятся на расстоянии, не большем

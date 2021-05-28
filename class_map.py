@@ -381,7 +381,8 @@ class GameMap:
         корабля ship_index : int, если он собирается атаковать через карточку
         card_index : int.
         '''
-        return self.battle_map.str(ship_index, self.ships[ship_index].card_store.cards[card_index].dst)
+        return self.battle_map.str(ship_index, self.ships[\
+        ship_index].card_store.cards[card_index].dst)
 
     def try_to_attack(self, ship_index, card_index, enemy_object):
         '''
@@ -403,7 +404,7 @@ class GameMap:
         Возвращает количество лимитов, доступных данному игроку.
         '''
         return self.limits[self.player]
-    
+
     def try_to_get_profit(self):
         '''
         При помощи корейской случайности определяет, необходимо ли
@@ -503,7 +504,7 @@ class GameMap:
     def remove_ship_from_fleet(self, scouted_fleet, ship_index):
         '''
         Удаляет из флота, принадлежащего ходящему в данный момент игроку, который
-        находится под индексом scouted_fleet : int, корабль под индексом ship_index : int. 
+        находится под индексом scouted_fleet : int, корабль под индексом ship_index : int.
         '''
         fleet = self.get_fleets_of_player()[scouted_fleet]
         fleet.remove_ship(ship_index)
@@ -534,7 +535,7 @@ class GameMap:
         '''
         Переводит индекс звезды, которая находится в соседях у звезды star : index и
         в списке соседей находится на месте index : int, в тот индекс, через который
-        можно обратиться к звезде в self.stars. 
+        можно обратиться к звезде в self.stars.
         '''
         star = 0
         cnt = 0
