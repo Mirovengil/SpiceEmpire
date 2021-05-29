@@ -7,6 +7,7 @@ import my_math
 from class_planet import Planet
 from class_ship import Ship
 from class_card import Card
+from class_card import CardStore
 
 class TestSaves (unittest.TestCase):
     '''
@@ -53,7 +54,30 @@ class TestSaves (unittest.TestCase):
         self.assertEqual(card.tit, readed_card.tit)
         self.assertEqual(card.usb, readed_card.usb)
         self.assertEqual(card.dst, readed_card.dst)
-        
+
+    def test_card_store(self):
+        '''
+        Проверяет, что card_store считывается из файла корректно.
+        '''
+        card_store = CardStore(fin='test')
+        f = open('log.txt', 'w')
+        print(card_store.cache(), file=f)
+        f.close()
+        f = open('log.txt', 'r')
+        readed_card_store = CardStore.load(f)
+        f.close()
+        card = 0
+        while card < len(card_store.cards):
+            self.assertEqual(card_store.cards[card].inf, readed_card_store.cards[card].inf)
+            self.assertEqual(card_store.cards[card].dmg, readed_card_store.cards[card].dmg)
+            self.assertEqual(card_store.cards[card].dfc, readed_card_store.cards[card].dfc)
+            self.assertEqual(card_store.cards[card].mov, readed_card_store.cards[card].mov)
+            self.assertEqual(card_store.cards[card].pri, readed_card_store.cards[card].pri)
+            self.assertEqual(card_store.cards[card].tit, readed_card_store.cards[card].tit)
+            self.assertEqual(card_store.cards[card].usb, readed_card_store.cards[card].usb)
+            self.assertEqual(card_store.cards[card].dst, readed_card_store.cards[card].dst)
+            card += 1
+
     def test_ship(self):
         '''
         Проверяет, что корабль считывается из файла корректно.
