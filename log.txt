@@ -1,10 +1,10 @@
 lave
-Ioann
+test
 1
 2
-image
+/img/planetslave.png
 -1
-10
+5
 3
 -1
 
