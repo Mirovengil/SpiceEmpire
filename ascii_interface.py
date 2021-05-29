@@ -287,7 +287,6 @@ class ASCIIInteface:
         mass = [
             ('Главное меню', ASCIIInteface.start),
             ('Назад к звезде', ASCIIInteface.now_star),
-            ('Просмотр карточки', ASCIIInteface.show_card),
             ('Перемещение корабля', ASCIIInteface.move_ship_on_map)
         ]
         if self.game.ships[self.scouted_ship].on_side(self.game):

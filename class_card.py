@@ -4,7 +4,7 @@
 '''
 
 import copy
-
+import random
 from my_math import rdf
 
 class Card:
@@ -31,9 +31,9 @@ class Card:
         self.dmg = float(rdf(fin))
         self.dfc = float(rdf(fin))
         self.mov = float(rdf(fin))
-        self.pri = int(rdf(fin))
-        self.tit = str(rdf(fin))
         self.dst = int(rdf(fin))
+        self.tit = str(rdf(fin))
+        self.pri = 4
         self.usb = True
         fin.close()
 
@@ -84,7 +84,7 @@ class CardStore:
     Поля:
         cards : [Card] -- массив карточек, доступных корабля.
     '''
-    cards_nummer = 3
+    cards_nummer = 4
 
     def __init__(self, fin=None):
         '''
@@ -95,6 +95,7 @@ class CardStore:
             self.cards.append(Card(fin + '_movement'))
             self.cards.append(Card(fin + '_attack'))
             self.cards.append(Card(fin + '_defence'))
+            self.cards.append(Card('captains/capitan_card_' + str(random.randint(1, 53))))
             self.refresh()
 
     def refresh(self):
