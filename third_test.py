@@ -13,6 +13,9 @@ class TestSaves (unittest.TestCase):
     временным файлом) не происходит потери или искажения данных.
     '''
     def test_planet(self):
+        '''
+        Проверяет, что планета считывается из файла корректно.
+        '''
         planet = Planet.new_planet('test', my_math.Coords(1, 2))
         f = open('log.txt', 'w')
         print(planet.cache(), file=f)
@@ -30,4 +33,28 @@ class TestSaves (unittest.TestCase):
         self.assertEqual(planet.adi.will_be_occupied, readed_planet.adi.will_be_occupied)
         self.assertEqual(planet.adi.will_be_occupied_by, readed_planet.adi.will_be_occupied_by)
         
+    def test_ship(self):
+        '''
+        Проверяет, что корабль считывается из файла корректно.
+        '''
+        ship = Ship.new_ship('test')
+        ship.master = -1
+        ship.x_y = my_math.Coords(-1, 12)
+        ship.system = 1533
+        f = open('log.txt', 'w')
+        print(ship.cache(), file=f)
+        f.close()
+        f = open('log.txt', 'r')
+        readed_ship = Ship.read_ship(f)
+        self.speed = None
+        self.limit = None
+        self.fleet = None
+        f.close()
+        self.assertEqual(ship.x_y, readed_ship.x_y)
+        self.assertEqual(ship.system, readed_ship.system)
+        self.assertEqual(ship.img, readed_ship.img)
+        self.assertEqual(ship.name, readed_ship.name)
+        self.assertEqual(ship.master, readed_ship.master)
+        self.assertEqual(ship.img, readed_ship.img)
+        #То, что card_store считываются корректно, уже проверено.
         

@@ -133,6 +133,7 @@ class Ship:
         ship.card_store = card_store
         ship.speed = SHIPS_PARAMS[ship.name]['speed']
         ship.limit = SHIPS_PARAMS[ship.name]['limit']
+        ship.set_img('./img/' + ship.name + '.img')
         ship.fleet = int(rdf(fin))
         return ship
 
