@@ -8,6 +8,7 @@ from class_planet import Planet
 from class_ship import Ship
 from class_card import Card
 from class_card import CardStore
+from class_map import GameMap
 
 class TestSaves (unittest.TestCase):
     '''
@@ -91,9 +92,6 @@ class TestSaves (unittest.TestCase):
         f.close()
         f = open('log.txt', 'r')
         readed_ship = Ship.read_ship(f)
-        self.speed = None
-        self.limit = None
-        self.fleet = None
         f.close()
         self.assertEqual(ship.x_y, readed_ship.x_y)
         self.assertEqual(ship.system, readed_ship.system)
@@ -102,4 +100,24 @@ class TestSaves (unittest.TestCase):
         self.assertEqual(ship.master, readed_ship.master)
         self.assertEqual(ship.img, readed_ship.img)
         #То, что card_store считываются корректно, уже проверено.
+
+    def test_map(self):
+        '''
+        Проверяет, что карта считывается из файла корректно.
+        '''
+        game_map = GameMap()
+        game_map.size_x = 123
+        game_map.size_y = 321
+        game_map.number_of_players = 6666
+        f = open('log.txt', 'w')
+        print(game_map.cache(), file=f)
+        f.close()
+        readed_map = GameMap.read_map('log.txt')
+        self.assertEqual(game_map.size_x, readed_map.size_x)
+        self.assertEqual(game_map.size_y, readed_map.size_y)
+        self.assertEqual(game_map.number_of_players, readed_map.number_of_players)
+        self.assertEqual(game_map.player, readed_map.player)
+        self.assertEqual(game_map.turn, readed_map.turn)
+        self.assertEqual(game_map.battle_is_on, readed_map.battle_is_on)
+        self.assertEqual(game_map.profit, readed_map.profit)
         
