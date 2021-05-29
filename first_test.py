@@ -54,4 +54,5 @@ class CoordsTest(unittest.TestCase):
         Проверяет, что объект класса Coords можно корректно получить из кортежа
         из двух элементов.
         '''
-        
+        test_coords = my_math.Coords.from_pair((5, -5))
+        self.assertEqual(my_math.Coords(5, -5), test_coords)
