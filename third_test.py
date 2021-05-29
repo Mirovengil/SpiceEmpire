@@ -6,6 +6,7 @@ import unittest
 import my_math
 from class_planet import Planet
 from class_ship import Ship
+from class_card import Card
 
 class TestSaves (unittest.TestCase):
     '''
@@ -32,6 +33,26 @@ class TestSaves (unittest.TestCase):
         self.assertEqual(planet.description, readed_planet.description)
         self.assertEqual(planet.adi.will_be_occupied, readed_planet.adi.will_be_occupied)
         self.assertEqual(planet.adi.will_be_occupied_by, readed_planet.adi.will_be_occupied_by)
+
+    def test_card(self):
+        '''
+        Проверяет, что карточка считывается из файла корректно.
+        '''
+        card = Card('test_attack')
+        f = open('log.txt', 'w')
+        print(card.cache(), file=f)
+        f.close()
+        f = open('log.txt', 'r')
+        readed_card = Card.load(f)
+        f.close()
+        self.assertEqual(card.inf, readed_card.inf)
+        self.assertEqual(card.dmg, readed_card.dmg)
+        self.assertEqual(card.dfc, readed_card.dfc)
+        self.assertEqual(card.mov, readed_card.mov)
+        self.assertEqual(card.pri, readed_card.pri)
+        self.assertEqual(card.tit, readed_card.tit)
+        self.assertEqual(card.usb, readed_card.usb)
+        self.assertEqual(card.dst, readed_card.dst)
         
     def test_ship(self):
         '''
