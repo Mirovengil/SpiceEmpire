@@ -166,6 +166,8 @@ class ASCIIInteface:
         Отрисовывает все звёзды и предлагает перейти к одной из них.
         '''
         ASCIIInteface.cls()
+        if self.game.battle_is_on:
+            self.draw_battle_map()
         if self.game.check_to_finish():
             self.draw_win(self.game.get_winner())
         print('Звёзды:')

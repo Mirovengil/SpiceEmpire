@@ -126,7 +126,7 @@ class GameMap:
         ship = self.ships[ship_index]
         self.refresh_planet_masters(ship.x_y, ship.system, ship.master)
         #Корабль мог прилететь в клетку, где стоит противник. Это надо обработать.
-        self.try_to_battle(ship_index)
+        self.try_to_battle(ship.x_y, ship.system)
 
     def move_fleet_to_system(self, fleet_index, system_index):
         '''
@@ -139,7 +139,7 @@ class GameMap:
         fleet = self.get_fleets_of_player()[fleet_index]
         self.refresh_planet_masters(fleet.x_y, fleet.system, fleet.master)
         #Корабль мог прилететь в клетку, где стоит противник. Это надо обработать.
-        self.try_to_battle(self.get_one_ship_from_fleet_index(fleet_index))
+        self.try_to_battle(fleet.x_y, fleet.system)
 
     def get_one_ship_from_fleet_index(self, fleet_index):
         '''
@@ -256,7 +256,8 @@ class GameMap:
         self.refresh_planet_masters(self.ships[ship].x_y,\
         self.ships[ship].system, self.ships[ship].master)
         #Корабль мог переместиться в клетку с противником. Этот случай надо обработать.
-        self.try_to_battle(ship)
+        ship = self.ships[ship]
+        self.try_to_battle(ship.x_y, ship.system)
 
     @staticmethod
     def read_map(name):
@@ -281,10 +282,11 @@ class GameMap:
         rez.refresh_fleets()
         return rez
 
-    def try_to_battle(self, ship_index):
+    def try_to_battle(self, place, system):
         '''
-        На вход принимает ship_index : int -- номер корабля, который совершил какое-либо
-        перемещение на глобальной карте. Это сделано во избежание O(n * n), где n -- сумма
+        На вход принимает place : Coords и system : int -- 
+        место корабля, который совершил какое-либо перемещение на глобальной
+        карте. Это сделано во избежание O(n * n), где n -- сумма
         кораблей у всех игроков. Реализация же за O(n) гораздо жизнеспособнее (потому что до
         n = 10 ** 5 работает практически неощутимо моментально, а такое количество кораблей
         на поле уже невозможно физически (гарантируют правила игры).
@@ -295,12 +297,11 @@ class GameMap:
         '''
         ships_must_be_in_battle = []
         for ship in self.ships:
-            if ship.x_y == self.ships[ship_index].x_y and\
-            ship.system == self.ships[ship_index].system:
+            if ship.x_y == place and ship.system == system:
                 ships_must_be_in_battle.append(ship)
         ship = 0
-        while ship < len(ships_must_be_in_battle):
-            if ships_must_be_in_battle[ship].master != self.player:
+        while ship + 1< len(ships_must_be_in_battle):
+            if ships_must_be_in_battle[ship + 1].master != ships_must_be_in_battle[ship].master:
                 #Начинается битва.
                 self.battle_is_on = True
                 self.battle_map = BattleMap(ships_must_be_in_battle)
@@ -522,7 +523,7 @@ class GameMap:
             raise ValueError('Координаты точки должны находиться в пределах системы!!11')
         fleet.move(place)
         self.refresh_planet_masters(fleet.x_y, fleet.system, fleet.master)
-        self.try_to_battle(self.get_one_ship_from_fleet_index(fleet_index))
+        self.try_to_battle(fleet.x_y, fleet.system)
 
     def fleet_is_on_side(self, fleet_index):
         '''
